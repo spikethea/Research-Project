@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class TurnSignals : MonoBehaviour
 {
+    [SerializeField] private Transform cameraOffset;
+
     public Transform LeftController;
     public Transform RightController;
 
@@ -22,7 +24,7 @@ public class TurnSignals : MonoBehaviour
     void Update()
     {
         // Turn Signals
-        if (LeftController.position.x - transform.position.x < -signalThreshhold)
+        if (LeftController.position.x - cameraOffset.position.x < -signalThreshhold)
         {
             LeftArrow.SetActive(true);
         }
@@ -30,7 +32,7 @@ public class TurnSignals : MonoBehaviour
             LeftArrow.SetActive(false);
         }
 
-        if (RightController.position.x - transform.position.x > signalThreshhold)
+        if (RightController.position.x - cameraOffset.position.x > signalThreshhold)
         {
             RightArrow.SetActive(true);
         }

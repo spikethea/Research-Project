@@ -9,6 +9,9 @@ public class EndlessRunnerEmitter : MonoBehaviour
     public float tileLength = 10f;
     public float moveSpeed = 10f;
 
+    public float xOffset;
+    public float yOffset;
+
     private float spawnZ = 0f;
 
     private Queue<GameObject> activeTiles =
@@ -49,7 +52,7 @@ public class EndlessRunnerEmitter : MonoBehaviour
     {
         GameObject tile = Instantiate(
             roadPrefab,
-            new Vector3(0, 0, spawnZ),
+            new Vector3(xOffset, yOffset, spawnZ),
             Quaternion.identity
         );
 
@@ -63,7 +66,7 @@ public class EndlessRunnerEmitter : MonoBehaviour
         GameObject tile = activeTiles.Dequeue();
 
         tile.transform.position =
-            new Vector3(0, 0, spawnZ);
+            new Vector3(xOffset, yOffset, spawnZ);
 
         spawnZ += tileLength;
 
