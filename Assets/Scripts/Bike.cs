@@ -20,8 +20,13 @@ public class Bike : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _initialHeadPosition = HeadTransform.localPosition;
+       Invoke(nameof(SetInitialHeadPosition), 0.2f); // Delay to ensure XR rig is properly initialized
 
+    }
+
+    void SetInitialHeadPosition()
+    {
+        _initialHeadPosition = HeadTransform.localPosition;
     }
 
     void DetectStop(Transform controller)
@@ -42,10 +47,12 @@ public class Bike : MonoBehaviour
         }
         if(HeadTransform.rotation.x < 0.4 && Emitter.moveSpeed > 5f)
         {
+            //Speeding up and slowing down disabled for now, motion sickness
             Emitter.moveSpeed -= 0.1f;
         }
         else if (HeadTransform.rotation.x > -0.4)
         {
+            //Speeding up and slowing down disabled for now, motion sickness
             Emitter.moveSpeed += 0.1f;
         }
 
@@ -59,7 +66,10 @@ public class Bike : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _bikeTilt = HeadTransform.localPosition.x - _initialHeadPosition.x;
+        //limit bike tilt
+        _bikeTilt = Mathf.Clamp(HeadTransform.localPosition.x - _initialHeadPosition.x, -1f, 1f);
+
+        
 
         // Tilt the bike based on the head's horizontal movement
         BikeBody.transform.rotation = Quaternion.Euler(0, 0, -_bikeTilt * TiltSensitivity); // Adjust the multiplier for more or less tilt
@@ -85,20 +95,20 @@ public class Bike : MonoBehaviour
         
         if (Player.transform.position.x > -5 && Player.transform.position.x < 5) { //Prevent bike from going out of bounds
             Debug.Log("Player Position X: " + Player.transform.position.x);
-            if (BikeBody.transform.rotation.x > -4f && BikeBody.transform.rotation.x < 4f)
-            {
-                if (BikeBody.transform.rotation.z > 0.01f)
-                {
-                    Player.transform.position += new Vector3(-xSpeed * Mathf.Abs(HeadTransform.position.x), 0, 0) * Time.deltaTime;
-                    Debug.Log("Bike Moving Left: " + BikeBody.transform.rotation.z);
-                }
+            
+                
+                if (HeadTransform.localPosition.x - _initialHeadPosition.x > 0.1f)
+                    {
+                    Player.transform.position += new Vector3(1, 0, 0) * Time.deltaTime;
+                    Debug.Log("Bike Moving Left: ");
+                    }
 
-                if (BikeBody.transform.rotation.z < -0.01f)
+                if (HeadTransform.localPosition.x - _initialHeadPosition.x < -0.1f)
                 {
-                    Player.transform.position += new Vector3(xSpeed * Mathf.Abs(HeadTransform.position.x), 0, 0) * Time.deltaTime;
-                    Debug.Log("Bike Moving Right: " + BikeBody.transform.rotation.z);
+                    Player.transform.position -= new Vector3(1, 0, 0) * Time.deltaTime;
+                    Debug.Log("Bike Moving Right: ");
                 }
-            }
+            
         } else {
             Player.transform.position = new Vector3(0, Player.transform.position.y, Player.transform.position.z); }
             

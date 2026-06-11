@@ -23,8 +23,12 @@ public class TurnSignals : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Turn Signals
-        if (LeftController.position.x - cameraOffset.position.x < -signalThreshhold)
+        
+        // Turn Signals, only one can be activated at a time
+        if (
+            RightArrow.activeSelf == false &&
+            LeftController.position.x - cameraOffset.position.x < -signalThreshhold
+            )
         {
             LeftArrow.SetActive(true);
         }
@@ -32,7 +36,10 @@ public class TurnSignals : MonoBehaviour
             LeftArrow.SetActive(false);
         }
 
-        if (RightController.position.x - cameraOffset.position.x > signalThreshhold)
+        if (
+            LeftArrow.activeSelf == false &&
+            RightController.position.x - cameraOffset.position.x > signalThreshhold
+            )
         {
             RightArrow.SetActive(true);
         }
