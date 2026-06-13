@@ -623,7 +623,7 @@ Transform:
   m_GameObject: {fileID: 468313533}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20, y: 0, z: 0}
+  m_LocalPosition: {x: 10, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -641,8 +641,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0723f3d716c0544da2bd0740e82f33c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lane
-  xPosition: 0
-  yPosition: 0
+  xOffset: 0
+  yOffset: 0
   tileLength: 10
 --- !u!1 &468728068
 GameObject:
@@ -1124,7 +1124,7 @@ GameObject:
   - component: {fileID: 877273167}
   - component: {fileID: 877273166}
   m_Layer: 0
-  m_Name: Plane (1)
+  m_Name: Road
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1177,7 +1177,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 1cf311211cc31cf439cc8ebb41cfb264, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1322,7 +1322,7 @@ Transform:
   m_GameObject: {fileID: 980645561}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20, y: 0, z: 0}
+  m_LocalPosition: {x: -10, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1340,8 +1340,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0723f3d716c0544da2bd0740e82f33c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lane
-  xPosition: 0
-  yPosition: 0
+  xOffset: 0
+  yOffset: 0
   tileLength: 10
 --- !u!4 &1017349661 stripped
 Transform:
@@ -1480,7 +1480,7 @@ MonoBehaviour:
   - {fileID: 468313535}
   - {fileID: 1272077861}
   tilesOnScreen: 8
-  tileLength: 10
+  tileLength: 50
   moveSpeed: 10
   xOffset: -10
   yOffset: 5
@@ -1770,7 +1770,7 @@ Transform:
   m_GameObject: {fileID: 1272077859}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20, y: 0, z: 0}
+  m_LocalPosition: {x: 20, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1788,8 +1788,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0723f3d716c0544da2bd0740e82f33c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lane
-  xPosition: 0
-  yPosition: 0
+  xOffset: 0
+  yOffset: 0
   tileLength: 10
 --- !u!4 &1283608252 stripped
 Transform:
@@ -2485,8 +2485,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0723f3d716c0544da2bd0740e82f33c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lane
-  xPosition: 0
-  yPosition: 0
+  xOffset: 0
+  yOffset: 0
   tileLength: 10
 --- !u!4 &1745296229 stripped
 Transform:

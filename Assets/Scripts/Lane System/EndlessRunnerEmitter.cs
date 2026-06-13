@@ -16,34 +16,32 @@ public class EndlessRunnerEmitter : MonoBehaviour
     public float yOffset;
 
     private float spawnZ = 0f;
-
-    private Queue<GameObject> activeTiles =
-        new Queue<GameObject>();
-
     void Start()
     {
 
             // Spawn road tiles
             for (int j = 0; j < lanes.Length; j++)
             {
-                lanes[j].SpawnTile(roadPrefab, spawnZ);
+                for (int i = 0; i < tilesOnScreen; i++)
+                {
+                    lanes[j].SpawnTile(roadPrefab);
+                }
             }
     }
 
     void Update()
     {
-        
 
-        
 
-        for (int j = 0; j < lanes.Length; j++)
+
+
+        foreach (Lane lane in lanes)
         {
-            GameObject firstTile = lanes[j].activeTiles.Peek();
+            lane.MoveTiles(moveSpeed);
 
-            lanes[j].MoveTiles(moveSpeed);
-            if (firstTile.transform.position.z < -tileLength)
+            if (lane.activeTiles.Peek().transform.position.z < -tileLength)
             {
-                lanes[j].RecycleTile(spawnZ);
+                lane.RecycleTile();
             }
         }
     }
