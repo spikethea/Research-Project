@@ -4,6 +4,7 @@ using UnityEngine;
 public class ResetXRPosition : MonoBehaviour
 {
     [SerializeField] private XROrigin xrOrigin;
+    [SerializeField] private Transform playerSpawn;
 
     void Start()
     {
@@ -12,7 +13,8 @@ public class ResetXRPosition : MonoBehaviour
 
     void Recenter()
     {
-        xrOrigin.MoveCameraToWorldLocation(Vector3.zero);
+        //xrOrigin.MoveCameraToWorldLocation(Vector3.zero);
+        xrOrigin.MoveCameraToWorldLocation(playerSpawn.position);
 
         xrOrigin.MatchOriginUpCameraForward(
             Vector3.up,
