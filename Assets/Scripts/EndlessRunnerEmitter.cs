@@ -4,6 +4,9 @@ using UnityEngine;
 public class EndlessRunnerEmitter : MonoBehaviour
 {
     [SerializeField] private GameObject roadPrefab;
+    [SerializeField] private GameObject buildingPrefab;
+
+    public Lane[] lanes;
 
     public int tilesOnScreen = 8;
     public float tileLength = 10f;
@@ -19,57 +22,29 @@ public class EndlessRunnerEmitter : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < tilesOnScreen; i++)
-        {
-            SpawnTile();
-        }
+
+            // Spawn road tiles
+            for (int j = 0; j < lanes.Length; j++)
+            {
+                lanes[j].SpawnTile(roadPrefab, spawnZ);
+            }
     }
 
     void Update()
     {
-        MoveTiles();
+        
 
-        GameObject firstTile = activeTiles.Peek();
+        
 
-        if (firstTile.transform.position.z < -tileLength)
+        for (int j = 0; j < lanes.Length; j++)
         {
-            RecycleTile();
+            GameObject firstTile = lanes[j].activeTiles.Peek();
+
+            lanes[j].MoveTiles(moveSpeed);
+            if (firstTile.transform.position.z < -tileLength)
+            {
+                lanes[j].RecycleTile(spawnZ);
+            }
         }
-    }
-
-    void MoveTiles()
-    {
-        foreach (GameObject tile in activeTiles)
-        {
-            tile.transform.position +=
-                Vector3.back *
-                moveSpeed *
-                Time.deltaTime;
-        }
-    }
-
-    void SpawnTile()
-    {
-        GameObject tile = Instantiate(
-            roadPrefab,
-            new Vector3(xOffset, yOffset, spawnZ),
-            Quaternion.identity
-        );
-
-        activeTiles.Enqueue(tile);
-
-        spawnZ += tileLength;
-    }
-
-    void RecycleTile()
-    {
-        GameObject tile = activeTiles.Dequeue();
-
-        tile.transform.position =
-            new Vector3(xOffset, yOffset, spawnZ);
-
-        spawnZ += tileLength;
-
-        activeTiles.Enqueue(tile);
     }
 }
