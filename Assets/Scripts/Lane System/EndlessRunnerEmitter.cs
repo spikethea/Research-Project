@@ -9,13 +9,11 @@ public class EndlessRunnerEmitter : MonoBehaviour
     public Lane[] lanes;
 
     public int tilesOnScreen = 8;
-    public float tileLength = 10f;
     public float moveSpeed = 10f;
 
     public float xOffset;
     public float yOffset;
 
-    private float spawnZ = 0f;
     void Start()
     {
 
@@ -37,9 +35,13 @@ public class EndlessRunnerEmitter : MonoBehaviour
 
         foreach (Lane lane in lanes)
         {
+            //Debug.Log(
+            //    lane.name + " x=" + lane.transform.position.x
+            //);
+
             lane.MoveTiles(moveSpeed);
 
-            if (lane.activeTiles.Peek().transform.position.z < -tileLength)
+            if (lane.activeTiles.Peek().transform.position.z < -lane.tileLength)
             {
                 lane.RecycleTile();
             }
