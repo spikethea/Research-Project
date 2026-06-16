@@ -17,9 +17,11 @@ public class Bike : MonoBehaviour
 
     private Vector3 _initialHeadPosition;
     private float _bikeTilt;
+    private int currentLanePosition = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        currentLanePosition = 2;
        Invoke(nameof(SetInitialHeadPosition), 0.2f); // Delay to ensure XR rig is properly initialized
 
     }
@@ -61,7 +63,16 @@ public class Bike : MonoBehaviour
         Emitter.moveSpeed = Mathf.Clamp(Emitter.moveSpeed, 5f, 20f);
     }
 
-
+    void ChangeLane(int newLanePosition)
+    {
+        if (newLanePosition < -2 || newLanePosition > 2)
+        {
+            Debug.Log("Cannot change lane to: " + newLanePosition + ". Out of bounds.");
+            return;
+        }
+        currentLanePosition = newLanePosition;
+        Debug.Log("Changed lane to: " + currentLanePosition);
+    }
 
     // Update is called once per frame
     void Update()
@@ -91,9 +102,21 @@ public class Bike : MonoBehaviour
 
         
 
+        float playerBoundsLeft = 5f; // Left boundary
+        float playerBoundsRight = 5f; // Right boundary
 
-        
-        if (Player.transform.position.x > -5 && Player.transform.position.x < 5) { //Prevent bike from going out of bounds
+        if (turnSignals.signallingLeft || currentLanePosition < -2) {
+            playerBoundsLeft = 10;
+        }
+
+        if (turnSignals.signallingRight || currentLanePosition > 2)
+        {
+            playerBoundsRight = 10;
+        }
+
+        //Prevent bike from going out of bounds in the lane, only allow movement if player is within lane boundaries
+        // Except if the player is signalling a turn, then allow them to move out of bounds to change lanes
+        if (Player.transform.position.x > currentLanePosition*5 - playerBoundsLeft && Player.transform.position.x < currentLanePosition * 5 + playerBoundsRight) {
             Debug.Log("Player Position X: " + Player.transform.position.x);
             
                 
@@ -110,10 +133,21 @@ public class Bike : MonoBehaviour
                 }
             
         } else {
-            Player.transform.position = new Vector3(0, Player.transform.position.y, Player.transform.position.z); }
-            
+            // reset player position to middle of current lane if out of bounds
+            Debug.Log("Player position " + Player.transform.position.x + " out of bounds, resetting position to centre of current lane: " + currentLanePosition);
+            Player.transform.position = new Vector3(currentLanePosition * 5, Player.transform.position.y, Player.transform.position.z);
+        }
 
-        
+        // If player exits current lane boundaries, change current lane
+        if (Player.transform.position.x > currentLanePosition * 5 + 5)
+        {
+            ChangeLane(currentLanePosition + 1);
+        }
+
+        if (Player.transform.position.x < currentLanePosition * 5 - 5)
+        {
+            ChangeLane(currentLanePosition - 1);
+        }
 
 
     }

@@ -10,6 +10,8 @@ public class TurnSignals : MonoBehaviour
     [SerializeField] GameObject LeftArrow;
     [SerializeField] GameObject RightArrow;
 
+    public bool signallingLeft = false;
+    public bool signallingRight = false;
 
     public float signalThreshhold = 0.5f;
 
@@ -31,9 +33,11 @@ public class TurnSignals : MonoBehaviour
             )
         {
             LeftArrow.SetActive(true);
+            signallingLeft = true;
         }
         else {
             LeftArrow.SetActive(false);
+            signallingLeft = false;
         }
 
         if (
@@ -42,10 +46,12 @@ public class TurnSignals : MonoBehaviour
             )
         {
             RightArrow.SetActive(true);
+            signallingRight = true;
         }
         else
         {
             RightArrow.SetActive(false);
+            signallingRight = false;
         }
     }
 

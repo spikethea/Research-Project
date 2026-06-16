@@ -7,8 +7,11 @@ public class EndlessRunnerEmitter : MonoBehaviour
     [SerializeField] private GameObject buildingPrefab;
 
     public Lane[] lanes;
+    public Lane buildingLaneLeft;
+    public Lane buildingLaneRight;
 
     public int tilesOnScreen = 8;
+    public int buildingsOnScreen = 8;
     public float moveSpeed = 10f;
 
     public float xOffset;
@@ -17,14 +20,25 @@ public class EndlessRunnerEmitter : MonoBehaviour
     void Start()
     {
 
-            // Spawn road tiles
-            for (int j = 0; j < lanes.Length; j++)
+        // Spawn road tiles
+        for (int j = 0; j < lanes.Length; j++)
+        {
+            for (int i = 0; i < tilesOnScreen; i++)
             {
-                for (int i = 0; i < tilesOnScreen; i++)
-                {
-                    lanes[j].SpawnTile(roadPrefab);
-                }
+                lanes[j].SpawnTile();
             }
+        }
+
+        // building lanes
+        for (int i = 0; i < buildingsOnScreen; i++)
+        {
+            buildingLaneLeft.SpawnTile();
+        }
+
+        for (int i = 0; i < buildingsOnScreen; i++)
+        {
+            buildingLaneRight.SpawnTile();
+        }
     }
 
     void Update()
@@ -45,6 +59,22 @@ public class EndlessRunnerEmitter : MonoBehaviour
             {
                 lane.RecycleTile();
             }
+        }
+
+        // Building Lanes
+        buildingLaneLeft.MoveTiles(moveSpeed);
+        buildingLaneRight.MoveTiles(moveSpeed);
+
+
+        // Check for space on z-axis then recycle if true
+        if (buildingLaneLeft.activeTiles.Peek().transform.position.z < -buildingLaneLeft.tileLength)
+        {
+            buildingLaneLeft.RecycleTile();
+        }
+
+        if (buildingLaneRight.activeTiles.Peek().transform.position.z < -buildingLaneRight.tileLength)
+        {
+            buildingLaneRight.RecycleTile();
         }
     }
 }

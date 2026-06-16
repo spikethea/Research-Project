@@ -15,6 +15,8 @@ public class Lane : MonoBehaviour
 
     public float tileLength = 10f;
 
+    public GameObject currentPrefab;
+
     public Queue<GameObject> activeTiles =
         new Queue<GameObject>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -44,12 +46,12 @@ public class Lane : MonoBehaviour
         }
     }
 
-    public void SpawnTile(GameObject prefab)
+    public void SpawnTile()
     {
 
         Debug.Log(gameObject.name + " spawning tile position: " + xPosition + ", " + yPosition + ", " + nextSpawnZ);
         GameObject tile = Instantiate(
-            prefab,
+            currentPrefab,
             new Vector3(xPosition, yPosition, nextSpawnZ),
             Quaternion.identity
         );
