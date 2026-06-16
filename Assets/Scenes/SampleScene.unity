@@ -288,6 +288,7 @@ MonoBehaviour:
   Emitter: {fileID: 1062090832}
   turnSignals: {fileID: 1637768384}
   StopSign: {fileID: 1057124523}
+  XROrigin: {fileID: 1071467183}
   isStopping: 1
   xSpeed: 0.3
   ySpeed: 5

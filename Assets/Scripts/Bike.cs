@@ -1,3 +1,4 @@
+using Unity.XR.CoreUtils;
 using UnityEngine;
 
 public class Bike : MonoBehaviour
@@ -10,25 +11,36 @@ public class Bike : MonoBehaviour
     [SerializeField] private EndlessRunnerEmitter Emitter;
     [SerializeField] private TurnSignals turnSignals;
     [SerializeField] private GameObject StopSign;
+    [SerializeField] private Transform XROrigin;
     public bool isStopping = true;
 
     public float xSpeed = 5f;
     public float ySpeed = 5f;
 
-    private Vector3 _initialHeadPosition;
+    private float _neutralLean;
     private float _bikeTilt;
     private int currentLanePosition = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentLanePosition = 2;
+       //currentLanePosition = 1;
        Invoke(nameof(SetInitialHeadPosition), 0.2f); // Delay to ensure XR rig is properly initialized
 
     }
 
+
+
     void SetInitialHeadPosition()
     {
-        _initialHeadPosition = HeadTransform.localPosition;
+        Vector3 offset =
+            HeadTransform.position -
+            XROrigin.position;
+
+        _neutralLean =
+            Vector3.Dot(
+                offset,
+                XROrigin.right
+            );
     }
 
     void DetectStop(Transform controller)
@@ -63,24 +75,101 @@ public class Bike : MonoBehaviour
         Emitter.moveSpeed = Mathf.Clamp(Emitter.moveSpeed, 5f, 20f);
     }
 
-    void ChangeLane(int newLanePosition)
+    void ChangeLane()
     {
-        if (newLanePosition < -2 || newLanePosition > 2)
+
+
+        float playerBoundsLeft = 5f; // Left boundary
+        float playerBoundsRight = 5f; // Right boundary
+
+        if (turnSignals.signallingLeft || currentLanePosition < -2)
         {
-            Debug.Log("Cannot change lane to: " + newLanePosition + ". Out of bounds.");
+            playerBoundsLeft = 10;
+            Debug.Log("Signalling Left");
+        }
+
+        if (turnSignals.signallingRight || currentLanePosition > 2)
+        {
+            Debug.Log("Signalling Right");
+            playerBoundsRight = 10;
+        }
+
+        //Debug.Log("Player Bounds " + playerBoundsLeft + " " + playerBoundsRight);
+        //Debug.Log("Current Lane Position: " + currentLanePosition);
+        //Debug.Log("Player Range: " + (currentLanePosition * 10 - playerBoundsLeft) + " to " + (currentLanePosition * 10 + playerBoundsRight));
+
+        //Prevent bike from going out of bounds in the lane, only allow movement if player is within lane boundaries
+        // Except if the player is signalling a turn, then allow them to move out of bounds to change lanes
+        if (Player.transform.position.x > currentLanePosition * 10 - playerBoundsLeft && Player.transform.position.x < currentLanePosition * 10 + playerBoundsRight)
+        {
+            Debug.Log("Player Position X: " + Player.transform.position.x);
+
+
+            if (HeadTransform.localPosition.x - _neutralLean > 0.1f)
+            {
+                Player.transform.position += new Vector3(1, 0, 0) * Time.deltaTime;
+                //Debug.Log("Bike Moving Left: ");
+            }
+
+            if (HeadTransform.localPosition.x - _neutralLean < -0.1f)
+            {
+                Player.transform.position -= new Vector3(1, 0, 0) * Time.deltaTime;
+                //Debug.Log("Bike Moving Right: ");
+            }
+
+        }
+        else
+        {
+            // reset player position to middle of current lane if out of bounds
+            Debug.Log("Player position " + Player.transform.position.x + " out of bounds, resetting position to centre of current lane: " + currentLanePosition);
+            Player.transform.position = new Vector3(currentLanePosition * 10, Player.transform.position.y, Player.transform.position.z);
+
             return;
         }
-        currentLanePosition = newLanePosition;
-        Debug.Log("Changed lane to: " + currentLanePosition);
+
+        // If player exits current lane boundaries, change current lane
+        if (Player.transform.position.x > currentLanePosition * 10 + 5.1)
+        {
+            if (currentLanePosition > -2 && currentLanePosition < 2)
+            {
+                currentLanePosition += 1;
+                Debug.Log("Changed lane to: " + currentLanePosition);
+            }
+        }
+
+        if (Player.transform.position.x < currentLanePosition * 10 - 5.1)
+        {
+            if (currentLanePosition > -2 && currentLanePosition < 2)
+            {
+                currentLanePosition -= 1;
+                Debug.Log("Changed lane to: " + currentLanePosition);
+            }
+        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        ChangeLane();
         //limit bike tilt
-        _bikeTilt = Mathf.Clamp(HeadTransform.localPosition.x - _initialHeadPosition.x, -1f, 1f);
+        Vector3 offset =
+        HeadTransform.position -
+        XROrigin.position;
 
-        
+        float lean =
+            Vector3.Dot(
+                offset,
+                XROrigin.right
+            );
+
+        _bikeTilt = Mathf.Clamp(
+            lean - _neutralLean,
+            -1f,
+            1f
+        );
+
+
 
         // Tilt the bike based on the head's horizontal movement
         BikeBody.transform.rotation = Quaternion.Euler(0, 0, -_bikeTilt * TiltSensitivity); // Adjust the multiplier for more or less tilt
@@ -92,7 +181,8 @@ public class Bike : MonoBehaviour
         {
             StopSign.SetActive(true);
         }
-        else {
+        else
+        {
             StopSign.SetActive(false);
         }
         TrackHeadOrientation();
@@ -100,55 +190,18 @@ public class Bike : MonoBehaviour
         // disable is stopping if neither controller falls into the stopping threshold
         isStopping = false;
 
-        
 
-        float playerBoundsLeft = 5f; // Left boundary
-        float playerBoundsRight = 5f; // Right boundary
+        //Debug.Log(
+        //$"Parent Rotation: {HeadTransform.parent.rotation.eulerAngles}"
+        //    );
+        //Debug.Log(
+        //    $"Head Rotation: {HeadTransform.rotation.eulerAngles}"
+        //);
 
-        if (turnSignals.signallingLeft || currentLanePosition < -2) {
-            playerBoundsLeft = 10;
-        }
-
-        if (turnSignals.signallingRight || currentLanePosition > 2)
-        {
-            playerBoundsRight = 10;
-        }
-
-        //Prevent bike from going out of bounds in the lane, only allow movement if player is within lane boundaries
-        // Except if the player is signalling a turn, then allow them to move out of bounds to change lanes
-        if (Player.transform.position.x > currentLanePosition*5 - playerBoundsLeft && Player.transform.position.x < currentLanePosition * 5 + playerBoundsRight) {
-            Debug.Log("Player Position X: " + Player.transform.position.x);
-            
-                
-                if (HeadTransform.localPosition.x - _initialHeadPosition.x > 0.1f)
-                    {
-                    Player.transform.position += new Vector3(1, 0, 0) * Time.deltaTime;
-                    Debug.Log("Bike Moving Left: ");
-                    }
-
-                if (HeadTransform.localPosition.x - _initialHeadPosition.x < -0.1f)
-                {
-                    Player.transform.position -= new Vector3(1, 0, 0) * Time.deltaTime;
-                    Debug.Log("Bike Moving Right: ");
-                }
-            
-        } else {
-            // reset player position to middle of current lane if out of bounds
-            Debug.Log("Player position " + Player.transform.position.x + " out of bounds, resetting position to centre of current lane: " + currentLanePosition);
-            Player.transform.position = new Vector3(currentLanePosition * 5, Player.transform.position.y, Player.transform.position.z);
-        }
-
-        // If player exits current lane boundaries, change current lane
-        if (Player.transform.position.x > currentLanePosition * 5 + 5)
-        {
-            ChangeLane(currentLanePosition + 1);
-        }
-
-        if (Player.transform.position.x < currentLanePosition * 5 - 5)
-        {
-            ChangeLane(currentLanePosition - 1);
-        }
-
+        //Debug.Log(
+        //    $"Local: {HeadTransform.localPosition} " +
+        //    $"World: {HeadTransform.position}"
+        //);
 
     }
 }

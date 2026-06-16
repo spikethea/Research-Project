@@ -63,6 +63,7 @@ public class Lane : MonoBehaviour
             if (renderer != null)
             {
                 Debug.Log("Tile length: " + renderer.bounds.size.z);
+                Debug.Log("Tile width: " + renderer.bounds.size.x);
                 tileLength = renderer.bounds.size.z;
             }
         }
