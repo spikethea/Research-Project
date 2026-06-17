@@ -104,18 +104,19 @@ public class Bike : MonoBehaviour
         {
             Debug.Log("Player Position X: " + Player.transform.position.x);
 
-
-            if (HeadTransform.localPosition.x - _neutralLean > 0.1f)
+            if (!isStopping)
             {
-                Player.transform.position += new Vector3(1, 0, 0) * Time.deltaTime;
-                //Debug.Log("Bike Moving Left: ");
-            }
+                if (HeadTransform.localPosition.x - _neutralLean > 0.1f) {
+                    Player.transform.position += new Vector3(1, 0, 0) * Time.deltaTime;
+                    //Debug.Log("Bike Moving Left: ");
+                }
 
-            if (HeadTransform.localPosition.x - _neutralLean < -0.1f)
-            {
-                Player.transform.position -= new Vector3(1, 0, 0) * Time.deltaTime;
-                //Debug.Log("Bike Moving Right: ");
+                if (HeadTransform.localPosition.x - _neutralLean < -0.1f) {
+                    Player.transform.position -= new Vector3(1, 0, 0) * Time.deltaTime;
+                    //Debug.Log("Bike Moving Right: ");
+                }
             }
+            
 
         }
         else
