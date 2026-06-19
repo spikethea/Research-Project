@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class EndlessRunnerEmitter : MonoBehaviour
     [SerializeField] private GameObject buildingPrefab;
 
     public Lane[] lanes;
+    public CarLane[] CarLanes;
     public Lane buildingLaneLeft;
     public Lane buildingLaneRight;
 
@@ -39,6 +41,19 @@ public class EndlessRunnerEmitter : MonoBehaviour
         {
             buildingLaneRight.SpawnTile();
         }
+
+        StartCoroutine(SpawnCars());
+    }
+
+    IEnumerator SpawnCars()
+    {
+        while (true)
+        {
+            var randomCarLane = CarLanes[Random.Range(0, CarLanes.Length)];
+            randomCarLane.SpawnCar();
+            
+            yield return new WaitForSeconds(3f);
+        }
     }
 
     void Update()
@@ -59,6 +74,11 @@ public class EndlessRunnerEmitter : MonoBehaviour
             {
                 lane.RecycleTile();
             }
+        }
+
+        foreach(CarLane carLane in CarLanes)
+        {
+           carLane.MoveObjects(moveSpeed);
         }
 
         // Building Lanes

@@ -243,7 +243,7 @@ Transform:
   m_GameObject: {fileID: 85609590}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.13318662, y: 2, z: 0}
+  m_LocalPosition: {x: 0.13318662, y: 2, z: -0.313}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -408,7 +408,7 @@ Transform:
   m_GameObject: {fileID: 275920931}
   serializedVersion: 2
   m_LocalRotation: {x: 0.01265715, y: 0.48652422, z: 0.8735105, w: 0.010654598}
-  m_LocalPosition: {x: 0.05384432, y: -0.649974, z: 0.35545745}
+  m_LocalPosition: {x: -0.05384432, y: -0.649974, z: 0.22199985}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -659,6 +659,7 @@ GameObject:
   m_Component:
   - component: {fileID: 468313534}
   - component: {fileID: 468313535}
+  - component: {fileID: 468313536}
   m_Layer: 0
   m_Name: Lane 3
   m_TagString: Untagged
@@ -697,6 +698,22 @@ MonoBehaviour:
   yOffset: 0
   tileLength: 10
   currentPrefab: {fileID: 9195895128064495700, guid: e8185235ef162634db7d829411b4aa5a, type: 3}
+--- !u!114 &468313536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468313533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c55dfed3bfb2b9408eea77d7137ee4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarLane
+  xOffset: 0
+  yOffset: 1
+  zSpawn: 100
+  CarPrefab: {fileID: 5123915136007677882, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
 --- !u!1 &468728068
 GameObject:
   m_ObjectHideFlags: 0
@@ -1302,7 +1319,7 @@ Transform:
   m_GameObject: {fileID: 892873990}
   serializedVersion: 2
   m_LocalRotation: {x: -0.012816477, y: 0.4767995, z: 0.87885404, w: -0.010663632}
-  m_LocalPosition: {x: -0.05384432, y: -0.649974, z: 0.35545745}
+  m_LocalPosition: {x: 0.05384432, y: -0.649974, z: 0.222}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1359,6 +1376,7 @@ GameObject:
   m_Component:
   - component: {fileID: 980645562}
   - component: {fileID: 980645563}
+  - component: {fileID: 980645564}
   m_Layer: 0
   m_Name: Lane 2
   m_TagString: Untagged
@@ -1397,6 +1415,22 @@ MonoBehaviour:
   yOffset: 0
   tileLength: 10
   currentPrefab: {fileID: 9195895128064495700, guid: e8185235ef162634db7d829411b4aa5a, type: 3}
+--- !u!114 &980645564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 980645561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c55dfed3bfb2b9408eea77d7137ee4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  xOffset: 0
+  yOffset: 1
+  zSpawn: 100
+  CarPrefab: {fileID: 5123915136007677882, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
 --- !u!1 &1014019539
 GameObject:
   m_ObjectHideFlags: 0
@@ -1582,6 +1616,10 @@ MonoBehaviour:
   - {fileID: 468313535}
   - {fileID: 1272077861}
   - {fileID: 201221652}
+  CarLanes:
+  - {fileID: 980645564}
+  - {fileID: 468313536}
+  - {fileID: 1272077862}
   buildingLaneLeft: {fileID: 1014019541}
   buildingLaneRight: {fileID: 1191228719}
   tilesOnScreen: 8
@@ -1907,6 +1945,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1272077860}
   - component: {fileID: 1272077861}
+  - component: {fileID: 1272077862}
   m_Layer: 0
   m_Name: Lane 4
   m_TagString: Untagged
@@ -1945,6 +1984,22 @@ MonoBehaviour:
   yOffset: 0
   tileLength: 10
   currentPrefab: {fileID: 9195895128064495700, guid: e8185235ef162634db7d829411b4aa5a, type: 3}
+--- !u!114 &1272077862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272077859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c55dfed3bfb2b9408eea77d7137ee4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarLane
+  xOffset: 0
+  yOffset: 1
+  zSpawn: 100
+  CarPrefab: {fileID: 5123915136007677882, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
 --- !u!4 &1283608252 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6441986103899411922, guid: 8044024ca14dade4981f1fea43ea3ff0, type: 3}
@@ -2903,6 +2958,83 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3117890623932289515, guid: 8044024ca14dade4981f1fea43ea3ff0, type: 3}
   m_PrefabInstance: {fileID: 515441889}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1957279630
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5123915136007677882, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
+      propertyPath: m_Name
+      value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 8552805080492162475, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9.814501
+      objectReference: {fileID: 0}
+    - target: {fileID: 8552805080492162475, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.1380401
+      objectReference: {fileID: 0}
+    - target: {fileID: 8552805080492162475, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 81.276985
+      objectReference: {fileID: 0}
+    - target: {fileID: 8552805080492162475, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8552805080492162475, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8552805080492162475, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8552805080492162475, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8552805080492162475, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8552805080492162475, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8552805080492162475, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5123915136007677882, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1957279632}
+  m_SourcePrefab: {fileID: 100100000, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
+--- !u!1 &1957279631 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5123915136007677882, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
+  m_PrefabInstance: {fileID: 1957279630}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1957279632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957279631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eb7bbd32ae53ec4081c81f3aa1192bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &1988641218
 GameObject:
   m_ObjectHideFlags: 0
@@ -3248,3 +3380,4 @@ SceneRoots:
   - {fileID: 1637768382}
   - {fileID: 453528366}
   - {fileID: 173734316}
+  - {fileID: 1957279630}
