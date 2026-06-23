@@ -9,8 +9,9 @@ public class CarLane : MonoBehaviour
     public float zSpawn = 100f;
 
     public GameObject CarPrefab;
-    public Queue<GameObject> activeHazards =
-        new Queue<GameObject>();
+    public Queue<CarBrain> activeCars =
+        new Queue<CarBrain>();
+
 
     private float xPosition;
     private float yPosition;
@@ -32,7 +33,8 @@ public class CarLane : MonoBehaviour
             new Vector3(xPosition, yPosition, zSpawn),
             Quaternion.identity
         );
-        activeHazards.Enqueue(hazard);
+        var hazardScript = hazard.GetComponent<CarBrain>();
+        activeCars.Enqueue(hazardScript);
     }
 
     public void SpawnCar() {
@@ -40,11 +42,9 @@ public class CarLane : MonoBehaviour
     }
 
     public void MoveObjects(float moveSpeed) {
-        foreach(GameObject hazard in activeHazards) {
-            hazard.transform.position +=
-                Vector3.back *
-                moveSpeed *
-                Time.deltaTime;
+        //Move to CarMotor
+        foreach(CarBrain car in activeCars) {
+            car.motor.Move(moveSpeed);
         }
     }
 

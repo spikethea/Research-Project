@@ -60,8 +60,6 @@ public class EndlessRunnerEmitter : MonoBehaviour
     {
 
 
-
-
         foreach (Lane lane in lanes)
         {
             //Debug.Log(

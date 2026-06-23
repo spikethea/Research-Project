@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 8542135974842330101}
   - component: {fileID: 5193382582939941949}
   - component: {fileID: 3381630497723605358}
+  - component: {fileID: 3842062290853119764}
+  - component: {fileID: 2489875067414119771}
   m_Layer: 0
   m_Name: Car
   m_TagString: Untagged
@@ -112,3 +114,30 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3842062290853119764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5123915136007677882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eb7bbd32ae53ec4081c81f3aa1192bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarBrain
+  motor: {fileID: 2489875067414119771}
+  rayHeight: 1
+  rayLength: 30
+--- !u!114 &2489875067414119771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5123915136007677882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e7b76ffc8643e45a178d84ac22e6c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarMotor
