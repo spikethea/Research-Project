@@ -243,7 +243,7 @@ Transform:
   m_GameObject: {fileID: 85609590}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.13318662, y: 0.65, z: -0.313}
+  m_LocalPosition: {x: 0.13318662, y: 2, z: -0.313}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -330,11 +330,6 @@ Transform:
   - {fileID: 1191228718}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &196674072 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9173983156334026967, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-  m_PrefabInstance: {fileID: 1071467182}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &201221650
 GameObject:
   m_ObjectHideFlags: 0
@@ -874,11 +869,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4741763956638393273, guid: 8044024ca14dade4981f1fea43ea3ff0, type: 3}
   m_PrefabInstance: {fileID: 515441889}
   m_PrefabAsset: {fileID: 0}
---- !u!137 &675522812 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 4939161678642713171, guid: 8044024ca14dade4981f1fea43ea3ff0, type: 3}
-  m_PrefabInstance: {fileID: 515441889}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &708113376
 GameObject:
   m_ObjectHideFlags: 0
@@ -1217,7 +1207,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &877273166
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1763,16 +1753,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
   m_PrefabInstance: {fileID: 1071467182}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1071467184 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 202364687, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-  m_PrefabInstance: {fileID: 1071467182}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1071467185 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1670256624, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-  m_PrefabInstance: {fileID: 1071467182}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1079822639 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5043611922549067111, guid: 8044024ca14dade4981f1fea43ea3ff0, type: 3}
@@ -2275,10 +2255,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Car
       objectReference: {fileID: 0}
-    - target: {fileID: 5123915136007677882, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8552805080492162475, guid: f5f54789060cab5448cbac5f99a89ce8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -79.32066
@@ -2534,10 +2510,6 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 49d2911e0bc72c24d95558c4f548dfa2, type: 3}
       propertyPath: m_Name
       value: Bike
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 49d2911e0bc72c24d95558c4f548dfa2, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 49d2911e0bc72c24d95558c4f548dfa2, type: 3}
       propertyPath: m_TagString
@@ -2843,11 +2815,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1712148502986564766, guid: 8044024ca14dade4981f1fea43ea3ff0, type: 3}
   m_PrefabInstance: {fileID: 515441889}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1719687852 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5895826684305351068, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-  m_PrefabInstance: {fileID: 1071467182}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1720247859 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3312600047437512535, guid: 8044024ca14dade4981f1fea43ea3ff0, type: 3}
@@ -3041,12 +3008,12 @@ MonoBehaviour:
   leftHand:
     vrTarget: {fileID: 1342820204}
     ikTarget: {fileID: 74977333}
-    trackingPositionOffset: {x: 0, y: 0, z: -0.15}
+    trackingPositionOffset: {x: 0, y: 0, z: 0}
     trackingRotationOffset: {x: 75, y: 0, z: 0}
   rightHand:
     vrTarget: {fileID: 1231950872}
     ikTarget: {fileID: 850515728}
-    trackingPositionOffset: {x: 0, y: 0, z: -0.15}
+    trackingPositionOffset: {x: 0, y: 0, z: 0}
     trackingRotationOffset: {x: 75, y: 0, z: 0}
   headBodyPositionOffset: {x: 0, y: -0.37, z: 0}
   headBodyYawOffset: 0
@@ -3368,7 +3335,6 @@ GameObject:
   - component: {fileID: 2028566754}
   - component: {fileID: 2028566753}
   - component: {fileID: 2028566756}
-  - component: {fileID: 2028566757}
   m_Layer: 5
   m_Name: Hand Canvas
   m_TagString: Untagged
@@ -3471,29 +3437,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a39de9968445014d9aa069766ab6c6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  avatarScaleCorrection: 0.85
-  leftController: {fileID: 1071467184}
-  rightController: {fileID: 1071467185}
-  leftControllerVisual: {fileID: 196674072}
-  rightControllerVisual: {fileID: 1719687852}
-  avatarRenderer: {fileID: 675522812}
-  avatarIK: {fileID: 1808624726}
-  head: {fileID: 1443719252}
---- !u!114 &2028566757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2028566751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 033e65b25a4d18941bee22955e9c42ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  adjustArmLength: {fileID: 2028566756}
-  HandCanvas: {fileID: 1285248074}
-  cameraOffset: {fileID: 1443719252}
+  leftController: {fileID: 0}
+  rightController: {fileID: 0}
+  avatarIK: {fileID: 0}
+  head: {fileID: 0}
 --- !u!4 &2042220789 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1415099163316650759, guid: 8044024ca14dade4981f1fea43ea3ff0, type: 3}

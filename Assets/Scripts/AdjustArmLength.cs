@@ -1,33 +1,79 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class AdjustArmLength : MonoBehaviour
 {
-    [SerializeField] private GameObject leftArm;
-    [SerializeField] private GameObject rightArm;
-    [SerializeField] private float armLength = 1.0f;
+    public float avatarScaleCorrection = 1.0f;
 
-    [SerializeField] private Transform handTarget;
+    public GameObject leftController;
+    public GameObject rightController;
+    [SerializeField] private GameObject leftControllerVisual;
+    [SerializeField] private GameObject rightControllerVisual;
+
+    [SerializeField] private SkinnedMeshRenderer avatarRenderer;
+    [SerializeField] private IKTargetFollowVRRig avatarIK;
+    [SerializeField] private Transform head;
+
+    private Vector3 originalHeadBodyPositionOffset;
+    private float avatarArmLength = 0f;
+    private float scaleFactor = 1.0f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        avatarRenderer.enabled = false;
+    }
+
+    float DetectAvatarArmLength() {
+        float leftArmLength = Vector3.Distance(avatarIK.leftHand.ikTarget.position, avatarIK.head.ikTarget.position);
+        float rightArmLength = Vector3.Distance(avatarIK.rightHand.ikTarget.position, avatarIK.head.ikTarget.position);
+        avatarArmLength = Mathf.Max(leftArmLength, rightArmLength);
+        Debug.Log("Avatar Arm Length: " + avatarArmLength);
+        return avatarArmLength;
+    }
+
+    float DetectPlayerArmLength() {
+        float leftArmLength = Vector3.Distance(leftController.transform.position, head.position);
+        float rightArmLength = Vector3.Distance(rightController.transform.position, head.position);
+
+        float armLengthMax = Mathf.Max(leftArmLength, rightArmLength);
+        Debug.Log("Player Arm Length: " + armLengthMax);
+
+        return armLengthMax;
+    }
+
+    public void Calibrate(float delay = 0f) {
+        StartCoroutine(CalibrateCoroutine(delay));
+    }
+
+    IEnumerator CalibrateCoroutine(float delayTime) {
+        if (delayTime > 0f) {
+            yield return new WaitForSeconds(delayTime);
+        }
+
+        if (leftController != null && rightController != null)
+        {
+            scaleFactor =  DetectPlayerArmLength() / DetectAvatarArmLength() * avatarScaleCorrection;
+            Debug.Log("Scale Factor: " + scaleFactor);
+
+            // transform scale of character
+            avatarIK.transform.localScale = Vector3.one * scaleFactor;
+            // adjust head position for local scale
+            avatarIK.headBodyPositionOffset *= scaleFactor;
+            //render avatar visuals 
+            avatarRenderer.enabled = true;
+
+            //hide controller visuals
+            leftControllerVisual.SetActive(false);
+            rightControllerVisual.SetActive(false);
+        }
+
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (handTarget != null)
-        {
-            Vector3 directionToHand = handTarget.position - transform.position;
-            float currentDistance = directionToHand.magnitude;
-            if (currentDistance > armLength)
-            {
-                currentDistance = armLength;
-
-                leftArm.transform.localScale = new Vector3(leftArm.transform.localScale.x, leftArm.transform.localScale.y, currentDistance);
-                rightArm.transform.localScale = new Vector3(rightArm.transform.localScale.x, rightArm.transform.localScale.y, currentDistance);
-            }
-        }
     }
 }
