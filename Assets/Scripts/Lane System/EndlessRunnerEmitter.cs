@@ -9,6 +9,7 @@ public class EndlessRunnerEmitter : MonoBehaviour
 
     public Lane[] lanes;
     public CarLane[] CarLanes;
+    public BusLane[] BusLanes;
     public Lane buildingLaneLeft;
     public Lane buildingLaneRight;
 
@@ -43,6 +44,7 @@ public class EndlessRunnerEmitter : MonoBehaviour
         }
 
         StartCoroutine(SpawnCars());
+        StartCoroutine(SpawnBuses());
     }
 
     IEnumerator SpawnCars()
@@ -53,6 +55,17 @@ public class EndlessRunnerEmitter : MonoBehaviour
             randomCarLane.SpawnCar();
             
             yield return new WaitForSeconds(3f);
+        }
+    }
+
+    IEnumerator SpawnBuses()
+    {
+        while (true)
+        {
+            var randomBusLane = BusLanes[Random.Range(0, BusLanes.Length)];
+            randomBusLane.SpawnBus();
+
+            yield return new WaitForSeconds(15f);
         }
     }
 
@@ -77,6 +90,11 @@ public class EndlessRunnerEmitter : MonoBehaviour
         foreach(CarLane carLane in CarLanes)
         {
            carLane.MoveObjects(moveSpeed);
+        }
+
+        foreach (BusLane busLane in BusLanes)
+        {
+            busLane.MoveObjects(moveSpeed);
         }
 
         // Building Lanes

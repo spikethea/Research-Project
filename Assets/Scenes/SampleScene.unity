@@ -345,6 +345,7 @@ GameObject:
   m_Component:
   - component: {fileID: 201221651}
   - component: {fileID: 201221652}
+  - component: {fileID: 201221653}
   m_Layer: 0
   m_Name: Lane 5
   m_TagString: Untagged
@@ -383,6 +384,22 @@ MonoBehaviour:
   yOffset: 0
   tileLength: 10
   currentPrefab: {fileID: 238317886903763122, guid: c1475c58f1246fe458a2308afad5825c, type: 3}
+--- !u!114 &201221653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201221650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba9789fe8a3f4f647aa4543f197c668e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BusLane
+  xOffset: 0
+  yOffset: 1
+  zSpawn: 100
+  BusPrefab: {fileID: 337672377503110432, guid: df3cd3786e994e4459ad5c7a10a7a39f, type: 3}
 --- !u!4 &254208147 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -15868586743643175, guid: 8044024ca14dade4981f1fea43ea3ff0, type: 3}
@@ -988,6 +1005,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 468728069}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &811333625
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 337672377503110432, guid: df3cd3786e994e4459ad5c7a10a7a39f, type: 3}
+      propertyPath: m_Name
+      value: Bus
+      objectReference: {fileID: 0}
+    - target: {fileID: 7034426147054303651, guid: df3cd3786e994e4459ad5c7a10a7a39f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -56.55104
+      objectReference: {fileID: 0}
+    - target: {fileID: 7034426147054303651, guid: df3cd3786e994e4459ad5c7a10a7a39f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.000004726875
+      objectReference: {fileID: 0}
+    - target: {fileID: 7034426147054303651, guid: df3cd3786e994e4459ad5c7a10a7a39f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 65.89485
+      objectReference: {fileID: 0}
+    - target: {fileID: 7034426147054303651, guid: df3cd3786e994e4459ad5c7a10a7a39f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7034426147054303651, guid: df3cd3786e994e4459ad5c7a10a7a39f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7034426147054303651, guid: df3cd3786e994e4459ad5c7a10a7a39f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7034426147054303651, guid: df3cd3786e994e4459ad5c7a10a7a39f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7034426147054303651, guid: df3cd3786e994e4459ad5c7a10a7a39f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7034426147054303651, guid: df3cd3786e994e4459ad5c7a10a7a39f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7034426147054303651, guid: df3cd3786e994e4459ad5c7a10a7a39f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: df3cd3786e994e4459ad5c7a10a7a39f, type: 3}
 --- !u!1 &829170785
 GameObject:
   m_ObjectHideFlags: 0
@@ -1638,6 +1712,9 @@ MonoBehaviour:
   - {fileID: 980645564}
   - {fileID: 468313536}
   - {fileID: 1272077862}
+  BusLanes:
+  - {fileID: 1740195840}
+  - {fileID: 201221653}
   buildingLaneLeft: {fileID: 1014019541}
   buildingLaneRight: {fileID: 1191228719}
   tilesOnScreen: 8
@@ -2868,6 +2945,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1740195838}
   - component: {fileID: 1740195839}
+  - component: {fileID: 1740195840}
   m_Layer: 0
   m_Name: Lane 1
   m_TagString: Untagged
@@ -2906,6 +2984,22 @@ MonoBehaviour:
   yOffset: 0
   tileLength: 10
   currentPrefab: {fileID: 238317886903763122, guid: c1475c58f1246fe458a2308afad5825c, type: 3}
+--- !u!114 &1740195840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1740195837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba9789fe8a3f4f647aa4543f197c668e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BusLane
+  xOffset: 0
+  yOffset: 1
+  zSpawn: 100
+  BusPrefab: {fileID: 337672377503110432, guid: df3cd3786e994e4459ad5c7a10a7a39f, type: 3}
 --- !u!4 &1745296229 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7270674689752606462, guid: 8044024ca14dade4981f1fea43ea3ff0, type: 3}
@@ -3649,3 +3743,4 @@ SceneRoots:
   - {fileID: 453528366}
   - {fileID: 173734316}
   - {fileID: 1384436054}
+  - {fileID: 811333625}
