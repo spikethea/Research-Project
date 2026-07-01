@@ -20,7 +20,7 @@ public class CalibrateArmUI : MonoBehaviour
     {
         
         transform.position = cameraOffset.position + new Vector3(0f, 0f, 0.5f); // Position the UI in front of the players hands
-        initialPosition = transform.position;
+        initialPosition = transform.localPosition;
     }
 
     IEnumerator HideHandImage(float delayTime)
@@ -46,7 +46,7 @@ public class CalibrateArmUI : MonoBehaviour
             }
 
             if (!canvasMoved) {
-                float distanceMoved = Vector3.Distance(initialPosition, transform.position);
+                float distanceMoved = Mathf.Abs(initialPosition.z - transform.localPosition.z);
                 Debug.Log("Distance moved: " + distanceMoved + " - Calibrating arm length.");
                 if (distanceMoved > 0.5f) {
                     adjustArmLength.Calibrate(5f);

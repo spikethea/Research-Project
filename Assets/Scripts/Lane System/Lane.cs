@@ -75,19 +75,51 @@ public class Lane : MonoBehaviour
 
     public void RecycleTile()
     {
-        GameObject recycledTile = activeTiles.Dequeue();
+        GameObject oldTile = activeTiles.Dequeue();
 
+        // Find the tile currently at the end of the lane
         GameObject lastTile = null;
-
         foreach (GameObject tile in activeTiles)
         {
             lastTile = tile;
         }
 
-        recycledTile.transform.position =
-            lastTile.transform.position +
-            Vector3.forward * tileLength;
+        LaneTile lastTileInfo = lastTile.GetComponent<LaneTile>();
 
-        activeTiles.Enqueue(recycledTile);
+        if (oldTile.GetComponent<LaneTile>().tileType == currentPrefab.GetComponent<LaneTile>().tileType)
+        {
+            LaneTile oldTileInfo = oldTile.GetComponent<LaneTile>();
+
+            float spawnDistance =
+                lastTileInfo.Length * 0.5f +
+                oldTileInfo.Length * 0.5f;
+
+            oldTile.transform.position =
+                lastTile.transform.position +
+                Vector3.forward * spawnDistance;
+
+            activeTiles.Enqueue(oldTile);
+        }
+        else
+        {
+            Destroy(oldTile);
+
+            GameObject newTile = Instantiate(
+                currentPrefab,
+                Vector3.zero,
+                Quaternion.identity);
+
+            LaneTile newTileInfo = newTile.GetComponent<LaneTile>();
+
+            float spawnDistance =
+                lastTileInfo.Length * 0.5f +
+                newTileInfo.Length * 0.5f;
+
+            newTile.transform.position =
+                lastTile.transform.position +
+                Vector3.forward * spawnDistance;
+
+            activeTiles.Enqueue(newTile);
+        }
     }
 }

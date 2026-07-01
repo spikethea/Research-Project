@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9027108746993271135}
   - component: {fileID: 8349603582425047050}
   - component: {fileID: 1230769685968467974}
+  - component: {fileID: 299826201318834694}
   m_Layer: 0
   m_Name: LanePrefab
   m_TagString: Untagged
@@ -113,3 +114,17 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &299826201318834694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9195895128064495700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81c4eaf894d70484aa1a80be16ad7ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LaneTile
+  Length: 0
+  tileType: 0

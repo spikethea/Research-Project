@@ -56,23 +56,23 @@ public class Bike : MonoBehaviour
     {
         if (isStopping)
         {
-            Emitter.moveSpeed = 0f;
+            Emitter.currentMoveSpeed = 0f;
             return;
         }
-        if(HeadTransform.rotation.x < 0.4 && Emitter.moveSpeed > 5f)
+        if(HeadTransform.rotation.x < 0.4 && Emitter.currentMoveSpeed > 5f)
         {
             //Speeding up and slowing down disabled for now, motion sickness
-            Emitter.moveSpeed -= 0.1f;
+            Emitter.currentMoveSpeed -= 0.1f;
         }
         else if (HeadTransform.rotation.x > -0.4)
         {
             //Speeding up and slowing down disabled for now, motion sickness
-            Emitter.moveSpeed += 0.1f;
+            Emitter.currentMoveSpeed += 0.1f;
         }
 
         //Debug.Log("Head Rotation X: " + HeadTransform.rotation.x);
 
-        Emitter.moveSpeed = Mathf.Clamp(Emitter.moveSpeed, 5f, 20f);
+        Emitter.currentMoveSpeed = Mathf.Clamp(Emitter.currentMoveSpeed, 5f, 20f);
     }
 
     void ChangeLane()
@@ -186,7 +186,7 @@ public class Bike : MonoBehaviour
         {
             StopSign.SetActive(false);
         }
-        TrackHeadOrientation();
+        //TrackHeadOrientation();
 
         // disable is stopping if neither controller falls into the stopping threshold
         isStopping = false;

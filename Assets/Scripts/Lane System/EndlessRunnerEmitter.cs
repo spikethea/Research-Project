@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EndlessRunnerEmitter : MonoBehaviour
 {
+    [SerializeField] private GameObject pavementPrefab;
     [SerializeField] private GameObject roadPrefab;
     [SerializeField] private GameObject buildingPrefab;
 
@@ -15,13 +16,18 @@ public class EndlessRunnerEmitter : MonoBehaviour
 
     public int tilesOnScreen = 8;
     public int buildingsOnScreen = 8;
-    public float moveSpeed = 10f;
+
+    public float initialMoveSpeed;
+    public float currentMoveSpeed = 10f;
+    
+    public bool pedestrianMode = false;
 
     public float xOffset;
     public float yOffset;
 
     void Start()
     {
+        currentMoveSpeed = initialMoveSpeed;
 
         // Spawn road tiles
         for (int j = 0; j < lanes.Length; j++)
@@ -52,7 +58,10 @@ public class EndlessRunnerEmitter : MonoBehaviour
         while (true)
         {
             var randomCarLane = CarLanes[Random.Range(0, CarLanes.Length)];
-            randomCarLane.SpawnCar();
+            if (!pedestrianMode)
+            {
+                randomCarLane.SpawnCar();
+            }
             
             yield return new WaitForSeconds(3f);
         }
@@ -63,7 +72,10 @@ public class EndlessRunnerEmitter : MonoBehaviour
         while (true)
         {
             var randomBusLane = BusLanes[Random.Range(0, BusLanes.Length)];
-            randomBusLane.SpawnBus();
+            if (!pedestrianMode)
+            {
+                randomBusLane.SpawnBus();
+            }
 
             yield return new WaitForSeconds(15f);
         }
@@ -71,35 +83,52 @@ public class EndlessRunnerEmitter : MonoBehaviour
 
     void Update()
     {
-
-
-        foreach (Lane lane in lanes)
+        if(pedestrianMode)
         {
-            //Debug.Log(
-            //    lane.name + " x=" + lane.transform.position.x
-            //);
+            if(currentMoveSpeed > 5f)
+                currentMoveSpeed -= 1f * Time.deltaTime;
 
-            lane.MoveTiles(moveSpeed);
-
-            if (lane.activeTiles.Peek().transform.position.z < -lane.tileLength)
+            foreach (Lane lane in lanes)
             {
-                lane.RecycleTile();
+                lane.currentPrefab = pavementPrefab;
+            }
+        } else {
+            if (currentMoveSpeed < 14f)
+                currentMoveSpeed += 1f * Time.deltaTime;
+            foreach (Lane lane in lanes)
+            {
+                lane.currentPrefab = roadPrefab;
             }
         }
 
+            foreach (Lane lane in lanes)
+            {
+                //Debug.Log(
+                //    lane.name + " x=" + lane.transform.position.x
+                //);
+
+                lane.MoveTiles(currentMoveSpeed);
+
+                if (lane.activeTiles.Peek().transform.position.z < -lane.tileLength)
+                {
+
+                    lane.RecycleTile();
+                }
+            }
+
         foreach(CarLane carLane in CarLanes)
         {
-           carLane.MoveObjects(moveSpeed);
+           carLane.MoveObjects(currentMoveSpeed);
         }
 
         foreach (BusLane busLane in BusLanes)
         {
-            busLane.MoveObjects(moveSpeed);
+            busLane.MoveObjects(currentMoveSpeed);
         }
 
         // Building Lanes
-        buildingLaneLeft.MoveTiles(moveSpeed);
-        buildingLaneRight.MoveTiles(moveSpeed);
+        buildingLaneLeft.MoveTiles(currentMoveSpeed);
+        buildingLaneRight.MoveTiles(currentMoveSpeed);
 
 
         // Check for space on z-axis then recycle if true
