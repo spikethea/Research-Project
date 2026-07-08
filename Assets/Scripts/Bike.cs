@@ -1,4 +1,5 @@
 using Unity.XR.CoreUtils;
+using UnityEditor.XR.LegacyInputHelpers;
 using UnityEngine;
 
 public class Bike : MonoBehaviour
@@ -102,7 +103,7 @@ public class Bike : MonoBehaviour
         // Except if the player is signalling a turn, then allow them to move out of bounds to change lanes
         if (Player.transform.position.x > currentLanePosition * 10 - playerBoundsLeft && Player.transform.position.x < currentLanePosition * 10 + playerBoundsRight)
         {
-            Debug.Log("Player Position X: " + Player.transform.position.x);
+            //Debug.Log("Player Position X: " + Player.transform.position.x);
 
             if (!isStopping)
             {
@@ -152,6 +153,9 @@ public class Bike : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log($"Player Rot: {Player.transform.eulerAngles}");
+        Debug.Log($"XR Origin Rot: {XROrigin.transform.eulerAngles}");
+        Debug.Log($"Head Parent Rot: {HeadTransform.parent.eulerAngles}");
         ChangeLane();
         //limit bike tilt
         Vector3 offset =
@@ -181,10 +185,14 @@ public class Bike : MonoBehaviour
         if (isStopping)
         {
             StopSign.SetActive(true);
+            if (Emitter.currentMoveSpeed > 0f)
+                Emitter.currentMoveSpeed -= 0.5f * Time.deltaTime;
         }
         else
         {
             StopSign.SetActive(false);
+            if(Emitter.currentMoveSpeed < 10f)
+                Emitter.currentMoveSpeed += 0.5f * Time.deltaTime;
         }
         //TrackHeadOrientation();
 
@@ -203,6 +211,5 @@ public class Bike : MonoBehaviour
         //    $"Local: {HeadTransform.localPosition} " +
         //    $"World: {HeadTransform.position}"
         //);
-
     }
 }

@@ -8,8 +8,8 @@ public class Lane : MonoBehaviour
 
     public float xOffset;
     public float yOffset;
+    public float nextSpawnZ = 0f;
 
-    private float nextSpawnZ = 0f;
     private float xPosition;
     private float yPosition;
 

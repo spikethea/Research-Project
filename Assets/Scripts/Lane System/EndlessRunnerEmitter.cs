@@ -8,7 +8,8 @@ public class EndlessRunnerEmitter : MonoBehaviour
     [SerializeField] private GameObject roadPrefab;
     [SerializeField] private GameObject buildingPrefab;
 
-    public Lane[] lanes;
+    public Lane[] roadLanes;
+    public Lane[] roadLanesBus;
     public CarLane[] CarLanes;
     public BusLane[] BusLanes;
     public Lane buildingLaneLeft;
@@ -25,16 +26,26 @@ public class EndlessRunnerEmitter : MonoBehaviour
     public float xOffset;
     public float yOffset;
 
+    private bool gameStarted = false;
+
     void Start()
     {
         currentMoveSpeed = initialMoveSpeed;
 
         // Spawn road tiles
-        for (int j = 0; j < lanes.Length; j++)
+        for (int j = 0; j < roadLanes.Length; j++)
         {
             for (int i = 0; i < tilesOnScreen; i++)
             {
-                lanes[j].SpawnTile();
+                roadLanes[j].SpawnTile();
+            }
+        }
+
+        for (int j = 0; j < roadLanesBus.Length; j++)
+        {
+            for (int i = 0; i < tilesOnScreen; i++)
+            {
+                roadLanesBus[j].SpawnTile();
             }
         }
 
@@ -48,6 +59,10 @@ public class EndlessRunnerEmitter : MonoBehaviour
         {
             buildingLaneRight.SpawnTile();
         }
+    }
+
+    public void StartGame() {
+        gameStarted = true;
 
         StartCoroutine(SpawnCars());
         StartCoroutine(SpawnBuses());
@@ -69,7 +84,7 @@ public class EndlessRunnerEmitter : MonoBehaviour
 
     IEnumerator SpawnBuses()
     {
-        while (true)
+        while (gameStarted)
         {
             var randomBusLane = BusLanes[Random.Range(0, BusLanes.Length)];
             if (!pedestrianMode)
@@ -83,25 +98,26 @@ public class EndlessRunnerEmitter : MonoBehaviour
 
     void Update()
     {
+        if (!gameStarted) return;
+
         if(pedestrianMode)
         {
             if(currentMoveSpeed > 5f)
                 currentMoveSpeed -= 1f * Time.deltaTime;
 
-            foreach (Lane lane in lanes)
+            foreach (Lane lane in roadLanes)
             {
                 lane.currentPrefab = pavementPrefab;
             }
         } else {
-            if (currentMoveSpeed < 14f)
-                currentMoveSpeed += 1f * Time.deltaTime;
-            foreach (Lane lane in lanes)
+            // Allow Bike script to speed up player
+            foreach (Lane lane in roadLanes)
             {
                 lane.currentPrefab = roadPrefab;
             }
         }
 
-            foreach (Lane lane in lanes)
+            foreach (Lane lane in roadLanes)
             {
                 //Debug.Log(
                 //    lane.name + " x=" + lane.transform.position.x
@@ -109,6 +125,7 @@ public class EndlessRunnerEmitter : MonoBehaviour
 
                 lane.MoveTiles(currentMoveSpeed);
 
+                
                 if (lane.activeTiles.Peek().transform.position.z < -lane.tileLength)
                 {
 

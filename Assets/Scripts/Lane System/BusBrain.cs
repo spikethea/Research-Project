@@ -17,7 +17,7 @@ public class BusBrain : MonoBehaviour
 
     float RaycastForward()
     {
-        Debug.Log("Raycasting...");
+        //Debug.Log("Raycasting...");
         Vector3 targetDirection = Vector3.forward;
 
         Ray ray = new Ray(transform.position + (Vector3.up * rayHeight), targetDirection);
@@ -26,7 +26,7 @@ public class BusBrain : MonoBehaviour
         if (Physics.Raycast(ray, out hitInfo, rayLength))
         {
             Debug.DrawRay(ray.origin, ray.direction * hitInfo.distance, Color.red);
-            Debug.Log("Hit: " + hitInfo.collider.name + ", Distance: " + hitInfo.distance);
+            //Debug.Log("Hit: " + hitInfo.collider.name + ", Distance: " + hitInfo.distance);
             return hitInfo.distance;
         }
         else
@@ -43,7 +43,7 @@ public class BusBrain : MonoBehaviour
         if (RaycastForward() < rayLength)
         {
             // Implement collision logic here
-            motor.accelerate(-5f); // Example: decelerate when an obstacle is detected
+            motor.decelerate(5f); // Example: decelerate when an obstacle is detected
         }
     }
 
@@ -64,7 +64,7 @@ public class BusBrain : MonoBehaviour
     {
         if(busStopping)
         {
-            motor.accelerate(-5f);
+            motor.decelerate(5f);
             return;
         }
         DetectCollision();

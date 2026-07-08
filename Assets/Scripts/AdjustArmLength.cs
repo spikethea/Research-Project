@@ -61,7 +61,7 @@ public class AdjustArmLength : MonoBehaviour
             avatarIK.transform.localScale = Vector3.one * scaleFactor;
             // adjust head position for local scale
             avatarIK.headBodyPositionOffset *= scaleFactor;
-            //render avatar visuals 
+            //render avatar visuals
             avatarRenderer.enabled = true;
 
             //hide controller visuals
