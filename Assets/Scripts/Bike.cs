@@ -19,13 +19,18 @@ public class Bike : MonoBehaviour
     public float ySpeed = 5f;
 
     private float _neutralLean;
+    private float _currentLean;
+
     private float _bikeTilt;
     private int currentLanePosition = 0;
+
+    private Vector3 _calibratedRight;
+    private Vector3 _calibratedForward;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
        //currentLanePosition = 1;
-       Invoke(nameof(SetInitialHeadPosition), 0.2f); // Delay to ensure XR rig is properly initialized
+       Invoke(nameof(SetInitialHeadPosition), 1f); // Delay to ensure XR rig is properly initialized
 
     }
 
@@ -42,6 +47,11 @@ public class Bike : MonoBehaviour
                 offset,
                 XROrigin.right
             );
+
+        _calibratedRight = XROrigin.right;
+        _calibratedForward = XROrigin.forward;
+
+        _currentLean = _neutralLean;
     }
 
     void DetectStop(Transform controller)
@@ -107,12 +117,12 @@ public class Bike : MonoBehaviour
 
             if (!isStopping)
             {
-                if (HeadTransform.localPosition.x - _neutralLean > 0.1f) {
+                if (_bikeTilt > 0.1f) {
                     Player.transform.position += new Vector3(1, 0, 0) * Time.deltaTime;
                     //Debug.Log("Bike Moving Left: ");
                 }
 
-                if (HeadTransform.localPosition.x - _neutralLean < -0.1f) {
+                if (_bikeTilt < -0.1f) {
                     Player.transform.position -= new Vector3(1, 0, 0) * Time.deltaTime;
                     //Debug.Log("Bike Moving Right: ");
                 }
@@ -153,23 +163,26 @@ public class Bike : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log($"Player Rot: {Player.transform.eulerAngles}");
-        Debug.Log($"XR Origin Rot: {XROrigin.transform.eulerAngles}");
-        Debug.Log($"Head Parent Rot: {HeadTransform.parent.eulerAngles}");
+        if (Time.frameCount % 60 == 0)
+        {
+            Debug.Log($"XR Right   = {XROrigin.right}");
+            Debug.Log($"XR Forward = {XROrigin.forward}");
+
+        }
+
         ChangeLane();
         //limit bike tilt
         Vector3 offset =
         HeadTransform.position -
         XROrigin.position;
 
-        float lean =
-            Vector3.Dot(
-                offset,
-                XROrigin.right
-            );
+        Debug.Log(offset);
+
+        _currentLean =
+            Vector3.Dot(offset, _calibratedRight);
 
         _bikeTilt = Mathf.Clamp(
-            lean - _neutralLean,
+            _currentLean - _neutralLean,
             -1f,
             1f
         );

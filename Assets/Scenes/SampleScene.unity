@@ -243,7 +243,7 @@ Transform:
   m_GameObject: {fileID: 85609590}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.13318662, y: 1.15, z: -0.399}
+  m_LocalPosition: {x: 0, y: 1.15, z: -0.399}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -820,7 +820,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 8044024ca14dade4981f1fea43ea3ff0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.13952541
+      value: 0.064
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8044024ca14dade4981f1fea43ea3ff0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1919,6 +1919,7 @@ GameObject:
   - component: {fileID: 1062090831}
   - component: {fileID: 1062090832}
   - component: {fileID: 1062090833}
+  - component: {fileID: 1062090834}
   m_Layer: 0
   m_Name: Emitters
   m_TagString: Untagged
@@ -1979,6 +1980,7 @@ MonoBehaviour:
   pedestrianMode: 0
   xOffset: -10
   yOffset: 5
+  gameStarted: 0
 --- !u!114 &1062090833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1994,6 +1996,22 @@ MonoBehaviour:
   emitter: {fileID: 1062090832}
   emitterObject: {fileID: 8755355933039297499, guid: e376a13351e890f48866a6ed84d6bda5, type: 3}
   frequency: 7
+  yOffset: 1
+--- !u!114 &1062090834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062090830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c564c2429371fde45947e59c9ca7ed30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PointsEmmiter
+  emitter: {fileID: 1062090832}
+  emitterObject: {fileID: 3766409396003104614, guid: a480f589191ff7040a565079c82e6464, type: 3}
+  frequency: 21.3
   yOffset: 1
 --- !u!4 &1068807248 stripped
 Transform:
@@ -3784,7 +3802,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Bike Demo
+  m_text: Work-In Progress Demo
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4470,6 +4488,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Road Sign
       objectReference: {fileID: 0}
+    - target: {fileID: 3766409396003104614, guid: a480f589191ff7040a565079c82e6464, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4873986685004279892, guid: a480f589191ff7040a565079c82e6464, type: 3}
       propertyPath: emitter
       value: 
@@ -4484,7 +4506,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7793379603464029588, guid: a480f589191ff7040a565079c82e6464, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 250
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7793379603464029588, guid: a480f589191ff7040a565079c82e6464, type: 3}
       propertyPath: m_LocalRotation.w

@@ -21,9 +21,11 @@ public class BrakeLight : MonoBehaviour
     {
         if (isDisabled)
         {
+            material.color = Color.black;
             material.SetColor("_EmissionColor", emissionColor * 0);
             isDisabled = false;
         } else {
+            material.color = Color.red;
             float intensity = maxIntensity;
             material.SetColor("_EmissionColor", emissionColor * intensity);
         }

@@ -24,22 +24,26 @@ public class PointsEmmiter : MonoBehaviour
     {
         while (true)
         {
+            if (emitter.gameStarted) {
 
-            currentLanePosition = Random.Range(0, emitter.roadLanes.Length);
 
-            GameObject FoodBag = Instantiate(
-                emitterObject,
-                new Vector3(
-                    emitter.roadLanes[currentLanePosition].transform.position.x,
-                    emitter.roadLanes[currentLanePosition].transform.position.y + yOffset,
-                    emitter.roadLanes[currentLanePosition].nextSpawnZ
-                ),
-                Quaternion.identity
-            );
+                currentLanePosition = Random.Range(0, emitter.roadLanes.Length);
 
-            emittedObjects.Add(FoodBag);
-            Debug.Log("Emitted FoodBag at lane: " + currentLanePosition + " position: " + FoodBag.transform.position);
-            yield return new WaitForSeconds(frequency);
+                GameObject FoodBag = Instantiate(
+                    emitterObject,
+                    new Vector3(
+                        emitter.roadLanes[currentLanePosition].transform.position.x,
+                        emitter.roadLanes[currentLanePosition].transform.position.y + yOffset,
+                        emitter.roadLanes[currentLanePosition].nextSpawnZ
+                    ),
+                    Quaternion.identity
+                );
+
+                emittedObjects.Add(FoodBag);
+                Debug.Log("Emitted FoodBag at lane: " + currentLanePosition + " position: " + FoodBag.transform.position);
+                yield return new WaitForSeconds(frequency);
+
+            }
 
             yield return null;
         }
@@ -52,7 +56,8 @@ public class PointsEmmiter : MonoBehaviour
         {
             GameObject obj = emittedObjects[i];
 
-            obj.transform.position += Vector3.back * emitter.currentMoveSpeed * Time.deltaTime;
+            if (emitter.gameStarted) // only move if the game has started 
+                obj.transform.position += Vector3.back * emitter.currentMoveSpeed * Time.deltaTime;
 
             if (obj.transform.position.z < -10f)
             {

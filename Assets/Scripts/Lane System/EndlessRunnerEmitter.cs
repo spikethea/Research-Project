@@ -26,7 +26,7 @@ public class EndlessRunnerEmitter : MonoBehaviour
     public float xOffset;
     public float yOffset;
 
-    private bool gameStarted = false;
+    public bool gameStarted = false;
 
     void Start()
     {

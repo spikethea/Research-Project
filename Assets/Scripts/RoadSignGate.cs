@@ -1,11 +1,7 @@
 using UnityEngine;
-using UnityEngine.Audio;
-using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
 public class RoadSignGate : MonoBehaviour
 {
-    [SerializeField] EndlessRunnerEmitter emitter;
-
     [SerializeField] AudioClip audioClip;
     [SerializeField] AudioSource audioSource;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -17,7 +13,7 @@ public class RoadSignGate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += Vector3.back * emitter.currentMoveSpeed * Time.deltaTime;
+        //transform.position += Vector3.back * emitter.currentMoveSpeed * Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider other)
