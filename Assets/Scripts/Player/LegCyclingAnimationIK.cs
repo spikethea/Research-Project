@@ -3,6 +3,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 public class LegCyclingAnimationIK : MonoBehaviour
 {
+    [SerializeField] Transform pedalPoint;
     [SerializeField] Transform LeftLegTarget;
     [SerializeField] Transform RightLegTarget;
 
@@ -18,20 +19,24 @@ public class LegCyclingAnimationIK : MonoBehaviour
         
     }
 
-    void CircularMovement(Transform legTarget, float delay)
+    void CircularMovement(Transform legTarget, float delay, float xOffset)
     {
-        float y = Mathf.Cos(Time.time * frequency + delay) * radius;
-        float z = Mathf.Sin(Time.time * frequency + delay) * radius;
-        float x = transform.position.x;// preserving x-axis 
+        float angle = Time.time * frequency + delay;
 
-        legTarget.transform.position = new Vector3(x, y + yOffset, z + zOffset);
+        Vector3 offset = new Vector3(
+            xOffset,
+            Mathf.Cos(angle) * radius + yOffset,
+            Mathf.Sin(angle) * radius + zOffset
+        );
+
+        legTarget.position = pedalPoint.position + offset;
     }
 
     // Update is called once per frame
     void Update()
     {
         
-        CircularMovement(RightLegTarget, 0f);
-        CircularMovement(LeftLegTarget, Mathf.PI);
+        CircularMovement(RightLegTarget, 0f, 0f);
+        CircularMovement(LeftLegTarget, Mathf.PI, -0.2f);
     }
 }

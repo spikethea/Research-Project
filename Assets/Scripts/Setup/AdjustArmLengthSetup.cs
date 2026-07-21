@@ -2,17 +2,15 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
-public class AdjustArmLength : MonoBehaviour
+public class AdjustArmLengthSetup : MonoBehaviour
 {
     public float avatarScaleCorrection = 1.0f;
 
+    [SerializeField] GameManager gameManager;
     public GameObject leftController;
     public GameObject rightController;
-    [SerializeField] private GameObject leftControllerVisual;
-    [SerializeField] private GameObject rightControllerVisual;
 
-    [SerializeField] private Player player;
-    [SerializeField] private GameObject bike;
+
     [SerializeField] private SkinnedMeshRenderer avatarRenderer;
     [SerializeField] private IKTargetFollowVRRig avatarIK;
     [SerializeField] private Transform head;
@@ -26,16 +24,15 @@ public class AdjustArmLength : MonoBehaviour
     void Start()
     {
         avatarRenderer.enabled = false;
-        bike.SetActive(false);
     }
 
-    float DetectAvatarArmLength() {
-        float leftArmLength = Vector3.Distance(avatarIK.leftHand.ikTarget.position, avatarIK.head.ikTarget.position);
-        float rightArmLength = Vector3.Distance(avatarIK.rightHand.ikTarget.position, avatarIK.head.ikTarget.position);
-        avatarArmLength = Mathf.Max(leftArmLength, rightArmLength);
-        Debug.Log("Avatar Arm Length: " + avatarArmLength);
-        return avatarArmLength;
-    }
+    //float DetectAvatarArmLength() {
+    //    float leftArmLength = Vector3.Distance(avatarIK.leftHand.ikTarget.position, avatarIK.head.ikTarget.position);
+    //    float rightArmLength = Vector3.Distance(avatarIK.rightHand.ikTarget.position, avatarIK.head.ikTarget.position);
+    //    avatarArmLength = Mathf.Max(leftArmLength, rightArmLength);
+    //    Debug.Log("Avatar Arm Length: " + avatarArmLength);
+    //    return avatarArmLength;
+    //}
 
     float DetectPlayerArmLength() {
         float leftArmLength = Vector3.Distance(leftController.transform.position, head.position);
@@ -58,21 +55,11 @@ public class AdjustArmLength : MonoBehaviour
 
         if (leftController != null && rightController != null)
         {
-            player.armLength = DetectPlayerArmLength();
-            scaleFactor = player.armLength / DetectAvatarArmLength() * avatarScaleCorrection;
+            playerArmLength =  DetectPlayerArmLength();
             Debug.Log("Scale Factor: " + scaleFactor);
 
-            // transform scale of character
-            avatarIK.transform.localScale = Vector3.one * scaleFactor;
-            // adjust head position for local scale
-            avatarIK.headBodyPositionOffset *= scaleFactor;
-            //render avatar visuals
-            avatarRenderer.enabled = true;
-            bike.SetActive(true);
+            gameManager.SetPlayerArmLength(playerArmLength);
 
-            //hide controller visuals
-            leftControllerVisual.SetActive(false);
-            rightControllerVisual.SetActive(false);
         }
 
         
@@ -81,6 +68,5 @@ public class AdjustArmLength : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
     }
 }

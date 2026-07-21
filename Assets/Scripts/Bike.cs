@@ -5,18 +5,22 @@ using UnityEngine;
 public class Bike : MonoBehaviour
 {
     [SerializeField] private GameObject BikeBody;
+    [SerializeField] private Transform leftHandlePoint;
+    [SerializeField] private Transform rightHandlePoint;
+
     [SerializeField] private Transform HeadTransform;
     [SerializeField] private float TiltSensitivity;
 
-    [SerializeField] private GameObject Player;
+    [SerializeField] private Player player;
     [SerializeField] private EndlessRunnerEmitter Emitter;
     [SerializeField] private TurnSignals turnSignals;
     [SerializeField] private GameObject StopSign;
     [SerializeField] private Transform XROrigin;
     public bool isStopping = true;
 
-    public float xSpeed = 5f;
-    public float ySpeed = 5f;
+    public float xSpeed = 1.5f;
+    public float ySpeed = 10f;
+    public float handlePromixity = 0.1f;
 
     private float _neutralLean;
     private float _currentLean;
@@ -56,8 +60,12 @@ public class Bike : MonoBehaviour
 
     void DetectStop(Transform controller)
     {
-        if (Mathf.Abs(controller.position.z - HeadTransform.position.z) > 0.5f) {
+        if (Mathf.Abs(controller.position.z - HeadTransform.position.z) > player.armLength - 0.1) {
             isStopping = true;
+            StopSign.SetActive(true);
+        } else {
+            isStopping = false;
+            StopSign.SetActive(false);
         }
 
         //Debug.Log("Head Stop Distance: " + Mathf.Abs(controller.position.z - HeadTransform.position.z));
@@ -111,19 +119,19 @@ public class Bike : MonoBehaviour
 
         //Prevent bike from going out of bounds in the lane, only allow movement if player is within lane boundaries
         // Except if the player is signalling a turn, then allow them to move out of bounds to change lanes
-        if (Player.transform.position.x > currentLanePosition * 10 - playerBoundsLeft && Player.transform.position.x < currentLanePosition * 10 + playerBoundsRight)
+        if (player.transform.position.x > currentLanePosition * 10 - playerBoundsLeft && player.transform.position.x < currentLanePosition * 10 + playerBoundsRight)
         {
-            //Debug.Log("Player Position X: " + Player.transform.position.x);
+            //Debug.Log("Player Position X: " + player.transform.position.x);
 
             if (!isStopping)
             {
                 if (_bikeTilt > 0.1f) {
-                    Player.transform.position += new Vector3(1, 0, 0) * Time.deltaTime;
+                    player.transform.position += new Vector3(xSpeed, 0, 0) * Time.deltaTime;
                     //Debug.Log("Bike Moving Left: ");
                 }
 
                 if (_bikeTilt < -0.1f) {
-                    Player.transform.position -= new Vector3(1, 0, 0) * Time.deltaTime;
+                    player.transform.position -= new Vector3(xSpeed, 0, 0) * Time.deltaTime;
                     //Debug.Log("Bike Moving Right: ");
                 }
             }
@@ -133,14 +141,14 @@ public class Bike : MonoBehaviour
         else
         {
             // reset player position to middle of current lane if out of bounds
-            Debug.Log("Player position " + Player.transform.position.x + " out of bounds, resetting position to centre of current lane: " + currentLanePosition);
-            Player.transform.position = new Vector3(currentLanePosition * 10, Player.transform.position.y, Player.transform.position.z);
+            Debug.Log("Player position " + player.transform.position.x + " out of bounds, resetting position to centre of current lane: " + currentLanePosition);
+            player.transform.position = new Vector3(currentLanePosition * 10, player.transform.position.y, player.transform.position.z);
 
             return;
         }
 
         // If player exits current lane boundaries, change current lane
-        if (Player.transform.position.x > currentLanePosition * 10 + 5.1)
+        if (player.transform.position.x > currentLanePosition * 10 + 5.1)
         {
             if (currentLanePosition > -2 && currentLanePosition < 2)
             {
@@ -149,7 +157,7 @@ public class Bike : MonoBehaviour
             }
         }
 
-        if (Player.transform.position.x < currentLanePosition * 10 - 5.1)
+        if (player.transform.position.x < currentLanePosition * 10 - 5.1)
         {
             if (currentLanePosition > -2 && currentLanePosition < 2)
             {
@@ -195,22 +203,31 @@ public class Bike : MonoBehaviour
         DetectStop(turnSignals.LeftController);
         DetectStop(turnSignals.RightController);
 
+        // Halt to a stop
         if (isStopping)
         {
-            StopSign.SetActive(true);
-            if (Emitter.currentMoveSpeed > 0f)
-                Emitter.currentMoveSpeed -= 0.5f * Time.deltaTime;
-        }
-        else
-        {
-            StopSign.SetActive(false);
-            if(Emitter.currentMoveSpeed < 10f)
-                Emitter.currentMoveSpeed += 0.5f * Time.deltaTime;
-        }
-        //TrackHeadOrientation();
 
-        // disable is stopping if neither controller falls into the stopping threshold
-        isStopping = false;
+            Emitter.currentMoveSpeed = 0;
+        }
+
+
+        if (
+            Vector3.Distance(turnSignals.LeftController.position, leftHandlePoint.position) < handlePromixity &&
+            Vector3.Distance(turnSignals.RightController.position, rightHandlePoint.position) < handlePromixity &&
+            !isStopping)
+        {
+            
+            if (Emitter.currentMoveSpeed < ySpeed)
+                Emitter.currentMoveSpeed += 1.5f * Time.deltaTime;
+        }
+        else {
+            if (Emitter.currentMoveSpeed > 0f)
+                Emitter.currentMoveSpeed -= 1.5f * Time.deltaTime;
+        }
+            //TrackHeadOrientation();
+
+            // disable is stopping if neither controller falls into the stopping threshold
+            isStopping = false;
 
 
         //Debug.Log(
