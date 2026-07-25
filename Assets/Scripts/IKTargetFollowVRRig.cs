@@ -8,16 +8,32 @@ public class VRMap
 
     public Vector3 trackingPositionOffset;
     public Vector3 trackingRotationOffset;
+    public bool trackRotation = true;
 
     public void Map()
     {
         ikTarget.position = vrTarget.TransformPoint(trackingPositionOffset);
-        ikTarget.rotation = vrTarget.rotation * Quaternion.Euler(trackingRotationOffset);
+        if(trackRotation) ikTarget.rotation = vrTarget.rotation * Quaternion.Euler(trackingRotationOffset);
+    }
+    public void AmplifyMovement(VRMap head, float multiplier)
+    {
+        Vector3 handPos = vrTarget.position;
+
+        // Offset from the head
+        Vector3 headPos = handPos - head.vrTarget.position;
+
+        // Exaggerate
+        handPos = head.vrTarget.position + headPos * multiplier;
+
+        // Apply tracking offset
+        ikTarget.position = handPos + vrTarget.rotation * trackingPositionOffset;
     }
 }
 
+
+
 public class IKTargetFollowVRRig : MonoBehaviour
-    {
+{
     [Range(0, 1)]
     public float turnSmoothness = 0.1f;
     public VRMap head;
@@ -26,15 +42,23 @@ public class IKTargetFollowVRRig : MonoBehaviour
 
     public Vector3 headBodyPositionOffset;
     public float headBodyYawOffset;
+    public bool isCalibrated = false;
 
-     void LateUpdate()
+    void LateUpdate()
     {
         transform.position = head.ikTarget.position + headBodyPositionOffset;
         float targetYaw = head.vrTarget.eulerAngles.y; // + headBodyYawOffset;
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.eulerAngles.x, targetYaw, transform.eulerAngles.z), turnSmoothness);
 
+        head.trackRotation = false;
         head.Map();
         leftHand.Map();
         rightHand.Map();
+
+        if (isCalibrated)
+        {
+            leftHand.AmplifyMovement(head, 1.0f + GameManager.Instance.leftAssistance);
+            rightHand.AmplifyMovement(head, 1.0f + GameManager.Instance.rightAssistance);
+        }
     }
 }

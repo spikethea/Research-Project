@@ -7,27 +7,53 @@ public class PointsEmmiter : MonoBehaviour
     [SerializeField] EndlessRunnerEmitter emitter;
     [SerializeField] private GameObject emitterObject;
 
-    public float frequency = 1f;
-    public float yOffset = 1;
+    public float WaitingTime = 1f;
+    public float yOffset = 0f;
 
     private int currentLanePosition = 0;
     private List<GameObject> emittedObjects = new List<GameObject>();
 
+    [SerializeField]
+    public List<bool> ActiveLanes = new List<bool> 
+        {
+        true,
+        true,
+        true,
+        };
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
+
         Debug.Log("Start");
         StartCoroutine(EmitFoodBag());
+    }
+
+    int GetRandomEnabledLane()
+    {
+        List<int> availableLanes = new List<int>();
+
+        for (int i = 0; i < ActiveLanes.Count; i++)
+        {
+            if (ActiveLanes[i])
+                availableLanes.Add(i);
+        }
+
+        if (availableLanes.Count == 0)
+            return -1;
+
+        return availableLanes[Random.Range(0, availableLanes.Count)];
     }
 
     IEnumerator EmitFoodBag()
     {
         while (true)
         {
-            if (emitter.gameStarted) {
+            if (emitter.gameStarted && emitter.currentMoveSpeed > 10) {
 
 
-                currentLanePosition = Random.Range(0, emitter.roadLanes.Length);
+                currentLanePosition = GetRandomEnabledLane();
 
                 GameObject FoodBag = Instantiate(
                     emitterObject,
@@ -41,7 +67,7 @@ public class PointsEmmiter : MonoBehaviour
 
                 emittedObjects.Add(FoodBag);
                 Debug.Log("Emitted FoodBag at lane: " + currentLanePosition + " position: " + FoodBag.transform.position);
-                yield return new WaitForSeconds(frequency);
+                yield return new WaitForSeconds(WaitingTime);
 
             }
 

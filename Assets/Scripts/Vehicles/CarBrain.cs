@@ -6,6 +6,7 @@ public class CarBrain : MonoBehaviour
     [SerializeField] float rayHeight = 1f;
     [SerializeField] float MaxRayLength = 20f;
     [SerializeField] float MinRayLength = 5f;
+    public LayerMask IgnoreMe;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,7 +20,7 @@ public class CarBrain : MonoBehaviour
             Ray ray = new Ray(transform.position + (Vector3.up * rayHeight), targetDirection);
             
             RaycastHit hitInfo = new RaycastHit();
-        if (Physics.Raycast(ray, out hitInfo, MaxRayLength))
+        if (Physics.Raycast(ray, out hitInfo, MaxRayLength, ~IgnoreMe))
         {
             Debug.DrawRay(ray.origin, ray.direction * hitInfo.distance, Color.red);
             //Debug.Log("Hit: " + hitInfo.collider.name + ", Distance: " + hitInfo.distance);

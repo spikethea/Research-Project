@@ -1,5 +1,4 @@
-using Unity.XR.CoreUtils;
-using UnityEditor.XR.LegacyInputHelpers;
+using System.Collections;
 using UnityEngine;
 
 public class Bike : MonoBehaviour
@@ -16,6 +15,7 @@ public class Bike : MonoBehaviour
     [SerializeField] private TurnSignals turnSignals;
     [SerializeField] private GameObject StopSign;
     [SerializeField] private Transform XROrigin;
+
     public bool isStopping = true;
 
     public float xSpeed = 1.5f;
@@ -30,12 +30,34 @@ public class Bike : MonoBehaviour
 
     private Vector3 _calibratedRight;
     private Vector3 _calibratedForward;
+
+    private bool handlebarLeft = false;
+    private bool handlebarRight = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
        //currentLanePosition = 1;
        Invoke(nameof(SetInitialHeadPosition), 1f); // Delay to ensure XR rig is properly initialized
+       StartCoroutine(handlebarVibration());
 
+    }
+
+    IEnumerator handlebarVibration()
+    {
+        while (true) {
+            yield return new WaitForSeconds(0.1f);
+
+            float vibrationVal = isStopping ? 0.5f : 0.1f;
+
+            
+
+            if (handlebarLeft) player.haptics.VibrateLeft((Emitter.currentMoveSpeed/ ySpeed) * vibrationVal, 0.1f);
+            if (handlebarRight) player.haptics.VibrateRight((Emitter.currentMoveSpeed/ySpeed) * vibrationVal, 0.1f);
+            if (isStopping) {
+                    Debug.Log("stopping vibration");
+            }
+        }
+        
     }
 
 
@@ -60,13 +82,19 @@ public class Bike : MonoBehaviour
 
     void DetectStop(Transform controller)
     {
-        if (Mathf.Abs(controller.position.z - HeadTransform.position.z) > player.armLength - 0.1) {
+        isStopping = false;
+        if (
+            controller.position.y > HeadTransform.position.y + 0.12f
+            ) {
             isStopping = true;
-            StopSign.SetActive(true);
-        } else {
-            isStopping = false;
-            StopSign.SetActive(false);
         }
+
+        if (handlebarLeft && player.BrakeL)
+            isStopping = true;
+        
+
+        if (handlebarRight && player.BrakeR)
+            isStopping = true;
 
         //Debug.Log("Head Stop Distance: " + Mathf.Abs(controller.position.z - HeadTransform.position.z));
     }
@@ -126,12 +154,12 @@ public class Bike : MonoBehaviour
             if (!isStopping)
             {
                 if (_bikeTilt > 0.1f) {
-                    player.transform.position += new Vector3(xSpeed, 0, 0) * Time.deltaTime;
+                    player.transform.position += new Vector3(xSpeed*_bikeTilt, 0, 0) * Time.deltaTime;
                     //Debug.Log("Bike Moving Left: ");
                 }
 
                 if (_bikeTilt < -0.1f) {
-                    player.transform.position -= new Vector3(xSpeed, 0, 0) * Time.deltaTime;
+                    player.transform.position += new Vector3(xSpeed*_bikeTilt, 0, 0) * Time.deltaTime;
                     //Debug.Log("Bike Moving Right: ");
                 }
             }
@@ -168,6 +196,39 @@ public class Bike : MonoBehaviour
 
     }
 
+    bool HandlebarTouch(Transform controller, Transform handlebarPoint) {
+        if (
+                Vector3.Distance(controller.position, handlebarPoint.position) < handlePromixity)
+        {
+            if (controller.tag == "LeftController")
+            {
+                handlebarLeft = true;
+            }
+
+            if (controller.tag == "RightController")
+            {
+                handlebarRight = true;
+            }
+
+            return true;
+        }
+        else {
+
+            if (controller.tag == "LeftController")
+            {
+                handlebarLeft = false;
+            }
+
+            if (controller.tag == "RightController")
+            {
+                handlebarRight = false;
+            }
+
+            return false;
+        }
+        
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -195,6 +256,12 @@ public class Bike : MonoBehaviour
             1f
         );
 
+        // Mirrored mode
+        if(player.Mirrored)
+        {
+            _bikeTilt = -_bikeTilt;
+        }
+
 
 
         // Tilt the bike based on the head's horizontal movement
@@ -207,27 +274,31 @@ public class Bike : MonoBehaviour
         if (isStopping)
         {
 
-            Emitter.currentMoveSpeed = 0;
+            if (Emitter.currentMoveSpeed > 0)
+                Emitter.currentMoveSpeed -= 7f * Time.deltaTime;
+
+            StopSign.SetActive(true);
+        }
+        else {
+            StopSign.SetActive(false);
         }
 
 
         if (
-            Vector3.Distance(turnSignals.LeftController.position, leftHandlePoint.position) < handlePromixity &&
-            Vector3.Distance(turnSignals.RightController.position, rightHandlePoint.position) < handlePromixity &&
+            HandlebarTouch(turnSignals.LeftController, leftHandlePoint) &&
+            HandlebarTouch(turnSignals.RightController, rightHandlePoint) &&
             !isStopping)
         {
-            
+
             if (Emitter.currentMoveSpeed < ySpeed)
-                Emitter.currentMoveSpeed += 1.5f * Time.deltaTime;
+                Emitter.currentMoveSpeed += 3f * Time.deltaTime;
         }
-        else {
+        else
+        {
             if (Emitter.currentMoveSpeed > 0f)
-                Emitter.currentMoveSpeed -= 1.5f * Time.deltaTime;
+                Emitter.currentMoveSpeed -= 0.5f * Time.deltaTime;
         }
             //TrackHeadOrientation();
-
-            // disable is stopping if neither controller falls into the stopping threshold
-            isStopping = false;
 
 
         //Debug.Log(

@@ -1259,12 +1259,10 @@ GameObject:
   - component: {fileID: 3786242062104164355}
   - component: {fileID: 3188544010511436084}
   - component: {fileID: 2785367125366236179}
-  - component: {fileID: 5706760611469688369}
   - component: {fileID: 4796205182918188685}
   - component: {fileID: 662942411683987325}
   - component: {fileID: 8875664071730214223}
   - component: {fileID: 5144554077268939885}
-  - component: {fileID: 98676574137437179}
   - component: {fileID: 3139971827056559838}
   m_Layer: 0
   m_Name: detective (love interest)
@@ -1336,25 +1334,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5706760611469688369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8097681949064527511}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4bc46bf3c9016f4ea16547864f8b309, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Commuter
-  agent: {fileID: 2785367125366236179}
-  areaMaskName: Platform
-  AnimatorRoot: {fileID: 8097681949064527511}
-  audioSource: {fileID: 0}
-  walkingSound: {fileID: 0}
-  walkingSpeed: 1
-  isWalkingMode: 0
 --- !u!54 &4796205182918188685
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1511,37 +1490,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   useEvents: 1
   promptMessage: 
+  player: {fileID: 0}
   audioSource: {fileID: 8875664071730214223}
-  jazzSong: {fileID: 8300000, guid: 964fb28a4bd1f0242a1b7c92e40dd7e1, type: 3}
-  playerHasLooked: 0
+  animator: {fileID: 3188544010511436084}
+  lookAtPlayer: {fileID: 662942411683987325}
+  SignalArrow: {fileID: 0}
+  StopSign: {fileID: 0}
+  volume: 0.5
   timeToLeave: 8
---- !u!114 &98676574137437179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8097681949064527511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 692bb7b7dd870c8489cfea960ba35214, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GazeEvent
-  OnInteract:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8778930209785694417}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+  playerHasLooked: 0
+  distanceReached: 0
+  exitedTrain: 0
+  WalkOffDistance: 0
 --- !u!136 &3139971827056559838
 CapsuleCollider:
   m_ObjectHideFlags: 0

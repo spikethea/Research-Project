@@ -18,7 +18,8 @@ public class CarMotor : MonoBehaviour
         {
             carSpeed = 0; // prevent acceleration from becoming negative
         }
-        carSpeed += Mathf.Abs(acceleration * Time.deltaTime);
+        if (carSpeed < 10)
+            carSpeed += Mathf.Abs(acceleration * Time.deltaTime);
         //Debug.Log("Car Accelerating: " + acceleration + ", Current Speed: " + carSpeed);
 
         brakeLightL.isDisabled = true;

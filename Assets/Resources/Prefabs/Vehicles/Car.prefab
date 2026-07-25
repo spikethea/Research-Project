@@ -262,6 +262,9 @@ MonoBehaviour:
   rayHeight: 1
   MaxRayLength: 35.8
   MinRayLength: 5
+  IgnoreMe:
+    serializedVersion: 2
+    m_Bits: 4
 --- !u!114 &5500777544410049905
 MonoBehaviour:
   m_ObjectHideFlags: 0

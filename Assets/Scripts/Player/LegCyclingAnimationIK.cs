@@ -6,6 +6,7 @@ public class LegCyclingAnimationIK : MonoBehaviour
     [SerializeField] Transform pedalPoint;
     [SerializeField] Transform LeftLegTarget;
     [SerializeField] Transform RightLegTarget;
+    [SerializeField] EndlessRunnerEmitter emitter;
 
     public float frequency = 2f;
     public float radius = 0.1f;
@@ -13,16 +14,16 @@ public class LegCyclingAnimationIK : MonoBehaviour
     public float yOffset = 0.16f;
     public float zOffset = -0.18f;
 
+    private float pedalAngle = 0f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
     }
 
-    void CircularMovement(Transform legTarget, float delay, float xOffset)
+    void CircularMovement(Transform legTarget, float angle, float xOffset)
     {
-        float angle = Time.time * frequency + delay;
-
         Vector3 offset = new Vector3(
             xOffset,
             Mathf.Cos(angle) * radius + yOffset,
@@ -35,8 +36,9 @@ public class LegCyclingAnimationIK : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        CircularMovement(RightLegTarget, 0f, 0f);
-        CircularMovement(LeftLegTarget, Mathf.PI, -0.2f);
+        pedalAngle += emitter.currentMoveSpeed * frequency * Time.deltaTime;
+
+        CircularMovement(RightLegTarget, pedalAngle, 0f);
+        CircularMovement(LeftLegTarget, pedalAngle + Mathf.PI, -0.2f);
     }
 }

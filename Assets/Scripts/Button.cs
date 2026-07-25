@@ -16,7 +16,7 @@ public class Button : MonoBehaviour
         foreach (var presser in pressers) {
             var distance = Vector3.Distance(presser.transform.position, this.transform.position);
 
-            if (distance < 0.02 && !pressed)
+            if (distance < 0.2 && !pressed)
             {
                 onPressed.Invoke();
                 pressed = true;

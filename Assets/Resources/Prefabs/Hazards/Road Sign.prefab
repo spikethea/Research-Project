@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8576918308046249510}
   - component: {fileID: 7450751509441153802}
   - component: {fileID: 7500449633866978617}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cylinder (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 9054626258915728293}
   - component: {fileID: 6231152848272203528}
   - component: {fileID: 6957901964179309823}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 4873986685004279892}
   - component: {fileID: 6265898900088671670}
   - component: {fileID: 857874494485603264}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Road Sign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,7 +276,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f860e7ed33d27a84ab06991ad60707cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  emitter: {fileID: 0}
   audioClip: {fileID: 8300000, guid: 0da441016e28804419656ced336ab4ec, type: 3}
   audioSource: {fileID: 857874494485603264}
 --- !u!65 &6265898900088671670
@@ -409,7 +408,7 @@ GameObject:
   - component: {fileID: 6531242181851843721}
   - component: {fileID: 6599839570568463888}
   - component: {fileID: 9059441016131380576}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

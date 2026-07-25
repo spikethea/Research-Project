@@ -17,15 +17,14 @@ public class LookAtPlayer : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    private void Start()
-    {
-        Invoke("DisableAnimator", 5.0f); // Delay to ensure the animator has initialized
-    }
-
-    // Disable the animator to prevent it from overriding the neck rotation
-    private void DisableAnimator()
+    private void OnEnable()
     {
         animator.enabled = false;
+    }
+
+    private void OnDisable()
+    {
+        animator.enabled = true;
     }
 
     void LateUpdate()

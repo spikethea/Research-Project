@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     public float playerArmLength = 1.0f;
+    public float leftAssistance = 0f;
+    public float rightAssistance = 0f;
     public bool isMirrorMode = false;
 
     // Game Objectives

@@ -59,7 +59,7 @@ public class CalibrateArmUI : MonoBehaviour
 
             // Position the UI in front of the players armspan limit
             float handPositionZ = (leftController.transform.position.z + rightController.transform.position.z) / 2;
-            if(handPositionZ > transform.position.z + 0.2f) {
+            if(handPositionZ > transform.position.z - 0.2f) {
                 transform.position += new Vector3(0, 0, 0.01f);
             }
 
