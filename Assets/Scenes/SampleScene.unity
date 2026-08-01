@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 1
   m_FogColor: {r: 0.8862746, g: 0.9921569, b: 1, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.038
+  m_FogDensity: 0.023
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -2896,6 +2896,7 @@ GameObject:
   - component: {fileID: 1062090833}
   - component: {fileID: 1062090834}
   - component: {fileID: 1062090835}
+  - component: {fileID: 1062090836}
   m_Layer: 0
   m_Name: Emitters
   m_TagString: Untagged
@@ -3008,6 +3009,23 @@ MonoBehaviour:
   WaitingTime: 40
   yOffset: 2
   ActiveLanes: 000100
+--- !u!114 &1062090836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062090830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c564c2429371fde45947e59c9ca7ed30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PointsEmmiter
+  emitter: {fileID: 1062090832}
+  emitterObject: {fileID: 8522623182585721759, guid: bb11d14734ca35349b27fd4ed5f06571, type: 3}
+  WaitingTime: 15
+  yOffset: 0
+  ActiveLanes: 010101
 --- !u!1 &1063798002
 GameObject:
   m_ObjectHideFlags: 0
@@ -5770,6 +5788,67 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 33.75, y: 11, z: 10}
   m_Center: {x: 10.53, y: 0, z: 0}
+--- !u!1001 &1933743083828367163
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1347652851778411226, guid: bb11d14734ca35349b27fd4ed5f06571, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.049876466
+      objectReference: {fileID: 0}
+    - target: {fileID: 1347652851778411226, guid: bb11d14734ca35349b27fd4ed5f06571, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 1347652851778411226, guid: bb11d14734ca35349b27fd4ed5f06571, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 9.289305
+      objectReference: {fileID: 0}
+    - target: {fileID: 1347652851778411226, guid: bb11d14734ca35349b27fd4ed5f06571, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1347652851778411226, guid: bb11d14734ca35349b27fd4ed5f06571, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1347652851778411226, guid: bb11d14734ca35349b27fd4ed5f06571, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1347652851778411226, guid: bb11d14734ca35349b27fd4ed5f06571, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1347652851778411226, guid: bb11d14734ca35349b27fd4ed5f06571, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1347652851778411226, guid: bb11d14734ca35349b27fd4ed5f06571, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1347652851778411226, guid: bb11d14734ca35349b27fd4ed5f06571, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8522623182585721759, guid: bb11d14734ca35349b27fd4ed5f06571, type: 3}
+      propertyPath: m_Name
+      value: Roadworks
+      objectReference: {fileID: 0}
+    - target: {fileID: 8522623182585721759, guid: bb11d14734ca35349b27fd4ed5f06571, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bb11d14734ca35349b27fd4ed5f06571, type: 3}
 --- !u!1001 &2839651753606095285
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6356,3 +6435,4 @@ SceneRoots:
   - {fileID: 8543960512485300905}
   - {fileID: 566567351}
   - {fileID: 1508441576}
+  - {fileID: 1933743083828367163}
