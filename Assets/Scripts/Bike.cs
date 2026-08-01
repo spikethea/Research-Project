@@ -16,6 +16,9 @@ public class Bike : MonoBehaviour
     [SerializeField] private GameObject StopSign;
     [SerializeField] private Transform XROrigin;
 
+    [SerializeField ] private AudioSource audioSource;
+    [SerializeField] private AudioClip carHornClip;
+
     public bool isStopping = true;
 
     public float xSpeed = 1.5f;
@@ -171,7 +174,9 @@ public class Bike : MonoBehaviour
             // reset player position to middle of current lane if out of bounds
             Debug.Log("Player position " + player.transform.position.x + " out of bounds, resetting position to centre of current lane: " + currentLanePosition);
             player.transform.position = new Vector3(currentLanePosition * 10, player.transform.position.y, player.transform.position.z);
-
+            audioSource.PlayOneShot(carHornClip);
+            player.haptics.VibrateLeft(1f, 1f);
+            player.haptics.VibrateRight(1f, 1f);
             return;
         }
 

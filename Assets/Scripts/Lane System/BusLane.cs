@@ -54,6 +54,14 @@ public class BusLane : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        foreach (BusBrain bus in activeBuses)
+        {
 
+            if (bus.transform.position.z < -10f)
+            {
+                Destroy(bus.gameObject);
+                activeBuses.Dequeue();
+            }
+        }
     }
 }

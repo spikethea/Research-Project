@@ -38,7 +38,21 @@ public class BusBrain : MonoBehaviour
 
     }
 
-    void DetectCollision()
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Car"))
+        {
+            // Implement collision logic here
+            motor.decelerate(5f); // Example: decelerate when a car is hit
+        }
+
+        if(collision.gameObject.GetComponent<LaneTile>().tileType == LaneTileType.Pavement)
+        {
+            Destroy(gameObject); // Destroy the bus if it collides with a pavement tile
+        }
+    }
+
+    void DetectRaycast()
     {
         if (RaycastForward() < rayLength)
         {
@@ -67,7 +81,7 @@ public class BusBrain : MonoBehaviour
             motor.decelerate(5f);
             return;
         }
-        DetectCollision();
+        DetectRaycast();
         if (RaycastForward() > 5f)
         {
             motor.accelerate(2f);

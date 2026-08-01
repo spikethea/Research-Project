@@ -35,7 +35,7 @@ public class CarBrain : MonoBehaviour
 
     }
 
-    void DetectCollision()
+    void DetectRaycast()
     {
         if(RaycastForward() > MaxRayLength)
         {
@@ -47,10 +47,24 @@ public class CarBrain : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Car"))
+        {
+            // Implement collision logic here
+            motor.decelerate(5f); // Example: decelerate when a car is hit
+        }
+
+        if (collision.gameObject.GetComponent<LaneTile>().tileType == LaneTileType.Pavement)
+        {
+            Destroy(gameObject); // Destroy the bus if it collides with a pavement tile
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
-        DetectCollision();
+        DetectRaycast();
         
         
     }

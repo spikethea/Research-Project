@@ -51,6 +51,14 @@ public class CarLane : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        foreach (CarBrain car in activeCars)
+        {
+            
+            if (car.transform.position.z < -10f)
+            {
+                Destroy(car.gameObject);
+                activeCars.Dequeue();
+            }
+        }
     }
 }
