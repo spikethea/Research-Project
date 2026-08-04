@@ -57,7 +57,7 @@ public class Commuter : MonoBehaviour
             if (moveTimer > Random.Range(8, 13))
             {
                 
-                MoveToRandomNearbyPoint(10f);
+                MoveToRandomNearbyPoint(2f);
                 moveTimer = 0;
             }
         }
@@ -91,6 +91,12 @@ public class Commuter : MonoBehaviour
 
 
         animator.SetBool("PlayerLookingAt", true);
+    }
+
+    public void MoveToPoint(Vector3 point)
+    {
+         agent.SetDestination(point);
+        
     }
 
     private void MoveToRandomNearbyPoint(float radius)

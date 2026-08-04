@@ -436,6 +436,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7023bdd526b9f874aa12b51ffe81fea5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  bike: {fileID: 0}
+  commuter: {fileID: 2003967323096727156}
+  crossingCollider: {fileID: 7324349695559544206}
+  zebraLightLeft: {fileID: 5386550804613844842}
+  zebraLightRight: {fileID: 7098946093081354356}
+  leftPoint: {fileID: 6564912261965086658}
+  rightPoint: {fileID: 538858296744263770}
+  emissionIntensity: 2.5
 --- !u!1 &3065691121978427418
 GameObject:
   m_ObjectHideFlags: 0
@@ -1494,6 +1502,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6401265569576446320, guid: c9c1577d61ec49b41af3ccce605f6ce0, type: 3}
   m_PrefabInstance: {fileID: 5324609282529298001}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &5386550804613844842 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 226324043038607675, guid: c9c1577d61ec49b41af3ccce605f6ce0, type: 3}
+  m_PrefabInstance: {fileID: 5324609282529298001}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7034786825301436751
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1554,6 +1567,11 @@ PrefabInstance:
 --- !u!4 &4140294899049840703 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6401265569576446320, guid: c9c1577d61ec49b41af3ccce605f6ce0, type: 3}
+  m_PrefabInstance: {fileID: 7034786825301436751}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &7098946093081354356 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 226324043038607675, guid: c9c1577d61ec49b41af3ccce605f6ce0, type: 3}
   m_PrefabInstance: {fileID: 7034786825301436751}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8017705897997030463
@@ -1628,7 +1646,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 462777299043533453, guid: 2512ecba4d7596d4297e42c586418c13, type: 3}
       propertyPath: m_VersionIndex
-      value: 218
+      value: 236
       objectReference: {fileID: 0}
     - target: {fileID: 1357905999616915966, guid: 2512ecba4d7596d4297e42c586418c13, type: 3}
       propertyPath: m_Name
@@ -1636,7 +1654,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1611021363599623478, guid: 2512ecba4d7596d4297e42c586418c13, type: 3}
       propertyPath: m_VersionIndex
-      value: 1992
+      value: 2010
       objectReference: {fileID: 0}
     - target: {fileID: 1621783100828199454, guid: 2512ecba4d7596d4297e42c586418c13, type: 3}
       propertyPath: m_LocalScale.x
@@ -1708,11 +1726,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6366104482746134695, guid: 2512ecba4d7596d4297e42c586418c13, type: 3}
       propertyPath: m_VersionIndex
-      value: 1103
+      value: 1121
       objectReference: {fileID: 0}
     - target: {fileID: 6865758909329612074, guid: 2512ecba4d7596d4297e42c586418c13, type: 3}
       propertyPath: m_VersionIndex
-      value: 215
+      value: 233
       objectReference: {fileID: 0}
     - target: {fileID: 7715316088215457231, guid: 2512ecba4d7596d4297e42c586418c13, type: 3}
       propertyPath: walkingSound
@@ -1724,17 +1742,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8769344262796722494, guid: 2512ecba4d7596d4297e42c586418c13, type: 3}
       propertyPath: m_VersionIndex
-      value: 679
+      value: 697
       objectReference: {fileID: 0}
     - target: {fileID: 9075265683597550896, guid: 2512ecba4d7596d4297e42c586418c13, type: 3}
       propertyPath: m_VersionIndex
-      value: 3932
+      value: 3950
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2512ecba4d7596d4297e42c586418c13, type: 3}
+--- !u!114 &2003967323096727156 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7715316088215457231, guid: 2512ecba4d7596d4297e42c586418c13, type: 3}
+  m_PrefabInstance: {fileID: 8132879374352118715}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4bc46bf3c9016f4ea16547864f8b309, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!4 &7375895154202466725 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1621783100828199454, guid: 2512ecba4d7596d4297e42c586418c13, type: 3}
