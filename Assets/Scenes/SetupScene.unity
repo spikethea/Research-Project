@@ -593,6 +593,7 @@ MonoBehaviour:
   leftAssistance: 0
   rightAssistance: 0
   isMirrorMode: 0
+  reinforcementMode: 0
   currentTarget: 
 --- !u!4 &382015261
 Transform:
@@ -1922,6 +1923,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  pressDuration: 1
 --- !u!1 &1735350047
 GameObject:
   m_ObjectHideFlags: 0
@@ -2285,6 +2287,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  pressDuration: 1
 --- !u!4 &1993098163
 Transform:
   m_ObjectHideFlags: 0
@@ -5557,6 +5560,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  pressDuration: 2
 --- !u!23 &8394172583848368023
 MeshRenderer:
   m_ObjectHideFlags: 0

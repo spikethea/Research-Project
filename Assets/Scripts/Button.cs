@@ -5,9 +5,12 @@ public class Button : MonoBehaviour
 {
     public Transform[] pressers;
     public UnityEvent onPressed;
+    public float pressDuration = 1f;
     //[SerializeField] Train train;
 
     private bool pressed;
+    private float pressedTimer;
+    
 
     private void Update()
     {
@@ -18,12 +21,19 @@ public class Button : MonoBehaviour
 
             if (distance < 0.2 && !pressed)
             {
-                onPressed.Invoke();
                 pressed = true;
+                pressedTimer += Time.deltaTime;
+                
             }
 
-            if (distance > 0.02) {
+            else
+            {
                 pressed = false;
+                pressedTimer = 0;
+            }
+
+            if (pressedTimer > pressDuration) {
+                onPressed.Invoke();
             }
         }
     }

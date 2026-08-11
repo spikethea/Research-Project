@@ -1,5 +1,3 @@
-using System.Collections;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class CarBrain : MonoBehaviour
@@ -81,7 +79,7 @@ public class CarBrain : MonoBehaviour
             // Implement collision logic here
             if (experimentMode)
             {
-                Destroy(other.gameObject);
+                Destroy(gameObject);
             }
             else {
                 motor.decelerate(25f); // Example: decelerate when a car is hit

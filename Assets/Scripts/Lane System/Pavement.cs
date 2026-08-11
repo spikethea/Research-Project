@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 
 public class Pavement : MonoBehaviour
@@ -7,7 +9,8 @@ public class Pavement : MonoBehaviour
     [SerializeField] public GameObject palmTree;
     [SerializeField] public GameObject[] commuterPrefabs;
 
-    private bool commutersSpawned = false;
+    private List<GameObject> commuters = new List<GameObject>();
+    public bool commutersSpawned = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,6 +22,27 @@ public class Pavement : MonoBehaviour
     {
         if (other.CompareTag("Hazard") || other.CompareTag("Consumable")) {
             Destroy(other.gameObject);
+        }
+    }
+
+    public void MoveCommutersWithTile(Vector3 movement)
+    {
+        //transform.position += movement;
+
+        foreach (GameObject commuter in commuters)
+        {
+            if (commuter != null)
+                commuter.transform.position += movement;
+        }
+    }
+
+    public void clearCommuters()
+    {
+        foreach (GameObject commuter in commuters)
+        {
+            if (commuter != null)
+                Destroy(commuter);
+            commutersSpawned = false;
         }
     }
 
@@ -42,12 +66,17 @@ public class Pavement : MonoBehaviour
                 float randomYRotation = Random.Range(0f, 360f);
                 Quaternion randomRotation = Quaternion.Euler(0f, randomYRotation, 0f);
 
-                GameObject commuter = Instantiate(commuterPrefab, spawnPosition, randomRotation);
+                GameObject commuter = Instantiate(
+                    commuterPrefab,
+                    spawnPosition,
+                    randomRotation
+                );
 
-                commuter.transform.SetParent(transform, true);
+                commuters.Add(commuter);
 
-                commutersSpawned = true;
             }
+
+            commutersSpawned = true;
         }
     }
 }

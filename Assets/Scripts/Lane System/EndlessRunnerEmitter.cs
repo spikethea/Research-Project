@@ -1,5 +1,9 @@
 using System.Collections;
+using System.Drawing;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 
 
@@ -9,6 +13,7 @@ public class EndlessRunnerEmitter : MonoBehaviour
     [SerializeField] private GameObject roadPrefab;
     [SerializeField] private GameObject busLanePrefab;
     [SerializeField] private GameObject buildingPrefab;
+    [SerializeField] private TextMeshPro PhoneScreen; 
 
     public Lane[] roadLanes;
     public Lane[] roadLanesBus;
@@ -76,10 +81,10 @@ public class EndlessRunnerEmitter : MonoBehaviour
         while (true)
         {
             if (!gameStarted) yield return null;
-
             pedestrianMode = true;
+            PhoneScreen.text = "Now for a 30 second break, press <b>X</b> to Mirror bike movement";
             yield return new WaitForSeconds(30f);
-            
+            PhoneScreen.text = "Hold Handlebars to start\r\n\r\nTilt and Signal to change lanes\r\n\r\nRaise your Right Hand to STOP\r\n\r\n<color=red>Avoid Hazards, Cars and Buses</color>\r\n\r\n<color=green>Follow Road Signs, Collect and Deliver Food Bags</color>\r\n\r\n<color=red> STOP</color><color=blue> for Zebra Crossings and Deliver Food</color>\r\n";
             GameManager.Instance.SetRandomMode();
             pedestrianMode = false;
             yield return new WaitForSeconds(180f);

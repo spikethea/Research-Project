@@ -28,7 +28,7 @@ public class CalibrateArmUI : MonoBehaviour
     void SetInitialPosition ()
     {
         initialPositionSet = true;
-        transform.position = cameraOffset.position + new Vector3(0f, -0.3f, 0.2f); // Position the UI in front of the players hands
+        transform.position = cameraOffset.position + new Vector3(0f, -0.1f, 0.2f); // Position the UI in front of the players hands
         initialPosition = transform.position;
 
         HandCanvas.enabled = true;

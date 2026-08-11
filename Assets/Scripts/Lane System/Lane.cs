@@ -40,10 +40,21 @@ public class Lane : MonoBehaviour
     {
         foreach (GameObject tile in activeTiles)
         {
+            // standard tile movement
             tile.transform.position +=
                 Vector3.back *
                 moveSpeed *
                 Time.deltaTime;
+
+            // if the tile is a pavement, move the commuters with it
+            if (tile.GetComponent<LaneTile>().tileType == LaneTileType.Pavement)
+            {
+                Pavement pavement = tile.GetComponent<Pavement>();
+                if (pavement != null)
+                {
+                    pavement.MoveCommutersWithTile(Vector3.back * moveSpeed * Time.deltaTime);
+                }
+            }
         }
     }
 
@@ -109,6 +120,15 @@ public class Lane : MonoBehaviour
                 Vector3.forward * spawnDistance;
 
             activeTiles.Enqueue(oldTile);
+
+            if(!palmTreePavement && oldTileInfo.tileType == LaneTileType.Pavement)
+            {
+                Pavement pavement = oldTile.GetComponent<Pavement>();
+                if (pavement != null)
+                {
+                    pavement.clearCommuters();
+                }
+            }
         }
         else
         {
