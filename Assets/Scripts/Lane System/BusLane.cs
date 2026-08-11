@@ -39,7 +39,11 @@ public class BusLane : MonoBehaviour
 
     public void SpawnBus()
     {
-        SpawnHazard(BusPrefab);
+    //    if (GameManager.Instance.reinforcementMode == Mode.Negative
+    //|| GameManager.Instance.reinforcementMode == Mode.Mixed)
+    //    {
+            SpawnHazard(BusPrefab);
+        //}
     }
 
     public void MoveObjects(float moveSpeed)
@@ -54,14 +58,11 @@ public class BusLane : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach (BusBrain bus in activeBuses)
+        while (activeBuses.Count > 0 &&
+           activeBuses.Peek().transform.position.z < -10f)
         {
-
-            if (bus.transform.position.z < -10f)
-            {
-                Destroy(bus.gameObject);
-                activeBuses.Dequeue();
-            }
+            BusBrain bus = activeBuses.Dequeue();
+            Destroy(bus.gameObject);
         }
     }
 }

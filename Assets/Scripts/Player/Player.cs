@@ -4,9 +4,13 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [SerializeField] InputSystem_Actions input;
+    [SerializeField] EndlessRunnerEmitter emitter;
 
     public float armLength;
     public HapticsManager haptics;
+
+    public bool onPavement = false; 
+    
     public bool Mirrored = false;
     public bool BrakeL = false;
     public bool BrakeR = false;
@@ -32,6 +36,23 @@ public class Player : MonoBehaviour
     private void OnMirrorPressed(InputAction.CallbackContext context)
     {
         Mirrored = !Mirrored;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Pavement"))
+        {
+            onPavement = true;
+            emitter.currentMoveSpeed = 8f;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Pavement"))
+        {
+            onPavement = false;
+        }
     }
 
 

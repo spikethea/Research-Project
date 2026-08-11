@@ -1,3 +1,5 @@
+using System.Collections;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class CarBrain : MonoBehaviour
@@ -6,58 +8,104 @@ public class CarBrain : MonoBehaviour
     [SerializeField] float rayHeight = 1f;
     [SerializeField] float MaxRayLength = 20f;
     [SerializeField] float MinRayLength = 5f;
+
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip carCrashClip;
+
     public LayerMask IgnoreMe;
+    public bool experimentMode = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        if (experimentMode) {
+        motor.setCarSpeed(5f); // Set a constant speed for the car in experiment mode
+        }
     }
 
-    float RaycastForward() {
-        //Debug.Log("Raycasting...");
+    float RaycastForward(float rayLength)
+    {
         Vector3 targetDirection = Vector3.forward;
-                
-            Ray ray = new Ray(transform.position + (Vector3.up * rayHeight), targetDirection);
-            
-            RaycastHit hitInfo = new RaycastHit();
-        if (Physics.Raycast(ray, out hitInfo, MaxRayLength, ~IgnoreMe))
+
+        Ray ray = new Ray(
+            transform.position + (Vector3.up * rayHeight),
+            targetDirection
+        );
+
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, rayLength, ~IgnoreMe))
         {
-            Debug.DrawRay(ray.origin, ray.direction * hitInfo.distance, Color.red);
-            //Debug.Log("Hit: " + hitInfo.collider.name + ", Distance: " + hitInfo.distance);
+            
             return hitInfo.distance;
         }
         else
         {
-            Debug.DrawRay(ray.origin, ray.direction * MaxRayLength, Color.white);
             return Mathf.Infinity;
         }
-
-
     }
 
     void DetectRaycast()
     {
-        if(RaycastForward() > MaxRayLength)
+        float distance = RaycastForward(MaxRayLength);
+
+        if (experimentMode) {
+            motor.constantSpeed();
+            return;
+        }
+
+        if (distance > MaxRayLength)
         {
             // Implement collision logic here
             motor.accelerate(5f); // Example: decelerate when an obstacle is detected
-        } else if (RaycastForward() < MinRayLength)
+            Debug.DrawRay(transform.position + (Vector3.up * rayHeight), Vector3.forward * distance, Color.green);
+        }
+        else if (distance < MinRayLength)
         {
-            motor.decelerate(5f);
+            motor.decelerate(15f);
+            Debug.DrawRay(transform.position + (Vector3.up * rayHeight), Vector3.forward * distance, Color.red);
+        }
+        else {
+            motor.constantSpeed();
+            Debug.DrawRay(transform.position + (Vector3.up * rayHeight), Vector3.forward * distance, Color.white);
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(UnityEngine.Collider other)
     {
-        if (collision.gameObject.CompareTag("Car"))
+        if (other.gameObject.CompareTag("Pavement"))
         {
-            // Implement collision logic here
-            motor.decelerate(5f); // Example: decelerate when a car is hit
+            Destroy(gameObject);
+
         }
 
-        if (collision.gameObject.GetComponent<LaneTile>().tileType == LaneTileType.Pavement)
+        if (other.gameObject.CompareTag("Hazard") || other.gameObject.CompareTag("Car"))
         {
-            Destroy(gameObject); // Destroy the bus if it collides with a pavement tile
+            // Implement collision logic here
+            if (experimentMode)
+            {
+                Destroy(other.gameObject);
+            }
+            else {
+                motor.decelerate(25f); // Example: decelerate when a car is hit
+            }
+                
+        }
+
+        if (other.gameObject.CompareTag("Player")) {
+            var bike = other.transform.GetComponentInChildren<Bike>();
+
+            if(bike)
+            {
+                audioSource.PlayOneShot(carCrashClip);
+                bike.CrashBike(2.5f);
+                Destroy(gameObject, 2f);
+            }
+            
+        }
+
+        LaneTile laneTile = other.gameObject.GetComponent<LaneTile>();
+
+        if (laneTile != null && laneTile.tileType == LaneTileType.Pavement)
+        {
+            Destroy(gameObject);
         }
     }
 

@@ -1,5 +1,11 @@
 using UnityEngine;
 
+public enum Mode
+{
+    Positive,
+    Negative,
+    Mixed,
+}
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +15,7 @@ public class GameManager : MonoBehaviour
     public float leftAssistance = 0f;
     public float rightAssistance = 0f;
     public bool isMirrorMode = false;
+    public Mode reinforcementMode = 0;
 
     // Game Objectives
     public string currentTarget = null;
@@ -46,6 +53,14 @@ public class GameManager : MonoBehaviour
     public void SetPlayerArmLength(float armLength)
     {
         playerArmLength = armLength;
+    }
+
+    public void SetRandomMode()
+    {
+        reinforcementMode = (Mode)Random.Range(
+            0,
+            System.Enum.GetValues(typeof(Mode)).Length
+        );
     }
 
 }

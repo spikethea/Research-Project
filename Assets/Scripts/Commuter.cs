@@ -12,6 +12,7 @@ public class Commuter : MonoBehaviour
     [SerializeField] AudioClip walkingSound;
     public float walkingSpeed = 1.0f; // Speed at which the commuter walks
     public bool isWalkingMode = false;
+    public bool randomWalkingDirection = false;
 
     private Animator animator;
     private float moveTimer;
@@ -50,11 +51,11 @@ public class Commuter : MonoBehaviour
     {
         Debug.DrawRay(transform.position, transform.forward * 4);
         if (!isWalkingMode) return;
-        if (!agent.pathPending && agent.remainingDistance <= 0.2f)
+        if (randomWalkingDirection && !agent.pathPending && agent.remainingDistance <= 0.2f)
         {
             moveTimer += Time.deltaTime;
 
-            if (moveTimer > Random.Range(8, 13))
+            if (moveTimer > Random.Range(2, 5))
             {
                 
                 MoveToRandomNearbyPoint(2f);
@@ -93,10 +94,21 @@ public class Commuter : MonoBehaviour
         animator.SetBool("PlayerLookingAt", true);
     }
 
-    public void MoveToPoint(Vector3 point)
+    public void MoveToPoint(Vector3 point, float radius)
     {
-         agent.SetDestination(point);
-        
+        randomWalkingDirection = false;
+
+        int areaIndex = NavMesh.GetAreaFromName("Walkable");
+        int areaMask = 1 << areaIndex;
+
+        if (NavMesh.SamplePosition(
+            point,
+            out NavMeshHit hit,
+            radius,
+            areaMask))
+        {
+            agent.SetDestination(hit.position);
+        }
     }
 
     private void MoveToRandomNearbyPoint(float radius)

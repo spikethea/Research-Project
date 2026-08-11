@@ -8,10 +8,16 @@ public class BusBrain : MonoBehaviour
     [SerializeField] float rayHeight = 1f;
     [SerializeField] float rayLength = 50f;
 
-    
+    [SerializeField] BrakeLight indicatorL;
+    [SerializeField] BrakeLight indicatorR;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        indicatorL.isDisabled = true;
+        indicatorR.isDisabled = true;
+
         StartCoroutine(BusStopCoroutine());
     }
 
@@ -38,6 +44,14 @@ public class BusBrain : MonoBehaviour
 
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.GetComponent<LaneTile>().tileType == LaneTileType.Pavement)
+        {
+            motor.decelerate(25f);
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Car"))
@@ -46,10 +60,7 @@ public class BusBrain : MonoBehaviour
             motor.decelerate(5f); // Example: decelerate when a car is hit
         }
 
-        if(collision.gameObject.GetComponent<LaneTile>().tileType == LaneTileType.Pavement)
-        {
-            Destroy(gameObject); // Destroy the bus if it collides with a pavement tile
-        }
+
     }
 
     void DetectRaycast()
@@ -66,8 +77,16 @@ public class BusBrain : MonoBehaviour
         while (true)
         {
             busStopping = true;
+            indicatorL.isDisabled = true;
+            indicatorR.isDisabled = false;
             yield return new WaitForSeconds(3f); // Example: stop for 3 seconds
+            indicatorL.isDisabled = false;
+            indicatorR.isDisabled = true;
             busStopping = false;
+            yield return new WaitForSeconds(3f); // hand indicator for 3 seconds
+            indicatorL.isDisabled = true;
+            indicatorR.isDisabled = true;
+
             yield return new WaitForSeconds(10f); // Example: wait for 10 seconds before stopping again
         }
         
@@ -84,7 +103,7 @@ public class BusBrain : MonoBehaviour
         DetectRaycast();
         if (RaycastForward() > 5f)
         {
-            motor.accelerate(2f);
+            motor.accelerate(25f);
         }
 
     }

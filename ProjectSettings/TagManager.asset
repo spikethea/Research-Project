@@ -7,7 +7,10 @@ TagManager:
   - LeftController
   - RightController
   - Head
-  - ZebraCrossing
+  - Car
+  - Hazard
+  - Pavement
+  - Consumable
   layers:
   - Default
   - TransparentFX

@@ -65,7 +65,7 @@ public class CalibrateArmUI : MonoBehaviour
 
             if (!canvasMoved) {
                 float distanceMoved = Mathf.Abs(initialPosition.z - transform.position.z);
-                Debug.Log("Distance moved: " + distanceMoved + " - Calibrating arm length.");
+                //Debug.Log("Distance moved: " + distanceMoved + " - Calibrating arm length.");
                 if (distanceMoved > minimumArmMovement) {
                     adjustArmLength.Calibrate(2f);
                     StartCoroutine(HideHandImageAndStart(5f));

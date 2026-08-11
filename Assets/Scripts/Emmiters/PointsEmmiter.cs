@@ -9,9 +9,12 @@ public class PointsEmmiter : MonoBehaviour
 
     public float WaitingTime = 1f;
     public float yOffset = 0f;
+    public float ZThreshold = -50f;
 
     private int currentLanePosition = 0;
     private List<GameObject> emittedObjects = new List<GameObject>();
+
+    public Mode reinforcementMode;
 
     [SerializeField]
     public List<bool> ActiveLanes = new List<bool> 
@@ -52,22 +55,26 @@ public class PointsEmmiter : MonoBehaviour
         {
             if (emitter.gameStarted && emitter.currentMoveSpeed > 10) {
 
+                if (GameManager.Instance.reinforcementMode == reinforcementMode
+                || GameManager.Instance.reinforcementMode == Mode.Mixed) {
+                    currentLanePosition = GetRandomEnabledLane();
 
-                currentLanePosition = GetRandomEnabledLane();
+                    GameObject FoodBag = Instantiate(
+                        emitterObject,
+                        new Vector3(
+                            emitter.roadLanes[currentLanePosition].transform.position.x,
+                            emitter.roadLanes[currentLanePosition].transform.position.y + yOffset,
+                            emitter.roadLanes[currentLanePosition].nextSpawnZ
+                        ),
+                        Quaternion.identity
+                    );
 
-                GameObject FoodBag = Instantiate(
-                    emitterObject,
-                    new Vector3(
-                        emitter.roadLanes[currentLanePosition].transform.position.x,
-                        emitter.roadLanes[currentLanePosition].transform.position.y + yOffset,
-                        emitter.roadLanes[currentLanePosition].nextSpawnZ
-                    ),
-                    Quaternion.identity
-                );
+                    emittedObjects.Add(FoodBag);
+                    Debug.Log("Emitted FoodBag at lane: " + currentLanePosition + " position: " + FoodBag.transform.position);
+                    yield return new WaitForSeconds(WaitingTime);
+                }
 
-                emittedObjects.Add(FoodBag);
-                Debug.Log("Emitted FoodBag at lane: " + currentLanePosition + " position: " + FoodBag.transform.position);
-                yield return new WaitForSeconds(WaitingTime);
+
 
             }
 
@@ -82,10 +89,10 @@ public class PointsEmmiter : MonoBehaviour
         {
             GameObject obj = emittedObjects[i];
 
-            if (emitter.gameStarted) // only move if the game has started 
+            if (emitter.gameStarted && obj != null) // only move if the game has started 
                 obj.transform.position += Vector3.back * emitter.currentMoveSpeed * Time.deltaTime;
 
-            if (obj.transform.position.z < -10f)
+            if (obj != null && obj.transform.position.z < ZThreshold)
             {
                 Destroy(obj);
                 emittedObjects.RemoveAt(i);

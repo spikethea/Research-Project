@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1049446963999069574}
   serializedVersion: 2
   m_LocalRotation: {x: -0.49991274, y: -0.50008726, z: -0.49991274, w: 0.50008726}
-  m_LocalPosition: {x: -3.06, y: 0.05, z: 0}
+  m_LocalPosition: {x: -1.1811235, y: 0.05, z: 0}
   m_LocalScale: {x: 43.461693, y: 66.412, z: 66.412}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -117,7 +117,7 @@ Transform:
   m_GameObject: {fileID: 1742935624606944582}
   serializedVersion: 2
   m_LocalRotation: {x: -0.49991274, y: -0.50008726, z: -0.49991274, w: 0.50008726}
-  m_LocalPosition: {x: 0.17099994, y: -0.95, z: 0.026564598}
+  m_LocalPosition: {x: 2.0498765, y: -0.95, z: 0.026564598}
   m_LocalScale: {x: 63.26469, y: 63.26469, z: 63.26469}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -207,7 +207,7 @@ Transform:
   m_GameObject: {fileID: 2951850477212829200}
   serializedVersion: 2
   m_LocalRotation: {x: -0.49991274, y: -0.50008726, z: -0.49991274, w: 0.50008726}
-  m_LocalPosition: {x: -0.53, y: 0.05, z: 0}
+  m_LocalPosition: {x: 1.3488765, y: 0.05, z: 0}
   m_LocalScale: {x: 41.402016, y: 63.26469, z: 63.26469}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -297,7 +297,7 @@ Transform:
   m_GameObject: {fileID: 3211209302265671036}
   serializedVersion: 2
   m_LocalRotation: {x: -0.49991274, y: -0.50008726, z: -0.49991274, w: 0.50008726}
-  m_LocalPosition: {x: -1.49, y: -0.86, z: 1.92}
+  m_LocalPosition: {x: 0.38887644, y: -0.86, z: 1.92}
   m_LocalScale: {x: 120.886215, y: 120.886215, z: 120.886215}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -387,7 +387,7 @@ Transform:
   m_GameObject: {fileID: 6609027431661121216}
   serializedVersion: 2
   m_LocalRotation: {x: -0.49991274, y: -0.50008726, z: -0.49991274, w: 0.50008726}
-  m_LocalPosition: {x: -3.8170967, y: -1.0080934, z: 0}
+  m_LocalPosition: {x: -1.9382203, y: -1.0080934, z: 0}
   m_LocalScale: {x: 66.412, y: 66.411995, z: 66.411995}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -477,7 +477,7 @@ Transform:
   m_GameObject: {fileID: 6956140109528352846}
   serializedVersion: 2
   m_LocalRotation: {x: 0.6853938, y: 0.6853938, z: 0.17388326, w: -0.17388326}
-  m_LocalPosition: {x: -1.3928007, y: -0.33, z: -1.92}
+  m_LocalPosition: {x: 0.48607576, y: -0.33, z: -1.92}
   m_LocalScale: {x: 37.88018, y: 58.97026, z: 37.88018}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -567,7 +567,7 @@ Transform:
   m_GameObject: {fileID: 7517830893856129803}
   serializedVersion: 2
   m_LocalRotation: {x: -0.49991274, y: -0.50008726, z: -0.49991274, w: 0.50008726}
-  m_LocalPosition: {x: -2.2564147, y: -1.0080936, z: 0.026564598}
+  m_LocalPosition: {x: -0.3775382, y: -1.0080936, z: 0.026564598}
   m_LocalScale: {x: 66.412, y: 66.411995, z: 66.411995}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -657,7 +657,7 @@ Transform:
   m_GameObject: {fileID: 7706173292912722282}
   serializedVersion: 2
   m_LocalRotation: {x: -0.49991274, y: -0.50008726, z: -0.49991274, w: 0.50008726}
-  m_LocalPosition: {x: -1.279, y: -0.95, z: 0}
+  m_LocalPosition: {x: 0.5998764, y: -0.95, z: 0}
   m_LocalScale: {x: 63.26469, y: 63.26469, z: 63.26469}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -730,10 +730,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1347652851778411226}
   - component: {fileID: 2579997274915596599}
-  - component: {fileID: 4962850971500940033}
+  - component: {fileID: 8775750917347560989}
+  - component: {fileID: 2137884122604453996}
   m_Layer: 0
   m_Name: Roadworks
-  m_TagString: Untagged
+  m_TagString: Hazard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -776,13 +777,13 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 4.789334, y: 3.7641125, z: 7.8588676}
-  m_Center: {x: -1.8946669, y: 0.94089365, z: 1.4567361}
---- !u!114 &4962850971500940033
+  m_Center: {x: 0, y: 0.94089365, z: 1.4567361}
+--- !u!114 &8775750917347560989
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -793,4 +794,103 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73820f3f268d9334c804e2b1d190faca, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
+  m_EditorClassIdentifier: Assembly-CSharp::Roadworks
+  audioSource: {fileID: 2137884122604453996}
+  CrashClip: {fileID: 8300000, guid: c0804b70f4f18784a8fe5d7d25471c6e, type: 3}
+--- !u!82 &2137884122604453996
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8522623182585721759}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

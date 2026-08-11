@@ -14,6 +14,7 @@ public class Lane : MonoBehaviour
     private float yPosition;
 
     public float tileLength = 10f;
+    public bool palmTreePavement = false;
 
     public GameObject currentPrefab;
 
@@ -55,6 +56,15 @@ public class Lane : MonoBehaviour
             new Vector3(xPosition, yPosition, nextSpawnZ),
             Quaternion.identity
         );
+
+        if(palmTreePavement)
+        {
+            Pavement pavement = tile.GetComponent<Pavement>();
+            if (pavement != null)
+            {
+                pavement.isPalmTree = true;
+            }
+        }
 
         if (activeTiles.Count == 0)
         {
@@ -109,7 +119,18 @@ public class Lane : MonoBehaviour
                 Vector3.zero,
                 Quaternion.identity);
 
+            
+
             LaneTile newTileInfo = newTile.GetComponent<LaneTile>();
+            
+            if (palmTreePavement && newTileInfo.tileType == LaneTileType.Pavement)
+            {
+                Pavement pavement = newTile.GetComponent<Pavement>();
+                if (pavement != null)
+                {
+                    pavement.isPalmTree = true;
+                }
+            }
 
             float spawnDistance =
                 lastTileInfo.Length * 0.5f +

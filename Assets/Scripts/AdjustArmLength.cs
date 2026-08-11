@@ -16,17 +16,21 @@ public class AdjustArmLength : MonoBehaviour
     [SerializeField] private GameObject leftControllerVisual;
     [SerializeField] private GameObject rightControllerVisual;
     [SerializeField] private XROrigin xROrigin;
+    [SerializeField] private TurnSignals turnSignals;
 
     [SerializeField] private Player player;
     [SerializeField] private GameObject bike;
     [SerializeField] private SkinnedMeshRenderer avatarRenderer;
     [SerializeField] private IKTargetFollowVRRig avatarIK;
+
     [SerializeField] private Transform pelvicBone;
     [SerializeField] private Transform headBone;
     [SerializeField] private Transform bikeSeat;
     [SerializeField] private Transform leftHand;
     [SerializeField] private Transform rightHand;
     [SerializeField] private Transform head;
+
+    [SerializeField] private EnvironmentManager environmentManager;
 
     private bool headAdjusted = false;
     private Vector3 originalHeadBodyPositionOffset;
@@ -94,6 +98,7 @@ public class AdjustArmLength : MonoBehaviour
 
             yield return new WaitForSeconds(0.5f); // Wait for a short moment to ensure the avatar is scaled properly
             avatarIK.isCalibrated = true;
+
         }
 
 
@@ -122,7 +127,11 @@ public class AdjustArmLength : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(avatarIK.isCalibrated)
+        if (avatarIK.isCalibrated)
+        {
             adjustHeadVector();
+            turnSignals.signalThreshhold = player.armLength - 0.1f;
+            environmentManager.ClearFog();
+        }
     }
 }

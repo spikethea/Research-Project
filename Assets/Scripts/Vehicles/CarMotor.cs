@@ -2,13 +2,27 @@ using UnityEngine;
 
 public class CarMotor : MonoBehaviour
 {
-    float carSpeed;
+    
+    public float topSpeed = 25f;
+
     [SerializeField] BrakeLight brakeLightL;
     [SerializeField] BrakeLight brakeLightR;
+
+    private float carSpeed;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
+    }
+
+    public void setCarSpeed(float speed)
+    {
+        carSpeed = speed;
+    }
+
+    public void constantSpeed() {
+        brakeLightL.isDisabled = true;
+        brakeLightR.isDisabled = true;
     }
 
     public void accelerate(float acceleration)
@@ -18,12 +32,14 @@ public class CarMotor : MonoBehaviour
         {
             carSpeed = 0; // prevent acceleration from becoming negative
         }
-        if (carSpeed < 10)
+        if (carSpeed < topSpeed)
             carSpeed += Mathf.Abs(acceleration * Time.deltaTime);
         //Debug.Log("Car Accelerating: " + acceleration + ", Current Speed: " + carSpeed);
 
         brakeLightL.isDisabled = true;
         brakeLightR.isDisabled = true;
+
+
     }
 
     public void decelerate(float deceleration)

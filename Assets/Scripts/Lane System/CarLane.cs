@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 
 public class CarLane : MonoBehaviour
 {
+    public float ZboundsThreshold = -50f;
     public float xOffset;
     public float yOffset;
     public float zSpawn = 100f;
@@ -26,24 +27,34 @@ public class CarLane : MonoBehaviour
     {
         
     }
+    public void SpawnCar(bool isExperimentMode) {
 
-    public void SpawnHazard(GameObject hazardPrefab) {
-        GameObject hazard = Instantiate(
-            hazardPrefab,
+        if (GameManager.Instance.reinforcementMode == Mode.Negative
+    || GameManager.Instance.reinforcementMode == Mode.Mixed)
+        {
+
+            GameObject hazard = Instantiate(
+            CarPrefab,
             new Vector3(xPosition, yPosition, zSpawn),
             Quaternion.identity
         );
-        var hazardScript = hazard.GetComponent<CarBrain>();
-        activeCars.Enqueue(hazardScript);
+            var hazardScript = hazard.GetComponent<CarBrain>();
+            hazardScript.experimentMode = isExperimentMode;
+            activeCars.Enqueue(hazardScript);
+        }
+
     }
 
-    public void SpawnCar() {
-        SpawnHazard(CarPrefab);
-    }
+    public void MoveObjects(float moveSpeed)
+    {
+        foreach (CarBrain car in activeCars)
+        {
+            if (!car)
+                continue;
 
-    public void MoveObjects(float moveSpeed) {
-        //Move to CarMotor
-        foreach(CarBrain car in activeCars) {
+            if (!car.motor)
+                continue;
+
             car.motor.Move(moveSpeed);
         }
     }
@@ -51,13 +62,24 @@ public class CarLane : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach (CarBrain car in activeCars)
+        while (activeCars.Count > 0)
         {
-            
+            CarBrain car = activeCars.Peek();
+
+            if (!car)
+            {
+                activeCars.Dequeue();
+                continue;
+            }
+
             if (car.transform.position.z < -10f)
             {
-                Destroy(car.gameObject);
                 activeCars.Dequeue();
+                Destroy(car.gameObject);
+            }
+            else
+            {
+                break;
             }
         }
     }

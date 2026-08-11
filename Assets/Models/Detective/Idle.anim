@@ -94,7 +94,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: {x: -24.078, y: 20.856, z: -124.731}
+        value: {x: -16.716, y: 33.28, z: -123.86}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -103,7 +103,7 @@ AnimationClip:
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 0.016666668
-        value: {x: -24.078, y: 20.856, z: -124.731}
+        value: {x: -16.716, y: 33.28, z: -123.86}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -490,6 +490,24 @@ AnimationClip:
     classID: 23
     script: {fileID: 0}
     flags: 2
+  - serializedVersion: 2
+    curve:
+    - time: 0
+      value: {fileID: 2100000, guid: 55f5344b55ac04d46b65ec46325fc60c, type: 2}
+    attribute: 'm_Materials.Array.data[0]'
+    path: Armature/spine/spine_lower/pelvis.R/femur.R/fibula.R/ankle.R/Heel.R
+    classID: 23
+    script: {fileID: 0}
+    flags: 2
+  - serializedVersion: 2
+    curve:
+    - time: 0
+      value: {fileID: 2100000, guid: 55f5344b55ac04d46b65ec46325fc60c, type: 2}
+    attribute: 'm_Materials.Array.data[0]'
+    path: Armature/spine/spine_lower/pelvis.L/femur.L/fibula.L/ankle.L/Heel.L
+    classID: 23
+    script: {fileID: 0}
+    flags: 2
   m_SampleRate: 60
   m_WrapMode: 0
   m_Bounds:
@@ -517,6 +535,24 @@ AnimationClip:
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3647706573
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 23
+      customType: 21
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    - serializedVersion: 2
+      path: 4207238152
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 23
+      customType: 21
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    - serializedVersion: 2
+      path: 3013128825
       attribute: 0
       script: {fileID: 0}
       typeID: 23
@@ -673,6 +709,8 @@ AnimationClip:
     - {fileID: 2100000, guid: c81bc777e4037f048b92ef493e285b54, type: 2}
     - {fileID: 2100000, guid: c81bc777e4037f048b92ef493e285b54, type: 2}
     - {fileID: 2100000, guid: c81bc777e4037f048b92ef493e285b54, type: 2}
+    - {fileID: 2100000, guid: 55f5344b55ac04d46b65ec46325fc60c, type: 2}
+    - {fileID: 2100000, guid: 55f5344b55ac04d46b65ec46325fc60c, type: 2}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -1090,7 +1128,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -24.078
+        value: -16.716
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1099,7 +1137,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.016666668
-        value: -24.078
+        value: -16.716
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1120,7 +1158,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 20.856
+        value: 33.28
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1129,7 +1167,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.016666668
-        value: 20.856
+        value: 33.28
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1150,7 +1188,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -124.731
+        value: -123.86
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1159,7 +1197,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.016666668
-        value: -124.731
+        value: -123.86
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -2041,7 +2079,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Armature/spine/spine_lower/pelvis.L/femur.L
+    path: Armature/spine/spine_lower/pelvis.L/femur.L/fibula.L/ankle.L
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -2053,7 +2091,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Armature/spine/spine_lower/pelvis.L/femur.L
+    path: Armature/spine/spine_lower/pelvis.L/femur.L/fibula.L/ankle.L
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -2065,7 +2103,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Armature/spine/spine_lower/pelvis.L/femur.L
+    path: Armature/spine/spine_lower/pelvis.L/femur.L/fibula.L/ankle.L
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -2293,7 +2331,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Armature/spine/spine_lower/pelvis.L/femur.L/fibula.L/ankle.L
+    path: Armature/spine/spine_lower/pelvis.L/femur.L
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -2305,7 +2343,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Armature/spine/spine_lower/pelvis.L/femur.L/fibula.L/ankle.L
+    path: Armature/spine/spine_lower/pelvis.L/femur.L
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -2317,7 +2355,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Armature/spine/spine_lower/pelvis.L/femur.L/fibula.L/ankle.L
+    path: Armature/spine/spine_lower/pelvis.L/femur.L
     classID: 4
     script: {fileID: 0}
     flags: 0

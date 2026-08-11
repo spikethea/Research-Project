@@ -1585,8 +1585,9 @@ MonoBehaviour:
   AnimatorRoot: {fileID: 1357905999616915966}
   audioSource: {fileID: 4834078149140505191}
   walkingSound: {fileID: 8300000, guid: db2cbdbcb51d9cb42ab61155e963f46d, type: 3}
-  walkingSpeed: 1.85
+  walkingSpeed: 15
   isWalkingMode: 0
+  randomWalkingDirection: 0
 --- !u!195 &6067386300594730867
 NavMeshAgent:
   m_ObjectHideFlags: 0

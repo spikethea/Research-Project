@@ -26,7 +26,7 @@ public class TurnSignals : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log($"Camera Offset Rot: {cameraOffset.transform.eulerAngles}");
+        //Debug.Log($"Camera Offset Rot: {cameraOffset.transform.eulerAngles}");
 
         // Turn Signals, only one can be activated at a time
         if (

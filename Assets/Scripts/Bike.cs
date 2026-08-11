@@ -18,7 +18,9 @@ public class Bike : MonoBehaviour
 
     [SerializeField ] private AudioSource audioSource;
     [SerializeField] private AudioClip carHornClip;
+    [SerializeField] private AudioClip positiveLaneChangeClip;
 
+    public bool isCrashing = false;
     public bool isStopping = true;
 
     public float xSpeed = 1.5f;
@@ -51,17 +53,22 @@ public class Bike : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
 
             float vibrationVal = isStopping ? 0.5f : 0.1f;
+            float vibrationDuration = 0.1f;
 
-            
-
-            if (handlebarLeft) player.haptics.VibrateLeft((Emitter.currentMoveSpeed/ ySpeed) * vibrationVal, 0.1f);
-            if (handlebarRight) player.haptics.VibrateRight((Emitter.currentMoveSpeed/ySpeed) * vibrationVal, 0.1f);
-            if (isStopping) {
-                    Debug.Log("stopping vibration");
+            if (isCrashing)
+            {
+                vibrationVal = 1f;
+                vibrationDuration = 0.5f;
             }
+
+            if (handlebarLeft || isCrashing) player.haptics.VibrateLeft((Emitter.currentMoveSpeed/ ySpeed) * vibrationVal, vibrationDuration);
+            if (handlebarRight || isCrashing) player.haptics.VibrateRight((Emitter.currentMoveSpeed/ySpeed) * vibrationVal, vibrationDuration);
+            
         }
         
     }
+
+
 
 
 
@@ -85,9 +92,11 @@ public class Bike : MonoBehaviour
 
     void DetectStop(Transform controller)
     {
+        
         isStopping = false;
         if (
-            controller.position.y > HeadTransform.position.y + 0.12f
+            controller.position.y > HeadTransform.position.y + 0.12f &&
+            controller.position.z < HeadTransform.position.z + 0.3f
             ) {
             isStopping = true;
         }
@@ -150,35 +159,41 @@ public class Bike : MonoBehaviour
 
         //Prevent bike from going out of bounds in the lane, only allow movement if player is within lane boundaries
         // Except if the player is signalling a turn, then allow them to move out of bounds to change lanes
-        if (player.transform.position.x > currentLanePosition * 10 - playerBoundsLeft && player.transform.position.x < currentLanePosition * 10 + playerBoundsRight)
+        if ((player.transform.position.x > currentLanePosition * 10 - playerBoundsLeft && player.transform.position.x < currentLanePosition * 10 + playerBoundsRight) || player.onPavement)
         {
             //Debug.Log("Player Position X: " + player.transform.position.x);
 
-            if (!isStopping)
+            if (!isStopping && Emitter.currentMoveSpeed > 2f)
             {
-                if (_bikeTilt > 0.1f) {
-                    player.transform.position += new Vector3(xSpeed*_bikeTilt, 0, 0) * Time.deltaTime;
+                if (_bikeTilt > 0.1f)
+                {
+                    player.transform.position += new Vector3(xSpeed * _bikeTilt, 0, 0) * Time.deltaTime;
                     //Debug.Log("Bike Moving Left: ");
                 }
 
-                if (_bikeTilt < -0.1f) {
-                    player.transform.position += new Vector3(xSpeed*_bikeTilt, 0, 0) * Time.deltaTime;
+                if (_bikeTilt < -0.1f)
+                {
+                    player.transform.position += new Vector3(xSpeed * _bikeTilt, 0, 0) * Time.deltaTime;
                     //Debug.Log("Bike Moving Right: ");
                 }
             }
-            
+
 
         }
         else
-        {
-            // reset player position to middle of current lane if out of bounds
-            Debug.Log("Player position " + player.transform.position.x + " out of bounds, resetting position to centre of current lane: " + currentLanePosition);
-            player.transform.position = new Vector3(currentLanePosition * 10, player.transform.position.y, player.transform.position.z);
-            audioSource.PlayOneShot(carHornClip);
-            player.haptics.VibrateLeft(1f, 1f);
-            player.haptics.VibrateRight(1f, 1f);
-            return;
-        }
+        
+            if (GameManager.Instance.reinforcementMode == Mode.Negative
+                || GameManager.Instance.reinforcementMode == Mode.Mixed)
+            {
+                // reset player position to middle of current lane if out of bounds
+                Debug.Log("Player position " + player.transform.position.x + " out of bounds, resetting position to centre of current lane: " + currentLanePosition);
+                player.transform.position = new Vector3(currentLanePosition * 10, player.transform.position.y, player.transform.position.z);
+                audioSource.PlayOneShot(carHornClip);
+                player.haptics.VibrateLeft(1f, 1f);
+                player.haptics.VibrateRight(1f, 1f);
+                return;
+            }
+        
 
         // If player exits current lane boundaries, change current lane
         if (player.transform.position.x > currentLanePosition * 10 + 5.1)
@@ -187,7 +202,13 @@ public class Bike : MonoBehaviour
             {
                 currentLanePosition += 1;
                 Debug.Log("Changed lane to: " + currentLanePosition);
-            }
+
+                if (GameManager.Instance.reinforcementMode == Mode.Positive ||
+                        GameManager.Instance.reinforcementMode == Mode.Mixed )
+                {
+                    audioSource.PlayOneShot(positiveLaneChangeClip);
+                    }
+                }
         }
 
         if (player.transform.position.x < currentLanePosition * 10 - 5.1)
@@ -234,15 +255,38 @@ public class Bike : MonoBehaviour
         
     }
 
+    public void CrashBike(float duration) {
+        StartCoroutine(Crash(duration));
+    }
+
+    IEnumerator Crash(float duration) {
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+           
+
+            isCrashing = true;
+
+            timer += Time.deltaTime;
+
+            yield return null;
+        }
+
+        Debug.Log("Crash reached END");
+
+        isCrashing = false;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (Time.frameCount % 60 == 0)
-        {
-            Debug.Log($"XR Right   = {XROrigin.right}");
-            Debug.Log($"XR Forward = {XROrigin.forward}");
+        //if (Time.frameCount % 60 == 0)
+        //{
+        //    Debug.Log($"XR Right   = {XROrigin.right}");
+        //    Debug.Log($"XR Forward = {XROrigin.forward}");
 
-        }
+        //}
 
         ChangeLane();
         //limit bike tilt
@@ -250,7 +294,7 @@ public class Bike : MonoBehaviour
         HeadTransform.position -
         XROrigin.position;
 
-        Debug.Log(offset);
+        //Debug.Log(offset);
 
         _currentLean =
             Vector3.Dot(offset, _calibratedRight);
@@ -276,12 +320,15 @@ public class Bike : MonoBehaviour
         DetectStop(turnSignals.RightController);
 
         // Halt to a stop
-        if (isStopping)
+        if (isStopping || isCrashing)
         {
 
             if (Emitter.currentMoveSpeed > 0)
                 Emitter.currentMoveSpeed -= 7f * Time.deltaTime;
+        }
 
+        // Show stop sign if purposefully stopping, hide if not
+        if (isStopping) {
             StopSign.SetActive(true);
         }
         else {
@@ -303,7 +350,7 @@ public class Bike : MonoBehaviour
             if (Emitter.currentMoveSpeed > 0f)
                 Emitter.currentMoveSpeed -= 0.5f * Time.deltaTime;
         }
-            //TrackHeadOrientation();
+        //TrackHeadOrientation();
 
 
         //Debug.Log(
