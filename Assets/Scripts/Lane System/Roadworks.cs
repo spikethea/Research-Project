@@ -30,7 +30,7 @@ public class Roadworks : MonoBehaviour
 
         if (other.gameObject.CompareTag("Hazard") || other.gameObject.CompareTag("Consumable"))
         {
-            Destroy(other.gameObject);
+            Destroy(gameObject);
         }
     }
 

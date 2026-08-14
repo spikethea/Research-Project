@@ -29,9 +29,7 @@ public class CarLane : MonoBehaviour
     }
     public void SpawnCar(bool isExperimentMode) {
 
-        if (GameManager.Instance.reinforcementMode == Mode.Negative
-    || GameManager.Instance.reinforcementMode == Mode.Mixed)
-        {
+
 
             GameObject hazard = Instantiate(
             CarPrefab,
@@ -41,7 +39,7 @@ public class CarLane : MonoBehaviour
             var hazardScript = hazard.GetComponent<CarBrain>();
             hazardScript.experimentMode = isExperimentMode;
             activeCars.Enqueue(hazardScript);
-        }
+        
 
     }
 

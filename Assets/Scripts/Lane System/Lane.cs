@@ -61,7 +61,7 @@ public class Lane : MonoBehaviour
     public void SpawnTile()
     {
 
-        Debug.Log(gameObject.name + " spawning tile position: " + xPosition + ", " + yPosition + ", " + nextSpawnZ);
+        //Debug.Log(gameObject.name + " spawning tile position: " + xPosition + ", " + yPosition + ", " + nextSpawnZ);
         GameObject tile = Instantiate(
             currentPrefab,
             new Vector3(xPosition, yPosition, nextSpawnZ),

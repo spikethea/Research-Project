@@ -8,6 +8,7 @@ public class PointsEmmiter : MonoBehaviour
     [SerializeField] private GameObject emitterObject;
 
     public float WaitingTime = 1f;
+    public float xOffset = 0f;
     public float yOffset = 0f;
     public float ZThreshold = -50f;
 
@@ -62,7 +63,7 @@ public class PointsEmmiter : MonoBehaviour
                     GameObject FoodBag = Instantiate(
                         emitterObject,
                         new Vector3(
-                            emitter.roadLanes[currentLanePosition].transform.position.x,
+                            emitter.roadLanes[currentLanePosition].transform.position.x + xOffset,
                             emitter.roadLanes[currentLanePosition].transform.position.y + yOffset,
                             emitter.roadLanes[currentLanePosition].nextSpawnZ
                         ),

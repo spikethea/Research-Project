@@ -6,6 +6,8 @@ public class Bike : MonoBehaviour
     [SerializeField] private GameObject BikeBody;
     [SerializeField] private Transform leftHandlePoint;
     [SerializeField] private Transform rightHandlePoint;
+    [SerializeField] private MeshRenderer leftHandlePointVisual;
+    [SerializeField] private MeshRenderer rightHandlePointVisual;
 
     [SerializeField] private Transform HeadTransform;
     [SerializeField] private float TiltSensitivity;
@@ -95,8 +97,8 @@ public class Bike : MonoBehaviour
         
         isStopping = false;
         if (
-            controller.position.y > HeadTransform.position.y + 0.12f &&
-            controller.position.z < HeadTransform.position.z + 0.3f
+            controller.position.y > HeadTransform.position.y + 0.05f &&
+            controller.position.z < HeadTransform.position.z + player.armLength - 0.2f
             ) {
             isStopping = true;
         }
@@ -159,19 +161,19 @@ public class Bike : MonoBehaviour
 
         //Prevent bike from going out of bounds in the lane, only allow movement if player is within lane boundaries
         // Except if the player is signalling a turn, then allow them to move out of bounds to change lanes
-        if ((player.transform.position.x > currentLanePosition * 10 - playerBoundsLeft && player.transform.position.x < currentLanePosition * 10 + playerBoundsRight) || player.onPavement)
+        if ((player.transform.position.x > currentLanePosition * 10 - playerBoundsLeft && player.transform.position.x < currentLanePosition * 10 + playerBoundsRight) || player.onPavement || GameManager.Instance.reinforcementMode == Mode.Positive)
         {
             //Debug.Log("Player Position X: " + player.transform.position.x);
 
             if (!isStopping && Emitter.currentMoveSpeed > 2f)
             {
-                if (_bikeTilt > 0.1f)
+                if (_bikeTilt > 0.1f && player.transform.position.x < 24)
                 {
                     player.transform.position += new Vector3(xSpeed * _bikeTilt, 0, 0) * Time.deltaTime;
                     //Debug.Log("Bike Moving Left: ");
                 }
 
-                if (_bikeTilt < -0.1f)
+                if (_bikeTilt < -0.1f && player.transform.position.x > -24)
                 {
                     player.transform.position += new Vector3(xSpeed * _bikeTilt, 0, 0) * Time.deltaTime;
                     //Debug.Log("Bike Moving Right: ");
@@ -193,31 +195,38 @@ public class Bike : MonoBehaviour
                 player.haptics.VibrateRight(1f, 1f);
                 return;
             }
-        
+
 
         // If player exits current lane boundaries, change current lane
         if (player.transform.position.x > currentLanePosition * 10 + 5.1)
         {
-            if (currentLanePosition > -2 && currentLanePosition < 2)
+            if (currentLanePosition >= -2 && currentLanePosition < 2)
             {
                 currentLanePosition += 1;
                 Debug.Log("Changed lane to: " + currentLanePosition);
 
-                if (GameManager.Instance.reinforcementMode == Mode.Positive ||
-                        GameManager.Instance.reinforcementMode == Mode.Mixed )
+                if (GameManager.Instance.reinforcementMode == Mode.Positive && !player.onPavement && turnSignals.signallingRight ||
+                        GameManager.Instance.reinforcementMode == Mode.Mixed && !player.onPavement && turnSignals.signallingRight)
                 {
                     audioSource.PlayOneShot(positiveLaneChangeClip);
-                    }
                 }
+            }
         }
 
         if (player.transform.position.x < currentLanePosition * 10 - 5.1)
         {
-            if (currentLanePosition > -2 && currentLanePosition < 2)
+            if (currentLanePosition > -2 && currentLanePosition <= 2 )
             {
                 currentLanePosition -= 1;
                 Debug.Log("Changed lane to: " + currentLanePosition);
+
+                if (GameManager.Instance.reinforcementMode == Mode.Positive && !player.onPavement && turnSignals.signallingLeft||
+                        GameManager.Instance.reinforcementMode == Mode.Mixed && !player.onPavement && turnSignals.signallingLeft)
+                {
+                    audioSource.PlayOneShot(positiveLaneChangeClip);
+                }
             }
+        
         }
 
     }
@@ -229,11 +238,13 @@ public class Bike : MonoBehaviour
             if (controller.tag == "LeftController")
             {
                 handlebarLeft = true;
+                leftHandlePointVisual.enabled = false;
             }
 
             if (controller.tag == "RightController")
             {
                 handlebarRight = true;
+                rightHandlePointVisual.enabled = false;
             }
 
             return true;
@@ -243,11 +254,13 @@ public class Bike : MonoBehaviour
             if (controller.tag == "LeftController")
             {
                 handlebarLeft = false;
+                leftHandlePointVisual.enabled = true;
             }
 
             if (controller.tag == "RightController")
             {
                 handlebarRight = false;
+                rightHandlePointVisual.enabled = true;
             }
 
             return false;
@@ -324,7 +337,7 @@ public class Bike : MonoBehaviour
         {
 
             if (Emitter.currentMoveSpeed > 0)
-                Emitter.currentMoveSpeed -= 7f * Time.deltaTime;
+                Emitter.currentMoveSpeed -= 12f * Time.deltaTime;
         }
 
         // Show stop sign if purposefully stopping, hide if not
@@ -335,19 +348,28 @@ public class Bike : MonoBehaviour
             StopSign.SetActive(false);
         }
 
+        bool leftTouch = HandlebarTouch(
+            turnSignals.LeftController,
+            leftHandlePoint
+        );
+
+        bool rightTouch = HandlebarTouch(
+            turnSignals.RightController,
+            rightHandlePoint
+        );
 
         if (
-            HandlebarTouch(turnSignals.LeftController, leftHandlePoint) &&
-            HandlebarTouch(turnSignals.RightController, rightHandlePoint) &&
-            !isStopping)
+            leftTouch || rightTouch
+            )
         {
-
+            if(!isStopping)
             if (Emitter.currentMoveSpeed < ySpeed)
                 Emitter.currentMoveSpeed += 3f * Time.deltaTime;
         }
         else
         {
-            if (Emitter.currentMoveSpeed > 0f)
+            if (!isStopping)
+                if (Emitter.currentMoveSpeed > 0f)
                 Emitter.currentMoveSpeed -= 0.5f * Time.deltaTime;
         }
         //TrackHeadOrientation();
@@ -364,5 +386,10 @@ public class Bike : MonoBehaviour
         //    $"Local: {HeadTransform.localPosition} " +
         //    $"World: {HeadTransform.position}"
         //);
+
+        if (player.Reset) {
+            player.Reset = false;
+            SetInitialHeadPosition();
+        }
     }
 }

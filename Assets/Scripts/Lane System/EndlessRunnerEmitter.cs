@@ -13,7 +13,8 @@ public class EndlessRunnerEmitter : MonoBehaviour
     [SerializeField] private GameObject roadPrefab;
     [SerializeField] private GameObject busLanePrefab;
     [SerializeField] private GameObject buildingPrefab;
-    [SerializeField] private TextMeshPro PhoneScreen; 
+    [SerializeField] private TextMeshPro PhoneScreen;
+    [SerializeField] private Player player;
 
     public Lane[] roadLanes;
     public Lane[] roadLanesBus;
@@ -80,10 +81,10 @@ public class EndlessRunnerEmitter : MonoBehaviour
     IEnumerator GameStructure() {
         while (true)
         {
-            if (!gameStarted) yield return null;
+            while (!gameStarted) yield return null;
             pedestrianMode = true;
-            PhoneScreen.text = "Now for a 30 second break, press <b>X</b> to Mirror bike movement";
-            yield return new WaitForSeconds(30f);
+            PhoneScreen.text = "Now for a 60 second break \n\n Press <b>X</b> (Left Hand) to Mirror bike movement \n\n Press <b>B</b> (Right Hand) to re-calibrate your head position";
+            yield return new WaitForSeconds(45f);
             PhoneScreen.text = "Hold Handlebars to start\r\n\r\nTilt and Signal to change lanes\r\n\r\nRaise your Right Hand to STOP\r\n\r\n<color=red>Avoid Hazards, Cars and Buses</color>\r\n\r\n<color=green>Follow Road Signs, Collect and Deliver Food Bags</color>\r\n\r\n<color=red> STOP</color><color=blue> for Zebra Crossings and Deliver Food</color>\r\n";
             GameManager.Instance.SetRandomMode();
             pedestrianMode = false;
@@ -97,20 +98,29 @@ public class EndlessRunnerEmitter : MonoBehaviour
     {
         while (true)
         {
-            
+            while (player.onPavement
+                || !gameStarted
+                || GameManager.Instance.reinforcementMode == Mode.Positive
+                )
+            {
+                yield return null;
+            }
+
             int emptyLane = Random.Range(0, CarLanes.Length);
 
             for (int i = 0; i < CarLanes.Length; i++)
             {
                 if (i != emptyLane)
                 {
-                    CarLanes[i].SpawnCar(experimentMode);
-
+                    // dont spawn extra cars unless bike is moving
+                    if (currentMoveSpeed > 5)
+                        CarLanes[i].SpawnCar(experimentMode);
+                    
                 }
             }
 
 
-            yield return new WaitForSeconds(6f);
+            yield return new WaitForSeconds(10f);
             
 
             //var randomCarLane = CarLanes[Random.Range(0, CarLanes.Length)];
@@ -128,7 +138,7 @@ public class EndlessRunnerEmitter : MonoBehaviour
     {
         while (true)
         {
-            if (!gameStarted) yield return null;
+            while (player.onPavement || !gameStarted) yield return null;
 
             var randomBusLane = BusLanes[Random.Range(0, BusLanes.Length)];
             if (!pedestrianMode)

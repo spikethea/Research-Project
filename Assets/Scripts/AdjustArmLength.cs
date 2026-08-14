@@ -130,7 +130,7 @@ public class AdjustArmLength : MonoBehaviour
         if (avatarIK.isCalibrated)
         {
             adjustHeadVector();
-            turnSignals.signalThreshhold = player.armLength - 0.1f;
+            turnSignals.signalThreshhold = player.armLength - 0.2f;
             environmentManager.ClearFog();
         }
     }

@@ -31,7 +31,7 @@ public class CarBrain : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hitInfo, rayLength, ~IgnoreMe))
         {
-            
+            Debug.Log("Hit: " + hitInfo.collider.gameObject.name);
             return hitInfo.distance;
         }
         else
@@ -46,6 +46,7 @@ public class CarBrain : MonoBehaviour
 
         if (experimentMode) {
             motor.constantSpeed();
+
             return;
         }
 

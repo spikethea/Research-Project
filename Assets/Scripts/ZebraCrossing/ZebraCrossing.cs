@@ -21,6 +21,9 @@ public class ZebraCrossing : MonoBehaviour
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip screamClip;
 
+    private bool eventStarted;
+    private bool destinationReached;
+    private bool bikeCrashed = false;
     private Material sharedTargetMaterial;
     private Color creamBaseColor = new Color(1.0f, 0.99f, 0.82f);
     [SerializeField] private float emissionIntensity = 2.5f;
@@ -84,11 +87,14 @@ public class ZebraCrossing : MonoBehaviour
         {
             var bike = other.transform.GetComponentInChildren<Bike>();
 
-            if (bike)
+            if (bike && !destinationReached)
             {
-                if(!audioSource.isPlaying)
+                if (!audioSource.isPlaying && !bikeCrashed)
+                {
+                    bikeCrashed = true;
                     audioSource.PlayOneShot(screamClip);
-                bike.CrashBike(7f);
+                    bike.CrashBike(7f);
+                }
             }
 
         }
@@ -103,15 +109,16 @@ public class ZebraCrossing : MonoBehaviour
     void Update()
     {
         //Debug.Log($"Bike: {bike.transform.position} | This: {transform.position}");
-        if (Vector3.Distance(bike.transform.position, transform.position) < 80f && !crossingCollider.enabled)
+        if (Vector3.Distance(bike.transform.position, transform.position) < 80f && !eventStarted)
         {
             MoveCommuterToRightPoint();
             crossingCollider.enabled = true;
-
+            eventStarted = true;
         }
 
-        if (Vector3.Distance(commuter.transform.position, rightPoint.position) < 2f) {
+        if (crossingCollider && Mathf.Abs(commuter.transform.position.x - rightPoint.position.x) < 2f) {
             crossingCollider.enabled = false;
+            destinationReached = true;
         }
         
     }

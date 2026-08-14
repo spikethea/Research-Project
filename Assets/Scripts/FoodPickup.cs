@@ -11,7 +11,9 @@ public class FoodPickup : MonoBehaviour
     [SerializeField] MeshRenderer MoneyText;
     [SerializeField] Collider _collider;
 
-    
+    [SerializeField] GameObject foodBagMesh;
+    [SerializeField] Transform pickupPoint;
+
 
     public float stoppingDuration;
 
@@ -38,9 +40,12 @@ public class FoodPickup : MonoBehaviour
             animator.SetBool("Bowing", true);
             _collider.enabled = false;
             stoppingTimer = 0;
-        }
 
-        lookAtPlayer();
+
+            
+        }
+        if (MoneyText.enabled)
+            lookAtPlayer();
     }
 
     private void lookAtPlayer() {
@@ -64,9 +69,21 @@ public class FoodPickup : MonoBehaviour
         if (other.gameObject.CompareTag("Player")) {
             Bike bike = other.gameObject.GetComponentInChildren<Bike>();
 
-            //if (bike.isStopping) {
-            stoppingTimer += Time.deltaTime;
-            //}
+            if ( stoppingTimer < stoppingDuration) {
+                stoppingTimer += Time.deltaTime;
+                
+
+                // Food Bag to attendant
+                if (!foodBagMesh.activeSelf)
+                {
+                    foodBagMesh.transform.position = bike.transform.position;
+                    foodBagMesh.SetActive(true);
+                }
+                    
+
+                var step = 5 * Time.deltaTime;
+                foodBagMesh.transform.position = Vector3.MoveTowards(foodBagMesh.transform.position, pickupPoint.transform.position, step);
+            }
         }
 
         if(other.gameObject.CompareTag("Hazard") || other.gameObject.CompareTag("Consumable") || other.gameObject.CompareTag("Car"))

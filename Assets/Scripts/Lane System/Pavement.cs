@@ -49,6 +49,7 @@ public class Pavement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (!palmTree.activeSelf && isPalmTree)
         {
             palmTree.SetActive(true);

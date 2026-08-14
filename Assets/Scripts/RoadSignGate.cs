@@ -22,5 +22,10 @@ public class RoadSignGate : MonoBehaviour
         {
             audioSource.PlayOneShot(audioClip);
         }
+
+        if(other.tag == "Hazard")
+        {
+            Destroy(gameObject);
+        }
     }
 }

@@ -49,7 +49,7 @@ public class BuildingLane : MonoBehaviour
     public void SpawnTile()
     {
 
-        Debug.Log(gameObject.name + " spawning tile position: " + xPosition + ", " + yPosition + ", " + nextSpawnZ);
+        //Debug.Log(gameObject.name + " spawning tile position: " + xPosition + ", " + yPosition + ", " + nextSpawnZ);
         
         float buildingHeight = UnityEngine.Random.Range(1, 4); // Random height between 1 and 3
 

@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     public bool Mirrored = false;
     public bool BrakeL = false;
     public bool BrakeR = false;
+    public bool Reset = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void Awake()
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour
         input.Player.Enable();
 
         input.Player.Mirror.performed += OnMirrorPressed;
+        input.Player.Reset.performed += OnResetPressed;
 
     }
 
@@ -36,6 +38,11 @@ public class Player : MonoBehaviour
     private void OnMirrorPressed(InputAction.CallbackContext context)
     {
         Mirrored = !Mirrored;
+    }
+
+    private void OnResetPressed(InputAction.CallbackContext context)
+    {
+        Reset = true;
     }
 
     private void OnTriggerStay(Collider other)
