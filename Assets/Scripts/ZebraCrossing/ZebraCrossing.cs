@@ -8,7 +8,7 @@ public class ZebraCrossing : MonoBehaviour
     private Bike bike;
     [SerializeField] private Commuter commuter;
 
-    [SerializeField] private Collider crossingCollider;
+    [SerializeField] private BoxCollider crossingCollider;
 
     [SerializeField] private Renderer zebraLightLeft;
     [SerializeField] private Renderer zebraLightRight;
@@ -83,7 +83,7 @@ public class ZebraCrossing : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (crossingCollider.enabled && other.gameObject.CompareTag("Player"))
         {
             var bike = other.transform.GetComponentInChildren<Bike>();
 
@@ -108,6 +108,14 @@ public class ZebraCrossing : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Move the collider right as the commuter walks
+        if (crossingCollider && eventStarted && !destinationReached) {
+            crossingCollider.center += new Vector3(
+                0.95f,
+                0,
+                0
+             ) * Time.deltaTime;
+        }
         //Debug.Log($"Bike: {bike.transform.position} | This: {transform.position}");
         if (Vector3.Distance(bike.transform.position, transform.position) < 80f && !eventStarted)
         {

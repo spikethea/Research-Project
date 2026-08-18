@@ -21,6 +21,26 @@ public class EnvironmentManager : MonoBehaviour
        StartCoroutine(decreaseFogDensity());
     }
 
+    public void FormFog()
+    {
+        StartCoroutine(increaseFogDensity());
+    }
+
+    IEnumerator increaseFogDensity()
+    {
+        float duration = 5f; // Duration of the transition in seconds
+        float elapsedTime = 0f;
+        float startFogDensity = RenderSettings.fogDensity;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / duration);
+            RenderSettings.fogDensity = Mathf.Lerp(startFogDensity, maxFogDensity, t);
+            yield return null;
+        }
+        RenderSettings.fogDensity = maxFogDensity; // Ensure it reaches the target value
+    }
+
     IEnumerator decreaseFogDensity() {
         float duration = 5f; // Duration of the transition in seconds
         float elapsedTime = 0f;

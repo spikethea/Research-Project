@@ -9,6 +9,11 @@ using UnityEngine.Rendering;
 
 public class EndlessRunnerEmitter : MonoBehaviour
 {
+    [SerializeField] VRTrackingLogger vrTrackingLogger;
+    [SerializeField] EnvironmentManager environmentManager;
+    [SerializeField] PointsEmmiter foodBagEmitter;
+    [SerializeField] PointsEmmiter roadSignEmitter;
+
     [SerializeField] private GameObject pavementPrefab;
     [SerializeField] private GameObject roadPrefab;
     [SerializeField] private GameObject busLanePrefab;
@@ -75,6 +80,7 @@ public class EndlessRunnerEmitter : MonoBehaviour
 
         StartCoroutine(SpawnCars());
         StartCoroutine(SpawnBuses());
+
         StartCoroutine(GameStructure());
     }
 
@@ -82,15 +88,32 @@ public class EndlessRunnerEmitter : MonoBehaviour
         while (true)
         {
             while (!gameStarted) yield return null;
+            if (experimentMode && vrTrackingLogger.trialTime <= 0)
+            {
+                vrTrackingLogger.StartTrial();
+            }
             pedestrianMode = true;
-            PhoneScreen.text = "Now for a 60 second break \n\n Press <b>X</b> (Left Hand) to Mirror bike movement \n\n Press <b>B</b> (Right Hand) to re-calibrate your head position";
-            yield return new WaitForSeconds(45f);
-            PhoneScreen.text = "Hold Handlebars to start\r\n\r\nTilt and Signal to change lanes\r\n\r\nRaise your Right Hand to STOP\r\n\r\n<color=red>Avoid Hazards, Cars and Buses</color>\r\n\r\n<color=green>Follow Road Signs, Collect and Deliver Food Bags</color>\r\n\r\n<color=red> STOP</color><color=blue> for Zebra Crossings and Deliver Food</color>\r\n";
+            PhoneScreen.text = "You are Participant "  + GameManager.Instance.participantNumber +  "\r\n\r\n" + "Now for a 60 second break \n\n Press <b>X</b> (Left Hand) to Mirror bike movement \n\n Press <b>B</b> (Right Hand) to re-calibrate your head position";
+            yield return new WaitForSeconds(30f);
+
             GameManager.Instance.SetRandomMode();
+            vrTrackingLogger.SetCondition(GameManager.Instance.reinforcementMode.ToString());
+            PhoneScreen.text = "Hold Handlebars to start\r\n\r\nTilt and Signal to change lanes\r\n\r\nRaise your Right Hand to STOP\r\n\r\n" +
+            (GameManager.Instance.reinforcementMode == Mode.Negative || GameManager.Instance.reinforcementMode == Mode.Mixed ? "<color=red>Avoid Hazards, Cars and Buses</color>\r\n\r\n" : "") +
+            (GameManager.Instance.reinforcementMode == Mode.Positive || GameManager.Instance.reinforcementMode == Mode.Mixed ? "<color=green>Follow Road Signs, Collect and Deliver Food Bags</color>\r\n\r\n" : "") +
+            (GameManager.Instance.reinforcementMode == Mode.Negative || GameManager.Instance.reinforcementMode == Mode.Mixed ? "<color=red> STOP</color><color=blue> for Zebra Crossings and Deliver Food</color>\r\n" : "");
+            
             pedestrianMode = false;
             yield return new WaitForSeconds(180f);
-            
 
+
+            int fifteenMinutes = 15 * 60;
+            if (experimentMode && vrTrackingLogger.trialTime > fifteenMinutes) {
+                vrTrackingLogger.EndTrial();
+                PhoneScreen.text = "Participant " + GameManager.Instance.participantNumber + ", this experiment is over.\r\n\r\n" + " You can now remove your Headset";
+                environmentManager.FormFog();
+                break; //end game loop
+            }
         }
     }
 
@@ -106,21 +129,48 @@ public class EndlessRunnerEmitter : MonoBehaviour
                 yield return null;
             }
 
-            int emptyLane = Random.Range(0, CarLanes.Length);
-
-            for (int i = 0; i < CarLanes.Length; i++)
+            // Experiment Mode will predictably spawn a lane positive consumable 
+            if (experimentMode)
             {
-                if (i != emptyLane)
+                int emptyLane = Random.Range(0, CarLanes.Length);
+
+                for (int i = 0; i < CarLanes.Length; i++)
                 {
-                    // dont spawn extra cars unless bike is moving
-                    if (currentMoveSpeed > 5)
-                        CarLanes[i].SpawnCar(experimentMode);
-                    
+                    if (i != emptyLane)
+                    {
+                        // dont spawn extra cars unless bike is moving
+                        if (currentMoveSpeed > 8f)
+                            CarLanes[i].SpawnCar(experimentMode);
+
+                    }
+                    else if (currentMoveSpeed > 8f && GameManager.Instance.reinforcementMode == Mode.Mixed)
+                    {
+                        if (Random.value < 0.5f)
+                        {
+                            foodBagEmitter.SpawnFoodBagInLane(i, CarLanes[i].zSpawn + 80); // added to account for the difference in velovity or car vs static object
+                        }
+                        else
+                        {
+                            roadSignEmitter.SpawnFoodBagInLane(i, CarLanes[i].zSpawn + 80);// added to account for the difference in velovity or car vs static object
+                        }
+
+                    }
+
+                }
+            }
+            else // classic, more randomised method of spawn cars across lanes
+            {
+                var randomCarLane = CarLanes[Random.Range(0, CarLanes.Length)];
+                if (!pedestrianMode)
+                {
+                    randomCarLane.SpawnCar(experimentMode);
                 }
             }
 
 
-            yield return new WaitForSeconds(10f);
+
+
+                yield return new WaitForSeconds(10f);
             
 
             //var randomCarLane = CarLanes[Random.Range(0, CarLanes.Length)];

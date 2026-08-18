@@ -1,88 +1,188 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Globalization;
 using UnityEngine;
 
 public class VRTrackingLogger : MonoBehaviour
 {
-    [Header("Participant")]
-    [SerializeField] private string participantID = "Participant_001";
-
     [Header("Tracking")]
+    [SerializeField] private Player player;
     [SerializeField] private Transform head;
     [SerializeField] private Transform leftController;
     [SerializeField] private Transform rightController;
 
-    [Header("Current Experiment")]
+    [Header("Current Trial")]
     [SerializeField] private int trialNumber = 1;
 
-    // These can change while the experiment is running
     private string condition = "None";
-    private string phase = "Experiment";
 
     private string filePath;
     private StringBuilder csvBuffer = new StringBuilder();
 
-    private float trialTime;
+    public float trialTime;
     private float lastSaveTime;
 
-    private Vector3 previousHeadPosition;
-    private Vector3 previousLeftPosition;
-    private Vector3 previousRightPosition;
-
-    private Vector3 previousHeadVelocity;
-    private Vector3 previousLeftVelocity;
-    private Vector3 previousRightVelocity;
-
-    private bool hasPreviousFrame = false;
     private bool logging = false;
 
-    // Save to disk every second rather than writing every frame
     private const float saveInterval = 1f;
 
 
     // =========================================================
-    // START EXPERIMENT / TRIAL
+    // AUTOMATIC PARTICIPANT NUMBER
     // =========================================================
 
-    public void StartTrial(int trial)
+    private string GetParticipantID()
     {
-        // Stop previous trial if one is still running
+        return $"Participant_{GameManager.Instance.participantNumber:000}";
+    }
+
+
+    // =========================================================
+    // START TRIAL
+    // =========================================================
+
+    public void StartTrial()
+    {
         if (logging)
             EndTrial();
 
-        trialNumber = trial;
+
+        // -----------------------------------------------------
+        // CHECK GAMEMANAGER
+        // -----------------------------------------------------
+
+        if (GameManager.Instance == null)
+        {
+            Debug.LogError(
+                "VRTrackingLogger: GameManager.Instance is null!"
+            );
+
+            return;
+        }
+
+
+        // -----------------------------------------------------
+        // CHECK TRACKING REFERENCES
+        // -----------------------------------------------------
+
+        if (player.transform == null ||
+            head == null ||
+            leftController == null ||
+            rightController == null)
+        {
+            Debug.LogError(
+                "VRTrackingLogger: One or more tracking transforms are missing!"
+            );
+
+            return;
+        }
+
+
+        // -----------------------------------------------------
+        // CHECK PARTICIPANT NUMBER
+        // -----------------------------------------------------
+
+        if (GameManager.Instance.participantNumber <= 0)
+        {
+            Debug.LogError(
+                "VRTrackingLogger: No valid participant number has been set!"
+            );
+
+            return;
+        }
+
+
+        // -----------------------------------------------------
+        // AUTOMATICALLY FIND NEXT TRIAL
+        // -----------------------------------------------------
+
+        trialNumber = GetNextTrialNumber();
+
+
+        // -----------------------------------------------------
+        // RESET TRIAL DATA
+        // -----------------------------------------------------
 
         trialTime = 0f;
         lastSaveTime = 0f;
 
-        hasPreviousFrame = false;
-
-        previousHeadPosition = Vector3.zero;
-        previousLeftPosition = Vector3.zero;
-        previousRightPosition = Vector3.zero;
-
-        previousHeadVelocity = Vector3.zero;
-        previousLeftVelocity = Vector3.zero;
-        previousRightVelocity = Vector3.zero;
-
         condition = "None";
-        phase = "Experiment";
 
         csvBuffer.Clear();
+
+
+        // -----------------------------------------------------
+        // CREATE CSV
+        // -----------------------------------------------------
 
         CreateTrialCSV();
 
         logging = true;
 
+
         Debug.Log(
-            $"Started Trial {trialNumber}"
+            $"Started Trial {trialNumber} " +
+            $"for {GetParticipantID()}"
         );
     }
 
 
     // =========================================================
-    // END EXPERIMENT / TRIAL
+    // FIND NEXT TRIAL NUMBER
+    // =========================================================
+
+    private int GetNextTrialNumber()
+    {
+        string participantFolder =
+            Path.Combine(
+                Application.persistentDataPath,
+                "VRExperiment",
+                GetParticipantID()
+            );
+
+        Directory.CreateDirectory(
+            participantFolder
+        );
+
+
+        string[] trialFiles =
+            Directory.GetFiles(
+                participantFolder,
+                "Trial_*.csv"
+            );
+
+
+        int highestTrial = 0;
+
+
+        foreach (string file in trialFiles)
+        {
+            string fileName =
+                Path.GetFileNameWithoutExtension(file);
+
+            string numberPart =
+                fileName.Replace("Trial_", "");
+
+
+            if (int.TryParse(
+                numberPart,
+                out int trial))
+            {
+                if (trial > highestTrial)
+                {
+                    highestTrial = trial;
+                }
+            }
+        }
+
+
+        return highestTrial + 1;
+    }
+
+
+    // =========================================================
+    // END TRIAL
     // =========================================================
 
     public void EndTrial()
@@ -101,7 +201,7 @@ public class VRTrackingLogger : MonoBehaviour
 
 
     // =========================================================
-    // CHANGE CONDITION
+    // CONDITION
     // =========================================================
 
     public void SetCondition(string newCondition)
@@ -110,20 +210,6 @@ public class VRTrackingLogger : MonoBehaviour
 
         Debug.Log(
             $"Condition changed to: {condition}"
-        );
-    }
-
-
-    // =========================================================
-    // CHANGE PHASE
-    // =========================================================
-
-    public void SetPhase(string newPhase)
-    {
-        phase = newPhase;
-
-        Debug.Log(
-            $"Phase changed to: {phase}"
         );
     }
 
@@ -146,97 +232,56 @@ public class VRTrackingLogger : MonoBehaviour
 
 
         // -----------------------------------------------------
-        // CURRENT POSITIONS
+        // PLAYER POSITION
         // -----------------------------------------------------
 
-        Vector3 headPosition = head.position;
-        Vector3 leftPosition = leftController.position;
-        Vector3 rightPosition = rightController.position;
-
-
-        // -----------------------------------------------------
-        // CURRENT ROTATIONS
-        // -----------------------------------------------------
-
-        Vector3 headRotation = head.eulerAngles;
-        Vector3 leftRotation = leftController.eulerAngles;
-        Vector3 rightRotation = rightController.eulerAngles;
+        Vector3 playerPosition =
+            player.transform.position;
 
 
         // -----------------------------------------------------
-        // VELOCITY
+        // LOCAL POSITIONS
         // -----------------------------------------------------
 
-        Vector3 headVelocity = Vector3.zero;
-        Vector3 leftVelocity = Vector3.zero;
-        Vector3 rightVelocity = Vector3.zero;
+        Vector3 headLocalPosition =
+            player.transform.InverseTransformPoint(
+                head.position
+            );
 
-        if (hasPreviousFrame)
-        {
-            headVelocity =
-                (headPosition - previousHeadPosition)
-                / deltaTime;
+        Vector3 leftLocalPosition =
+            player.transform.InverseTransformPoint(
+                leftController.position
+            );
 
-            leftVelocity =
-                (leftPosition - previousLeftPosition)
-                / deltaTime;
-
-            rightVelocity =
-                (rightPosition - previousRightPosition)
-                / deltaTime;
-        }
+        Vector3 rightLocalPosition =
+            player.transform.InverseTransformPoint(
+                rightController.position
+            );
 
 
         // -----------------------------------------------------
-        // ACCELERATION
+        // PLAYER ROTATION
         // -----------------------------------------------------
 
-        Vector3 headAcceleration = Vector3.zero;
-        Vector3 leftAcceleration = Vector3.zero;
-        Vector3 rightAcceleration = Vector3.zero;
-
-        if (hasPreviousFrame)
-        {
-            headAcceleration =
-                (headVelocity - previousHeadVelocity)
-                / deltaTime;
-
-            leftAcceleration =
-                (leftVelocity - previousLeftVelocity)
-                / deltaTime;
-
-            rightAcceleration =
-                (rightVelocity - previousRightVelocity)
-                / deltaTime;
-        }
+        Quaternion playerRotation =
+            player.transform.rotation;
 
 
         // -----------------------------------------------------
-        // SPEED
+        // LOCAL ROTATIONS
         // -----------------------------------------------------
 
-        float headSpeed =
-            headVelocity.magnitude;
+        Quaternion headLocalRotation =
+            Quaternion.Inverse(player.transform.rotation)
+            * head.rotation;
 
-        float leftSpeed =
-            leftVelocity.magnitude;
+        Quaternion leftLocalRotation =
+            Quaternion.Inverse(player.transform.rotation)
+            * leftController.rotation;
 
-        float rightSpeed =
-            rightVelocity.magnitude;
-
-
-        // -----------------------------------------------------
-        // ACCELERATION MAGNITUDE
-        // -----------------------------------------------------
-
-        float headAccelerationMagnitude =
-            headAcceleration.magnitude;
-
-        float leftAccelerationMagnitude =
-            leftAcceleration.magnitude;
-
-        float rightAccelerationMagnitude =
-            rightAcceleration.magnitude;
+        Quaternion rightLocalRotation =
+            Quaternion.Inverse(player.transform.rotation)
+            * rightController.rotation;
 
 
         // -----------------------------------------------------
@@ -250,117 +295,67 @@ public class VRTrackingLogger : MonoBehaviour
 
 
         // -----------------------------------------------------
-        // CSV ROW
+        // CSV
         // -----------------------------------------------------
 
         csvBuffer.AppendLine(
-            $"{participantID}," +
+            $"{GetParticipantID()}," +
             $"{trialNumber}," +
-            $"{condition}," +
-            $"{phase}," +
+            $"{player.armLength}," +
+            $"{(player.onPavement ? "None" : condition )}," + // If the player is still on the pavement dont count as a condition
 
             $"{Time.frameCount}," +
             $"{timestamp}," +
-            $"{trialTime:F4}," +
+            $"{trialTime.ToString("F4", CultureInfo.InvariantCulture)}," +
 
-            // -------------------------
-            // HEAD POSITION
-            // -------------------------
+            // Player position
+            $"{playerPosition.x.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{playerPosition.y.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{playerPosition.z.ToString("F4", CultureInfo.InvariantCulture)}," +
 
-            $"{headPosition.x:F4}," +
-            $"{headPosition.y:F4}," +
-            $"{headPosition.z:F4}," +
+            // Player rotation
+            $"{playerRotation.x.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{playerRotation.y.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{playerRotation.z.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{playerRotation.w.ToString("F4", CultureInfo.InvariantCulture)}," +
 
-            // -------------------------
-            // HEAD ROTATION
-            // -------------------------
+            // Head local position
+            $"{headLocalPosition.x.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{headLocalPosition.y.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{headLocalPosition.z.ToString("F4", CultureInfo.InvariantCulture)}," +
 
-            $"{headRotation.x:F4}," +
-            $"{headRotation.y:F4}," +
-            $"{headRotation.z:F4}," +
+            // Head local rotation
+            $"{headLocalRotation.x.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{headLocalRotation.y.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{headLocalRotation.z.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{headLocalRotation.w.ToString("F4", CultureInfo.InvariantCulture)}," +
 
-            // -------------------------
-            // LEFT POSITION
-            // -------------------------
+            // Left controller local position
+            $"{leftLocalPosition.x.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{leftLocalPosition.y.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{leftLocalPosition.z.ToString("F4", CultureInfo.InvariantCulture)}," +
 
-            $"{leftPosition.x:F4}," +
-            $"{leftPosition.y:F4}," +
-            $"{leftPosition.z:F4}," +
+            // Left controller local rotation
+            $"{leftLocalRotation.x.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{leftLocalRotation.y.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{leftLocalRotation.z.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{leftLocalRotation.w.ToString("F4", CultureInfo.InvariantCulture)}," +
 
-            // -------------------------
-            // LEFT ROTATION
-            // -------------------------
+            // Right controller local position
+            $"{rightLocalPosition.x.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{rightLocalPosition.y.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{rightLocalPosition.z.ToString("F4", CultureInfo.InvariantCulture)}," +
 
-            $"{leftRotation.x:F4}," +
-            $"{leftRotation.y:F4}," +
-            $"{leftRotation.z:F4}," +
-
-            // -------------------------
-            // RIGHT POSITION
-            // -------------------------
-
-            $"{rightPosition.x:F4}," +
-            $"{rightPosition.y:F4}," +
-            $"{rightPosition.z:F4}," +
-
-            // -------------------------
-            // RIGHT ROTATION
-            // -------------------------
-
-            $"{rightRotation.x:F4}," +
-            $"{rightRotation.y:F4}," +
-            $"{rightRotation.z:F4}," +
-
-            // -------------------------
-            // HEAD MOVEMENT
-            // -------------------------
-
-            $"{headSpeed:F4}," +
-            $"{headAccelerationMagnitude:F4}," +
-
-            // -------------------------
-            // LEFT MOVEMENT
-            // -------------------------
-
-            $"{leftSpeed:F4}," +
-            $"{leftAccelerationMagnitude:F4}," +
-
-            // -------------------------
-            // RIGHT MOVEMENT
-            // -------------------------
-
-            $"{rightSpeed:F4}," +
-            $"{rightAccelerationMagnitude:F4}"
+            // Right controller local rotation
+            $"{rightLocalRotation.x.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{rightLocalRotation.y.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{rightLocalRotation.z.ToString("F4", CultureInfo.InvariantCulture)}," +
+            $"{rightLocalRotation.w.ToString("F4", CultureInfo.InvariantCulture)}"
         );
 
 
         // -----------------------------------------------------
-        // STORE CURRENT VALUES
-        // -----------------------------------------------------
-
-        previousHeadPosition =
-            headPosition;
-
-        previousLeftPosition =
-            leftPosition;
-
-        previousRightPosition =
-            rightPosition;
-
-        previousHeadVelocity =
-            headVelocity;
-
-        previousLeftVelocity =
-            leftVelocity;
-
-        previousRightVelocity =
-            rightVelocity;
-
-        hasPreviousFrame = true;
-
-
-        // -----------------------------------------------------
-        // PERIODIC SAVE
+        // SAVE
         // -----------------------------------------------------
 
         if (trialTime - lastSaveTime >= saveInterval)
@@ -382,7 +377,7 @@ public class VRTrackingLogger : MonoBehaviour
             Path.Combine(
                 Application.persistentDataPath,
                 "VRExperiment",
-                participantID
+                GetParticipantID()
             );
 
         Directory.CreateDirectory(
@@ -401,51 +396,51 @@ public class VRTrackingLogger : MonoBehaviour
             );
 
 
-        // -----------------------------------------------------
-        // CSV HEADER
-        // -----------------------------------------------------
-
         csvBuffer.AppendLine(
             "ParticipantID," +
             "Trial," +
+            "ReachLength," +
             "Condition," +
-            "Phase," +
 
             "Frame," +
             "Timestamp," +
             "TrialTime," +
 
-            // Head
-            "HeadX," +
-            "HeadY," +
-            "HeadZ," +
+            "PlayerX," +
+            "PlayerY," +
+            "PlayerZ," +
+
+            "PlayerRotX," +
+            "PlayerRotY," +
+            "PlayerRotZ," +
+            "PlayerRotW," +
+
+            "HeadLocalX," +
+            "HeadLocalY," +
+            "HeadLocalZ," +
+
             "HeadRotX," +
             "HeadRotY," +
             "HeadRotZ," +
+            "HeadRotW," +
 
-            // Left controller
-            "LeftX," +
-            "LeftY," +
-            "LeftZ," +
+            "LeftLocalX," +
+            "LeftLocalY," +
+            "LeftLocalZ," +
+
             "LeftRotX," +
             "LeftRotY," +
             "LeftRotZ," +
+            "LeftRotW," +
 
-            // Right controller
-            "RightX," +
-            "RightY," +
-            "RightZ," +
+            "RightLocalX," +
+            "RightLocalY," +
+            "RightLocalZ," +
+
             "RightRotX," +
             "RightRotY," +
             "RightRotZ," +
-
-            // Movement
-            "HeadSpeed," +
-            "HeadAcceleration," +
-            "LeftSpeed," +
-            "LeftAcceleration," +
-            "RightSpeed," +
-            "RightAcceleration"
+            "RightRotW"
         );
 
 
@@ -458,7 +453,7 @@ public class VRTrackingLogger : MonoBehaviour
 
 
         Debug.Log(
-            $"CSV created: {filePath}"
+            $"CSV created at:\n{filePath}"
         );
     }
 
@@ -482,7 +477,7 @@ public class VRTrackingLogger : MonoBehaviour
 
 
     // =========================================================
-    // SAFETY
+    // APPLICATION EXIT
     // =========================================================
 
     private void OnApplicationQuit()
@@ -490,6 +485,7 @@ public class VRTrackingLogger : MonoBehaviour
         if (logging)
             EndTrial();
     }
+
 
     private void OnDestroy()
     {

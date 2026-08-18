@@ -6,6 +6,9 @@ public class Player : MonoBehaviour
     [SerializeField] InputSystem_Actions input;
     [SerializeField] EndlessRunnerEmitter emitter;
 
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip barcelonaAmbienceClip;
+
     public float armLength;
     public HapticsManager haptics;
 
@@ -20,6 +23,10 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         input = new InputSystem_Actions();
+
+        audioSource.loop = true;
+        audioSource.clip = barcelonaAmbienceClip;
+        audioSource.Play();
     }
     void OnEnable()
     {
@@ -67,6 +74,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (onPavement) {
+            if (audioSource.volume < 1f) audioSource.volume += 0.01f;
+        } else {
+            if (audioSource.volume > 0f) audioSource.volume -= 0.01f;
+        }
+
         if (input.Player.BrakeL.ReadValue<float>() > 0.2)
         {
             BrakeL = true;

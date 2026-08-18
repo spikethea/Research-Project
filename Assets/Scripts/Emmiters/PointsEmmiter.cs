@@ -7,6 +7,7 @@ public class PointsEmmiter : MonoBehaviour
     [SerializeField] EndlessRunnerEmitter emitter;
     [SerializeField] private GameObject emitterObject;
 
+    public float emitterOffset;
     public float WaitingTime = 1f;
     public float xOffset = 0f;
     public float yOffset = 0f;
@@ -14,8 +15,7 @@ public class PointsEmmiter : MonoBehaviour
 
     private int currentLanePosition = 0;
     private List<GameObject> emittedObjects = new List<GameObject>();
-
-    public Mode reinforcementMode;
+    public List<Mode> reinforcementModes = new List<Mode>();
 
     [SerializeField]
     public List<bool> ActiveLanes = new List<bool> 
@@ -29,6 +29,8 @@ public class PointsEmmiter : MonoBehaviour
 
     void Start()
     {
+
+        emitterOffset = Random.Range(0, 10);
 
         Debug.Log("Start");
         StartCoroutine(EmitFoodBag());
@@ -50,14 +52,37 @@ public class PointsEmmiter : MonoBehaviour
         return availableLanes[Random.Range(0, availableLanes.Count)];
     }
 
+    public void SpawnFoodBagInLane(int lanePosition, float zSpawn)
+    {
+        
+        if (emitter.gameStarted && emitter.currentMoveSpeed > 10)
+        {
+
+                GameObject FoodBag = Instantiate(
+                    emitterObject,
+                    new Vector3(
+                        emitter.roadLanes[lanePosition].transform.position.x + xOffset,
+                        emitter.roadLanes[lanePosition].transform.position.y + yOffset,
+                        zSpawn
+                    ),
+                    Quaternion.identity
+                );
+
+                emittedObjects.Add(FoodBag);
+                Debug.Log("Emitted FoodBag at lane: " + currentLanePosition + " position: " + FoodBag.transform.position);
+            }
+        
+    }
+
     IEnumerator EmitFoodBag()
     {
+        yield return new WaitForSeconds(emitterOffset);
         while (true)
         {
             if (emitter.gameStarted && emitter.currentMoveSpeed > 10) {
 
-                if (GameManager.Instance.reinforcementMode == reinforcementMode
-                || GameManager.Instance.reinforcementMode == Mode.Mixed) {
+                if (reinforcementModes.Contains(GameManager.Instance.reinforcementMode)
+                ) {
                     currentLanePosition = GetRandomEnabledLane();
 
                     GameObject FoodBag = Instantiate(

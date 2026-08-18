@@ -11,10 +11,15 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    public int participantNumber;
+
     public float playerArmLength = 1.0f;
     public float leftAssistance = 0f;
     public float rightAssistance = 0f;
+
     public bool isMirrorMode = false;
+    public bool isParticipant = false;
+
     public Mode reinforcementMode = 0;
 
     // Game Objectives

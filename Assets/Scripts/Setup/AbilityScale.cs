@@ -4,7 +4,6 @@ public class AbilityScale : MonoBehaviour
 {
     [SerializeField] Transform TopPoint;
     [SerializeField] Transform BottomPoint;
-    [SerializeField] GameManager gameManager;
 
     [SerializeField] Transform measuringBall;
 
@@ -29,12 +28,12 @@ public class AbilityScale : MonoBehaviour
         }
         else {
             if (transform.tag == "LeftController") {
-                gameManager.leftAssistance = 1 - GetMobilityValue();
+                GameManager.Instance.leftAssistance = 1 - GetMobilityValue();
             }
 
             if (transform.tag == "RightController")
             {
-                gameManager.rightAssistance = 1 - GetMobilityValue();
+                GameManager.Instance.rightAssistance = 1 - GetMobilityValue();
             }
         }
 
