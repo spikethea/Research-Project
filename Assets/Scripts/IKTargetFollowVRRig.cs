@@ -15,7 +15,7 @@ public class VRMap
         ikTarget.position = vrTarget.TransformPoint(trackingPositionOffset);
         if(trackRotation) ikTarget.rotation = vrTarget.rotation * Quaternion.Euler(trackingRotationOffset);
     }
-    public void AmplifyMovement(VRMap head, float multiplier)
+    public void AmplifyMovement(VRMap head, float assistance)
     {
         Vector3 handPos = vrTarget.position;
 
@@ -23,7 +23,10 @@ public class VRMap
         Vector3 headPos = handPos - head.vrTarget.position;
 
         // Exaggerate
-        handPos = head.vrTarget.position + headPos * multiplier;
+        handPos = head.vrTarget.position + headPos * (1 + assistance);
+
+        // Raise the hand on top of the exaggeration
+        handPos.y += 0.6f * assistance;
 
         // Apply tracking offset
         ikTarget.position = handPos + vrTarget.rotation * trackingPositionOffset;
@@ -57,8 +60,8 @@ public class IKTargetFollowVRRig : MonoBehaviour
 
         if (isCalibrated)
         {
-            leftHand.AmplifyMovement(head, 1.0f + GameManager.Instance.leftAssistance);
-            rightHand.AmplifyMovement(head, 1.0f + GameManager.Instance.rightAssistance);
+            leftHand.AmplifyMovement(head, GameManager.Instance.leftAssistance);
+            rightHand.AmplifyMovement(head, GameManager.Instance.rightAssistance);
         }
     }
 }

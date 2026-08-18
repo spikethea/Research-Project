@@ -205,7 +205,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Left Hand Motor Ability
+  m_text: Left Arm Motor Ability
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1502,7 +1502,7 @@ MonoBehaviour:
   leftAssistance: 0
   rightAssistance: 0
   isMirrorMode: 0
-  isExperimentMode: 0
+  isParticipant: 0
   reinforcementMode: 0
   currentTarget: 
 --- !u!4 &382015261
@@ -2098,7 +2098,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Right Hand Motor Ability
+  m_text: Right Arm Motor Ability
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2803,7 +2803,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: This VR Demo experience requires a seat & roomscale Boundary activated
+  m_text: This VR Demo experience requires a Seat & a Wide Space to accomodate upper
+    body physical movement
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3745,7 +3746,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: Press the <b>Blue</b> buttons to demonstration of the XR Mechanics. <b>Red
-    Button will start the game </b> There will be further instructions on your bike
+    Button will start the game </b> There will be further instructions on your <b>smartphone</b>
     mount in-game. Please input your participant number below and start the experiment.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4464,9 +4465,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Youve lost your office job in the midst of a global reccession. This is
+  m_text: Youve lost your office job in the midst of a global reccession. This is
     your first day as a bike courier, delivering food to the citizens of barcelona
-    streets to make ends meet. '
+    streets to make ends meet. Check your notifications.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

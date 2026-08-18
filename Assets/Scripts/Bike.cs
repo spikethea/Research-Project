@@ -92,24 +92,25 @@ public class Bike : MonoBehaviour
         _currentLean = _neutralLean;
     }
 
-    void DetectStop(Transform controller)
+    bool DetectStop(Transform controller)
     {
         
-        isStopping = false;
+        
         if (
             controller.position.y > HeadTransform.position.y + 0.05f &&
             controller.position.z < HeadTransform.position.z + player.armLength - 0.2f
             ) {
-            isStopping = true;
+            return true;
         }
 
         if (handlebarLeft && player.BrakeL)
-            isStopping = true;
+            return true;
         
 
         if (handlebarRight && player.BrakeR)
-            isStopping = true;
+            return true;
 
+        return false;
         //Debug.Log("Head Stop Distance: " + Mathf.Abs(controller.position.z - HeadTransform.position.z));
     }
 
@@ -329,8 +330,17 @@ public class Bike : MonoBehaviour
         // Tilt the bike based on the head's horizontal movement
         BikeBody.transform.rotation = Quaternion.Euler(0, 0, -_bikeTilt * TiltSensitivity); // Adjust the multiplier for more or less tilt
 
-        DetectStop(turnSignals.LeftController);
-        DetectStop(turnSignals.RightController);
+        bool leftStop = DetectStop(turnSignals.LeftController);
+        bool rightStop = DetectStop(turnSignals.RightController);
+
+        if (leftStop || rightStop)
+        {
+            isStopping = true;
+        }
+        else
+        {
+            isStopping = false;
+        }
 
         // Halt to a stop
         if (isStopping || isCrashing)

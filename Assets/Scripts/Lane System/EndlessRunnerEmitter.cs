@@ -14,6 +14,8 @@ public class EndlessRunnerEmitter : MonoBehaviour
     [SerializeField] PointsEmmiter foodBagEmitter;
     [SerializeField] PointsEmmiter roadSignEmitter;
 
+    [SerializeField] private BikeAudio bikeAudio;
+
     [SerializeField] private GameObject pavementPrefab;
     [SerializeField] private GameObject roadPrefab;
     [SerializeField] private GameObject busLanePrefab;
@@ -92,13 +94,16 @@ public class EndlessRunnerEmitter : MonoBehaviour
             {
                 vrTrackingLogger.StartTrial();
             }
+            bikeAudio.PlayNotificationSound();
             pedestrianMode = true;
-            PhoneScreen.text = "You are Participant "  + GameManager.Instance.participantNumber +  "\r\n\r\n" + "Now for a 60 second break \n\n Press <b>X</b> (Left Hand) to Mirror bike movement \n\n Press <b>B</b> (Right Hand) to re-calibrate your head position";
+            PhoneScreen.text = (GameManager.Instance.participantNumber != 0 ? "You are Participant "  + GameManager.Instance.participantNumber : "Test Mode") +  
+                "\r\n\r\n" + "Now for a 60 second break \n\n Press <b>X</b> (Left Hand) to Mirror bike movement \n\n Press <b>B</b> (Right Hand) to re-calibrate your head position";
             yield return new WaitForSeconds(30f);
 
+            bikeAudio.PlayNotificationSound();
             GameManager.Instance.SetRandomMode();
             vrTrackingLogger.SetCondition(GameManager.Instance.reinforcementMode.ToString());
-            PhoneScreen.text = "Hold Handlebars to start\r\n\r\nTilt and Signal to change lanes\r\n\r\nRaise your Right Hand to STOP\r\n\r\n" +
+            PhoneScreen.text = "Hold Handlebars to move\r\n\r\nTilt and Signal to change lanes\r\n\r\nRaise your Right Hand to STOP\r\n\r\n" +
             (GameManager.Instance.reinforcementMode == Mode.Negative || GameManager.Instance.reinforcementMode == Mode.Mixed ? "<color=red>Avoid Hazards, Cars and Buses</color>\r\n\r\n" : "") +
             (GameManager.Instance.reinforcementMode == Mode.Positive || GameManager.Instance.reinforcementMode == Mode.Mixed ? "<color=green>Follow Road Signs, Collect and Deliver Food Bags</color>\r\n\r\n" : "") +
             (GameManager.Instance.reinforcementMode == Mode.Negative || GameManager.Instance.reinforcementMode == Mode.Mixed ? "<color=red> STOP</color><color=blue> for Zebra Crossings and Deliver Food</color>\r\n" : "");
@@ -110,6 +115,7 @@ public class EndlessRunnerEmitter : MonoBehaviour
             int fifteenMinutes = 15 * 60;
             if (experimentMode && vrTrackingLogger.trialTime > fifteenMinutes) {
                 vrTrackingLogger.EndTrial();
+                bikeAudio.PlayNotificationSound();
                 PhoneScreen.text = "Participant " + GameManager.Instance.participantNumber + ", this experiment is over.\r\n\r\n" + " You can now remove your Headset";
                 environmentManager.FormFog();
                 break; //end game loop

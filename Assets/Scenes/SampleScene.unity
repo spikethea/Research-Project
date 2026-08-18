@@ -4263,6 +4263,7 @@ MonoBehaviour:
   environmentManager: {fileID: 1130925085}
   foodBagEmitter: {fileID: 1062090833}
   roadSignEmitter: {fileID: 1062090834}
+  bikeAudio: {fileID: 1454764507}
   pavementPrefab: {fileID: 6900223283439407171, guid: c393005497896714789f0d79b7a5f5eb, type: 3}
   roadPrefab: {fileID: 9195895128064495700, guid: e8185235ef162634db7d829411b4aa5a, type: 3}
   busLanePrefab: {fileID: 238317886903763122, guid: c1475c58f1246fe458a2308afad5825c, type: 3}
@@ -5530,7 +5531,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -5630,6 +5631,8 @@ MonoBehaviour:
   Emitter: {fileID: 1062090832}
   WheelClip: {fileID: 8300000, guid: 1df66129388c2204daaab859f3af1cfd, type: 3}
   wheelAudioSource: {fileID: 1216584407}
+  phoneAudioSource: {fileID: 0}
+  notificationSoundClip: {fileID: 0}
 --- !u!1 &1231950871
 GameObject:
   m_ObjectHideFlags: 0
@@ -6373,6 +6376,8 @@ MonoBehaviour:
   Emitter: {fileID: 1062090832}
   WheelClip: {fileID: 8300000, guid: 1df66129388c2204daaab859f3af1cfd, type: 3}
   wheelAudioSource: {fileID: 1216584407}
+  phoneAudioSource: {fileID: 1474544848}
+  notificationSoundClip: {fileID: 8300000, guid: 8ce8a6a1987ce7d4fb7c9dda8b6b5c0e, type: 3}
 --- !u!82 &1454764508
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6479,6 +6484,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1474544847}
+  - component: {fileID: 1474544848}
   m_Layer: 0
   m_Name: Phone
   m_TagString: Untagged
@@ -6505,6 +6511,103 @@ Transform:
   - {fileID: 1377661570}
   m_Father: {fileID: 543450652245268028}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1474544848
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474544846}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1477159025
 GameObject:
   m_ObjectHideFlags: 0
@@ -11335,13 +11438,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2988424695083299538, guid: e26ea5342f6bc214398aa146457a814d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 9213009874071532637, guid: e26ea5342f6bc214398aa146457a814d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e26ea5342f6bc214398aa146457a814d, type: 3}
 --- !u!4 &2580547631379767716
 Transform:

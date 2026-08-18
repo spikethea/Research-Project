@@ -9,6 +9,8 @@ public class FoodPickup : MonoBehaviour
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip chaChingClip;
     [SerializeField] MeshRenderer MoneyText;
+    [SerializeField] Canvas stopSign;
+
     [SerializeField] Collider _collider;
 
     [SerializeField] GameObject foodBagMesh;
@@ -24,6 +26,7 @@ public class FoodPickup : MonoBehaviour
     void Start()
     {
         MoneyText.enabled = false;
+        stopSign.enabled = true;
 
         playerTransform = GameObject.FindWithTag("Player").transform;
     }
@@ -34,7 +37,8 @@ public class FoodPickup : MonoBehaviour
         if(stoppingTimer > stoppingDuration)
         {
             MoneyText.enabled = true;
-            if(!audioSource.isPlaying)
+            stopSign.enabled = false;
+            if (!audioSource.isPlaying)
                 audioSource.PlayOneShot(chaChingClip);
             animator.SetBool("Waving", false);
             animator.SetBool("Bowing", true);
