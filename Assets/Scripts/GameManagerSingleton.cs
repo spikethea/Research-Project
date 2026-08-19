@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum Mode
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour
     public bool isParticipant = false;
 
     public Mode reinforcementMode = 0;
+    public List<Mode> modePool = new List<Mode>();
 
     // Game Objectives
     public string currentTarget = null;
@@ -62,10 +64,35 @@ public class GameManager : MonoBehaviour
 
     public void SetRandomMode()
     {
-        reinforcementMode = (Mode)Random.Range(
-            0,
-            System.Enum.GetValues(typeof(Mode)).Length
-        );
+        // Refill and shuffle when empty
+        if (modePool.Count == 0)
+        {
+            modePool = new List<Mode>
+        {
+            Mode.Positive,
+            Mode.Negative,
+            Mode.Mixed,
+            Mode.Positive,
+            Mode.Negative,
+            Mode.Mixed
+        };
+
+            // Fisher-Yates shuffle algorithm
+            for (int i = modePool.Count - 1; i > 0; i--)
+            {
+                int j = Random.Range(0, i + 1);
+
+                Mode temp = modePool[i];
+                modePool[i] = modePool[j];
+                modePool[j] = temp;
+            }
+        }
+
+        // Take the first mode
+        reinforcementMode = modePool[0];
+
+        // Remove it so it can't be selected again
+        modePool.RemoveAt(0);
     }
 
 }

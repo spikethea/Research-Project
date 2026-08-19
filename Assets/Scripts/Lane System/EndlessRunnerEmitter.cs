@@ -89,7 +89,7 @@ public class EndlessRunnerEmitter : MonoBehaviour
     IEnumerator GameStructure() {
         while (true)
         {
-            while (!gameStarted) yield return null;
+            yield return new WaitUntil(() => gameStarted);
             if (experimentMode && vrTrackingLogger.trialTime <= 0)
             {
                 vrTrackingLogger.StartTrial();
@@ -111,13 +111,18 @@ public class EndlessRunnerEmitter : MonoBehaviour
             pedestrianMode = false;
             yield return new WaitForSeconds(180f);
 
+            // old time-based system
+            //int fifteenMinutes = 15 * 60;
+            //if (experimentMode && vrTrackingLogger.trialTime > fifteenMinutes) {
 
-            int fifteenMinutes = 15 * 60;
-            if (experimentMode && vrTrackingLogger.trialTime > fifteenMinutes) {
+            //newer, time and mode based system, where the experiment ends when all modes have been completed
+            if (experimentMode && GameManager.Instance.modePool.Count == 0) {
                 vrTrackingLogger.EndTrial();
                 bikeAudio.PlayNotificationSound();
                 PhoneScreen.text = "Participant " + GameManager.Instance.participantNumber + ", this experiment is over.\r\n\r\n" + " You can now remove your Headset";
                 environmentManager.FormFog();
+                yield return new WaitForSeconds(7f);
+                Application.Quit();
                 break; //end game loop
             }
         }

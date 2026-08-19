@@ -4316,6 +4316,10 @@ PrefabInstance:
       value: Ability Scale Right
       objectReference: {fileID: 0}
     - target: {fileID: 3693484500196916146, guid: 9445fa637c9adf7428d2b481bde3b662, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3693484500196916146, guid: 9445fa637c9adf7428d2b481bde3b662, type: 3}
       propertyPath: m_TagString
       value: RightController
       objectReference: {fileID: 0}
@@ -7496,6 +7500,10 @@ PrefabInstance:
     - target: {fileID: 3693484500196916146, guid: 9445fa637c9adf7428d2b481bde3b662, type: 3}
       propertyPath: m_Name
       value: Ability Scale Left
+      objectReference: {fileID: 0}
+    - target: {fileID: 3693484500196916146, guid: 9445fa637c9adf7428d2b481bde3b662, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8271566615854019800, guid: 9445fa637c9adf7428d2b481bde3b662, type: 3}
       propertyPath: m_LocalScale.y

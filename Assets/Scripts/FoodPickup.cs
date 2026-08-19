@@ -46,7 +46,7 @@ public class FoodPickup : MonoBehaviour
             stoppingTimer = 0;
 
 
-            
+            Destroy(gameObject, 2f);
         }
         if (MoneyText.enabled)
             lookAtPlayer();

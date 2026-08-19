@@ -4,6 +4,7 @@ using UnityEngine;
 public class TurnSignals : MonoBehaviour
 {
     [SerializeField] private Transform cameraOffset;
+    [SerializeField] private Bike bike;
 
     public Transform LeftController;
     public Transform RightController;
@@ -31,7 +32,8 @@ public class TurnSignals : MonoBehaviour
         // Turn Signals, only one can be activated at a time
         if (
             RightArrow.activeSelf == false &&
-            LeftController.position.x - cameraOffset.position.x < -signalThreshhold
+            LeftController.position.x - cameraOffset.position.x < -signalThreshhold &&
+            !bike.isStopping
             )
         {
             LeftArrow.SetActive(true);
@@ -44,7 +46,8 @@ public class TurnSignals : MonoBehaviour
 
         if (
             LeftArrow.activeSelf == false &&
-            RightController.position.x - cameraOffset.position.x > signalThreshhold
+            RightController.position.x - cameraOffset.position.x > signalThreshhold &&
+            !bike.isStopping
             )
         {
             RightArrow.SetActive(true);

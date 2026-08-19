@@ -2720,7 +2720,7 @@ Transform:
   m_GameObject: {fileID: 707329266}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0.03}
+  m_LocalPosition: {x: 0, y: 0.085, z: 0.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4455,6 +4455,10 @@ PrefabInstance:
     - target: {fileID: 1767192439, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: far clip plane
       value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1767192439, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: near clip plane
+      value: 0.11
       objectReference: {fileID: 0}
     - target: {fileID: 58445280694286476, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_Layer
@@ -7501,6 +7505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   cameraOffset: {fileID: 1443719252}
+  bike: {fileID: 150037953}
   LeftController: {fileID: 316297239}
   RightController: {fileID: 33627506}
   LeftArrow: {fileID: 1622684982}
@@ -15040,6 +15045,7 @@ MonoBehaviour:
   isMirrorMode: 0
   isParticipant: 0
   reinforcementMode: 0
+  modePool: 
   currentTarget: 
 --- !u!1 &7192203317349450561
 GameObject:
