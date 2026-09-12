@@ -70,7 +70,7 @@ public class CarLane : MonoBehaviour
                 continue;
             }
 
-            if (car.transform.position.z < -10f)
+            if (car.transform.position.z < ZboundsThreshold)
             {
                 activeCars.Dequeue();
                 Destroy(car.gameObject);

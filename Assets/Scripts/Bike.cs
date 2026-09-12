@@ -40,6 +40,7 @@ public class Bike : MonoBehaviour
 
     private bool handlebarLeft = false;
     private bool handlebarRight = false;
+    private bool handlebarHasBeenTouched = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -54,7 +55,7 @@ public class Bike : MonoBehaviour
         while (true) {
             yield return new WaitForSeconds(0.1f);
 
-            float vibrationVal = isStopping ? 0.5f : 0.1f;
+            float vibrationVal = isStopping ? 0.5f : 0.2f;
             float vibrationDuration = 0.1f;
 
             if (isCrashing)
@@ -98,7 +99,7 @@ public class Bike : MonoBehaviour
         
         if (
             controller.position.y > HeadTransform.position.y + 0.05f &&
-            controller.position.z < HeadTransform.position.z + player.armLength - 0.2f
+            controller.position.z < HeadTransform.position.z + player.armLength - 0.13f
             ) {
             return true;
         }
@@ -358,6 +359,7 @@ public class Bike : MonoBehaviour
             StopSign.SetActive(false);
         }
 
+
         bool leftTouch = HandlebarTouch(
             turnSignals.LeftController,
             leftHandlePoint
@@ -368,12 +370,22 @@ public class Bike : MonoBehaviour
             rightHandlePoint
         );
 
+        if (!Emitter.gameStarted)
+        {
+            leftHandlePointVisual.enabled = false;
+            rightHandlePointVisual.enabled = false;
+        }
+
         if (
-            leftTouch || rightTouch
+            leftTouch || rightTouch ||
+            (Emitter.experimentMode && handlebarHasBeenTouched) // In experiment mode, the player will keep moving unless stopped for timing purposes 
             )
         {
+            
+            handlebarHasBeenTouched = true;
+
             if(!isStopping)
-            if (Emitter.currentMoveSpeed < ySpeed)
+            if (Emitter.currentMoveSpeed < ySpeed && Emitter.gameStarted)
                 Emitter.currentMoveSpeed += 3f * Time.deltaTime;
         }
         else

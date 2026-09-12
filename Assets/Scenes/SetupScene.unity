@@ -378,7 +378,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1178791450436251564, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_CameraYOffset
-      value: 1
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 1178791450436251564, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_RequestedTrackingOriginMode
@@ -398,7 +398,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.324
+      value: -0.26
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -406,7 +406,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.151
+      value: 0.123
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -777,7 +777,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Test Mode
+  m_text: Production Mode
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -843,7 +843,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -1.2285919, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1129,7 +1129,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &281758902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1504,6 +1504,7 @@ MonoBehaviour:
   isMirrorMode: 0
   isParticipant: 0
   reinforcementMode: 0
+  modePool: 
   currentTarget: 
 --- !u!4 &382015261
 Transform:
@@ -1828,7 +1829,7 @@ GameObject:
   - component: {fileID: 443239097}
   - component: {fileID: 443239096}
   m_Layer: 5
-  m_Name: Text Mode Button
+  m_Name: Production Mode Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1851,8 +1852,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -221, y: -141}
-  m_SizeDelta: {x: 120.7, y: 30}
+  m_AnchoredPosition: {x: -185.9, y: -141}
+  m_SizeDelta: {x: 202.5, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &443239096
 MonoBehaviour:
@@ -1936,6 +1937,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 443239094}
   m_CullTransparentMesh: 1
+--- !u!1 &462719253 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3693484500196916146, guid: 9445fa637c9adf7428d2b481bde3b662, type: 3}
+  m_PrefabInstance: {fileID: 6150939933065781349}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &556447800
 GameObject:
   m_ObjectHideFlags: 0
@@ -2362,7 +2368,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &845082084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2543,7 +2549,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 914105149}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.691}
+  m_LocalPosition: {x: 0, y: 0, z: 0.851}
   m_LocalScale: {x: 0.0019, y: 0.0019, z: 0.0019}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -2578,6 +2584,10 @@ MonoBehaviour:
   rightNearFarInteractor: {fileID: 558859860}
   leftNearFarInteractorVisual: {fileID: 831787239}
   rightNearFarInteractorVisual: {fileID: 1042995799}
+  leftAmplification: {fileID: 462719253}
+  rightAmplification: {fileID: 1233084383}
+  controllerUILeft: {fileID: 281758902}
+  controllerUIRight: {fileID: 845082084}
   physicalButtons:
   - {fileID: 8390373527858951504}
   - {fileID: 1701767893}
@@ -2695,7 +2705,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -2803,8 +2813,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: This VR Demo experience requires a Seat & a Wide Space to accomodate upper
-    body physical movement
+  m_text: This VR experience requires a Seat & Wide Space to accomodate upper-body
+    physical movement
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3174,7 +3184,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 318047534}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3336,6 +3346,11 @@ Transform:
   - {fileID: 5886844021290701701}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1233084383 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3693484500196916146, guid: 9445fa637c9adf7428d2b481bde3b662, type: 3}
+  m_PrefabInstance: {fileID: 1699466940}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1276148450
 GameObject:
   m_ObjectHideFlags: 1
@@ -3745,9 +3760,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press the <b>Blue</b> buttons to demonstration of the XR Mechanics. <b>Red
-    Button will start the game </b> There will be further instructions on your <b>smartphone</b>
-    mount in-game. Please input your participant number below and start the experiment.
+  m_text: 'Please input your participant number below and start the experiment. After,
+    press the in-game <b>Blue</b> buttons for demonstration of the XR Mechanics.
+    <b>Red Button will start the game. </b>There will be further instructions on
+    your <b>smartphone</b>. '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3996,7 +4012,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press X to Mirror Head Movement
+  m_text: Raise your Hand to the Physical Buttons to activate
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4393,6 +4409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Button
   haptics: {fileID: 104662586}
+  buttonVisual: {fileID: 298034999}
   pressers:
   - {fileID: 104662582}
   - {fileID: 104662581}
@@ -4411,7 +4428,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  pressDuration: 0.5
+  pressDuration: 0.05
 --- !u!1 &1710690851
 GameObject:
   m_ObjectHideFlags: 0
@@ -5036,6 +5053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Button
   haptics: {fileID: 104662586}
+  buttonVisual: {fileID: 1084083381}
   pressers:
   - {fileID: 104662582}
   - {fileID: 104662581}
@@ -5054,7 +5072,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  pressDuration: 0.5
+  pressDuration: 0.05
 --- !u!4 &1993098163
 Transform:
   m_ObjectHideFlags: 0
@@ -5311,7 +5329,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8172,15 +8190,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Courieree HQ
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4294860287
+  m_fontColor: {r: 1, g: 0.36320752, b: 0.9958798, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -8197,8 +8215,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20.2
-  m_fontSizeBase: 20.2
+  m_fontSize: 27.56
+  m_fontSizeBase: 27.56
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -8419,6 +8437,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Button
   haptics: {fileID: 104662586}
+  buttonVisual: {fileID: 4898656644015611402}
   pressers:
   - {fileID: 104662582}
   - {fileID: 104662581}
@@ -8437,7 +8456,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  pressDuration: 1
+  pressDuration: 0.15
 --- !u!23 &8394172583848368023
 MeshRenderer:
   m_ObjectHideFlags: 0

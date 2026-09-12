@@ -13,6 +13,7 @@ public class EndlessRunnerEmitter : MonoBehaviour
     [SerializeField] EnvironmentManager environmentManager;
     [SerializeField] PointsEmmiter foodBagEmitter;
     [SerializeField] PointsEmmiter roadSignEmitter;
+    [SerializeField] PointsEmmiter zebraCrossingEmitter;
 
     [SerializeField] private BikeAudio bikeAudio;
 
@@ -80,35 +81,65 @@ public class EndlessRunnerEmitter : MonoBehaviour
     public void StartGame() {
         gameStarted = true;
 
+
+
         StartCoroutine(SpawnCars());
         StartCoroutine(SpawnBuses());
 
         StartCoroutine(GameStructure());
+
+        if (!experimentMode) {// If the experiment mode is off, the zebra crossing can be in all lanes
+            zebraCrossingEmitter.ActiveLanes[0] = true;
+            zebraCrossingEmitter.ActiveLanes[1] = true;
+            zebraCrossingEmitter.ActiveLanes[2] = true;
+        }
     }
 
     IEnumerator GameStructure() {
         while (true)
         {
             yield return new WaitUntil(() => gameStarted);
+
+            // If the participant number is set, we are in experiment mode
+            if (GameManager.Instance.isParticipant == true)
+            {
+                experimentMode = true;
+            }
+
             if (experimentMode && vrTrackingLogger.trialTime <= 0)
             {
                 vrTrackingLogger.StartTrial();
             }
-            bikeAudio.PlayNotificationSound();
+            
             pedestrianMode = true;
-            PhoneScreen.text = (GameManager.Instance.participantNumber != 0 ? "You are Participant "  + GameManager.Instance.participantNumber : "Test Mode") +  
-                "\r\n\r\n" + "Now for a 60 second break \n\n Press <b>X</b> (Left Hand) to Mirror bike movement \n\n Press <b>B</b> (Right Hand) to re-calibrate your head position";
-            yield return new WaitForSeconds(30f);
 
-            bikeAudio.PlayNotificationSound();
-            GameManager.Instance.SetRandomMode();
+            if (player != null && player.onPavement == false)
+            {
+                yield return new WaitUntil(() => player.onPavement == true);
+            }
             vrTrackingLogger.SetCondition(GameManager.Instance.reinforcementMode.ToString());
-            PhoneScreen.text = "Hold Handlebars to move\r\n\r\nTilt and Signal to change lanes\r\n\r\nRaise your Right Hand to STOP\r\n\r\n" +
+            bikeAudio.PlayNotificationSound();
+            PhoneScreen.text = (GameManager.Instance.participantNumber != 0 ? "You are Participant "  + GameManager.Instance.participantNumber : "Production Mode") +  
+                "\r\n\r\n" + "Now for a short break, rest your arms. \n\n Press <b>X</b> (Left Hand, bottom face button) to Mirror bike movement \n\n Press <b>B</b> (Right Hand, top face button) to re-calibrate your head position";
+
+            yield return new WaitForSeconds(experimentMode ? 30f : 15f);
+
+            GameManager.Instance.SetRandomMode();
+            
+            pedestrianMode = false;
+
+            if (player != null && player.onPavement == true)
+            {
+                yield return new WaitUntil(() => player.onPavement == false);
+            }
+            vrTrackingLogger.SetCondition(GameManager.Instance.reinforcementMode.ToString());
+            bikeAudio.PlayNotificationSound();
+            PhoneScreen.text = "Hold Left/Right Handlebar(s) to move\r\n\r\nTilt and Signal to change lanes\r\n\r\nRaise your Right Hand to STOP\r\n\r\n" +
             (GameManager.Instance.reinforcementMode == Mode.Negative || GameManager.Instance.reinforcementMode == Mode.Mixed ? "<color=red>Avoid Hazards, Cars and Buses</color>\r\n\r\n" : "") +
             (GameManager.Instance.reinforcementMode == Mode.Positive || GameManager.Instance.reinforcementMode == Mode.Mixed ? "<color=green>Follow Road Signs, Collect and Deliver Food Bags</color>\r\n\r\n" : "") +
             (GameManager.Instance.reinforcementMode == Mode.Negative || GameManager.Instance.reinforcementMode == Mode.Mixed ? "<color=red> STOP</color><color=blue> for Zebra Crossings and Deliver Food</color>\r\n" : "");
             
-            pedestrianMode = false;
+
             yield return new WaitForSeconds(180f);
 
             // old time-based system
@@ -116,7 +147,7 @@ public class EndlessRunnerEmitter : MonoBehaviour
             //if (experimentMode && vrTrackingLogger.trialTime > fifteenMinutes) {
 
             //newer, time and mode based system, where the experiment ends when all modes have been completed
-            if (experimentMode && GameManager.Instance.modePool.Count == 0) {
+            if (GameManager.Instance.modePool.Count == 0) {
                 vrTrackingLogger.EndTrial();
                 bikeAudio.PlayNotificationSound();
                 PhoneScreen.text = "Participant " + GameManager.Instance.participantNumber + ", this experiment is over.\r\n\r\n" + " You can now remove your Headset";
@@ -168,6 +199,7 @@ public class EndlessRunnerEmitter : MonoBehaviour
                     }
 
                 }
+                yield return new WaitForSeconds(10f);
             }
             else // classic, more randomised method of spawn cars across lanes
             {
@@ -176,12 +208,13 @@ public class EndlessRunnerEmitter : MonoBehaviour
                 {
                     randomCarLane.SpawnCar(experimentMode);
                 }
+                yield return new WaitForSeconds(8f);
             }
 
 
 
 
-                yield return new WaitForSeconds(10f);
+                
             
 
             //var randomCarLane = CarLanes[Random.Range(0, CarLanes.Length)];
@@ -201,13 +234,21 @@ public class EndlessRunnerEmitter : MonoBehaviour
         {
             while (player.onPavement || !gameStarted) yield return null;
 
-            var randomBusLane = BusLanes[Random.Range(0, BusLanes.Length)];
+            int laneIndex = Random.Range(0, BusLanes.Length);
+            var randomBusLane = BusLanes[laneIndex];
             if (!pedestrianMode)
             {
                 randomBusLane.SpawnBus();
             }
 
-            yield return new WaitForSeconds(15f);
+            if (experimentMode)
+            {
+                yield return new WaitForSeconds(6f);
+            }
+            else {
+                yield return new WaitForSeconds(15f);
+            } 
+            
         }
     }
 

@@ -13,6 +13,13 @@ public class TutorialGuideUI : MonoBehaviour
     [SerializeField] GameObject leftNearFarInteractorVisual;
     [SerializeField] GameObject rightNearFarInteractorVisual;
 
+    
+    [SerializeField] GameObject leftAmplification;
+    [SerializeField] GameObject rightAmplification;
+
+    [SerializeField] FollowPlayer controllerUILeft;
+    [SerializeField] FollowPlayer controllerUIRight;
+
     public List<GameObject> physicalButtons = new List<GameObject>();
 
     [SerializeField] Button ExperimentModeButton;
@@ -57,6 +64,9 @@ public class TutorialGuideUI : MonoBehaviour
         {
             GameManager.Instance.participantNumber = participantNumber;
             GameManager.Instance.isParticipant = true;
+
+            controllerUILeft.gameObject.SetActive(true);
+            controllerUIRight.gameObject.SetActive(true);
             CloseUIMode();
 
         }
@@ -69,6 +79,10 @@ public class TutorialGuideUI : MonoBehaviour
     }
 
     void StartTestMode() {
+        leftAmplification.SetActive(true);
+        rightAmplification.SetActive(true);
+        controllerUILeft.gameObject.SetActive(true);
+        controllerUIRight.gameObject.SetActive(true);
         GameManager.Instance.isParticipant = false;
         CloseUIMode();
     }

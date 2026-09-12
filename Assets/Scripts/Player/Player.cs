@@ -57,7 +57,14 @@ public class Player : MonoBehaviour
         if (other.CompareTag("Pavement"))
         {
             onPavement = true;
-            emitter.currentMoveSpeed = 8f;
+            if (emitter.currentMoveSpeed > 8f)
+            {
+                emitter.currentMoveSpeed -= 0.05f;// slow down to 8f
+            }
+            else {
+                emitter.currentMoveSpeed = 8f; //keep at 8f
+            }
+            
         }
     }
 
@@ -75,7 +82,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         if (onPavement) {
-            if (audioSource.volume < 1f) audioSource.volume += 0.01f;
+            if (audioSource.volume < 1f) audioSource.volume += 0.006f;
         } else {
             if (audioSource.volume > 0f) audioSource.volume -= 0.01f;
         }

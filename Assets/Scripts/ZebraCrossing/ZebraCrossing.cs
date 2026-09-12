@@ -101,7 +101,8 @@ public class ZebraCrossing : MonoBehaviour
 
         if(other.gameObject.CompareTag("Hazard") || other.gameObject.CompareTag("Consumable"))
         {
-            Destroy(other.gameObject);
+            if(other.name != "NavMesh&HazardCollider") // add an execptioin for the NavMesh&HazardCollider, which is part of the zebra crossing
+                Destroy(other.gameObject);
         }
     }
 

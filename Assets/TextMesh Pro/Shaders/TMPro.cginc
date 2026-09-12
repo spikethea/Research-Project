@@ -9,7 +9,8 @@ float2 UnpackUV(float uv)
 
 fixed4 GetColor(half d, fixed4 faceColor, fixed4 outlineColor, half outline, half softness)
 {
-	half faceAlpha = 1-saturate((d - outline * 0.5 + softness * 0.5) / (1.0 + softness));
+	half faceAlpha = 1-saturate((d - outline * 0.5 + softness * 0.5) / (
+	0 + softness));
 	half outlineAlpha = saturate((d + outline * 0.5)) * sqrt(min(1.0, outline));
 
 	faceColor.rgb *= faceColor.a;

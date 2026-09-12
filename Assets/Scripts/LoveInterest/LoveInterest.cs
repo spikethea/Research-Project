@@ -89,12 +89,14 @@ public class LoveInterest : Gaze
 
     public void SignalAnim() {
         animator.enabled = true;
+        animator.ResetTrigger("doStopping");
         animator.SetTrigger("doSignalling");
     }
     public void StopAnim() {
         animator.enabled = true;
+        animator.ResetTrigger("doSignalling");
         animator.SetTrigger("doStopping");
-    
+
     }
 
     public void enableStopSign() {

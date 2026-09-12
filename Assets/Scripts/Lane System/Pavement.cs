@@ -18,6 +18,11 @@ public class Pavement : MonoBehaviour
         
     }
 
+    private void OnDestroy()
+    {
+        clearCommuters();
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Hazard") || other.CompareTag("Consumable")) {

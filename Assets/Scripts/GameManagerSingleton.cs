@@ -67,25 +67,35 @@ public class GameManager : MonoBehaviour
         // Refill and shuffle when empty
         if (modePool.Count == 0)
         {
-            modePool = new List<Mode>
-        {
-            Mode.Positive,
-            Mode.Negative,
-            Mode.Mixed,
-            Mode.Positive,
-            Mode.Negative,
-            Mode.Mixed
-        };
+            if (isParticipant) {
+                modePool = new List<Mode>
+                {
+                    Mode.Positive,
+                    Mode.Negative,
+                    Mode.Mixed,
+                    Mode.Positive,
+                    Mode.Negative,
+                    Mode.Mixed
+                };
+            } else {
+                modePool = new List<Mode>
+                {
+                    Mode.Positive,
+                    Mode.Negative,
+                    Mode.Mixed
+                };
+            }
+
 
             // Fisher-Yates shuffle algorithm
             for (int i = modePool.Count - 1; i > 0; i--)
-            {
-                int j = Random.Range(0, i + 1);
+                {
+                    int j = Random.Range(0, i + 1);
 
-                Mode temp = modePool[i];
-                modePool[i] = modePool[j];
-                modePool[j] = temp;
-            }
+                    Mode temp = modePool[i];
+                    modePool[i] = modePool[j];
+                    modePool[j] = temp;
+                }
         }
 
         // Take the first mode

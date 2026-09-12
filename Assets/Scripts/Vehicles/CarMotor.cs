@@ -3,7 +3,7 @@ using UnityEngine;
 public class CarMotor : MonoBehaviour
 {
     
-    public float topSpeed = 25f;
+    public float topSpeed = 12f;
 
     [SerializeField] BrakeLight brakeLightL;
     [SerializeField] BrakeLight brakeLightR;

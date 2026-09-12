@@ -32,6 +32,11 @@ public class CarBrain : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hitInfo, rayLength, ~IgnoreMe))
         {
             Debug.Log("Hit: " + hitInfo.collider.gameObject.name);
+
+            if(hitInfo.collider.gameObject.CompareTag("Pavement") && hitInfo.distance < MinRayLength)
+            {
+                Destroy(gameObject);
+            }
             return hitInfo.distance;
         }
         else
@@ -52,16 +57,17 @@ public class CarBrain : MonoBehaviour
 
         if (distance > MaxRayLength)
         {
-            // Implement collision logic here
+            
             motor.accelerate(5f); // Example: decelerate when an obstacle is detected
-            Debug.DrawRay(transform.position + (Vector3.up * rayHeight), Vector3.forward * distance, Color.green);
+            Debug.DrawRay(transform.position + (Vector3.up * rayHeight), Vector3.forward * MaxRayLength, Color.green);
         }
         else if (distance < MinRayLength)
         {
             motor.decelerate(15f);
             Debug.DrawRay(transform.position + (Vector3.up * rayHeight), Vector3.forward * distance, Color.red);
         }
-        else {
+        else if (MaxRayLength > distance && distance > MinRayLength)
+        {
             motor.constantSpeed();
             Debug.DrawRay(transform.position + (Vector3.up * rayHeight), Vector3.forward * distance, Color.white);
         }
@@ -84,6 +90,7 @@ public class CarBrain : MonoBehaviour
             }
             else {
                 motor.decelerate(25f); // Example: decelerate when a car is hit
+
             }
                 
         }

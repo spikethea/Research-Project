@@ -9,6 +9,7 @@ public class PointsEmmiter : MonoBehaviour
 
     public float emitterOffset;
     public float WaitingTime = 1f;
+    public float ExperimentWaitingTime = 1f;
     public float xOffset = 0f;
     public float yOffset = 0f;
     public float ZThreshold = -50f;
@@ -76,10 +77,11 @@ public class PointsEmmiter : MonoBehaviour
 
     IEnumerator EmitFoodBag()
     {
+        yield return new WaitUntil(() => emitter.gameStarted && emitter.currentMoveSpeed > 10);
         yield return new WaitForSeconds(emitterOffset);
         while (true)
         {
-            if (emitter.gameStarted && emitter.currentMoveSpeed > 10) {
+            if (emitter.currentMoveSpeed > 10) {
 
                 if (reinforcementModes.Contains(GameManager.Instance.reinforcementMode)
                 ) {
@@ -97,7 +99,7 @@ public class PointsEmmiter : MonoBehaviour
 
                     emittedObjects.Add(FoodBag);
                     Debug.Log("Emitted FoodBag at lane: " + currentLanePosition + " position: " + FoodBag.transform.position);
-                    yield return new WaitForSeconds(WaitingTime);
+                    yield return new WaitForSeconds(emitter.experimentMode ? ExperimentWaitingTime : WaitingTime);
                 }
 
 

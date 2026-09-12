@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class BusLane : MonoBehaviour
 {
+    public bool flippedIndicators = false;
+
+    public float ZboundsThreshold = -50f;
     public float xOffset;
     public float yOffset;
     public float zSpawn = 100f;
@@ -34,6 +37,8 @@ public class BusLane : MonoBehaviour
             Quaternion.identity
         );
         var hazardScript = hazard.GetComponent<BusBrain>();
+        if(hazardScript != null && flippedIndicators)
+            hazardScript.isFlipped = true;
         activeBuses.Enqueue(hazardScript);
     }
 
@@ -51,6 +56,11 @@ public class BusLane : MonoBehaviour
         //Move to BusMotor
         foreach (BusBrain bus in activeBuses)
         {
+            if (!bus)
+                continue;
+
+            if (!bus.motor)
+                continue;
             bus.motor.Move(moveSpeed);
         }
     }
@@ -58,11 +68,23 @@ public class BusLane : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        while (activeBuses.Count > 0 &&
-           activeBuses.Peek().transform.position.z < -10f)
+        while (activeBuses.Count > 0)
         {
-            BusBrain bus = activeBuses.Dequeue();
-            Destroy(bus.gameObject);
+            BusBrain bus = activeBuses.Peek();
+            if (!bus)
+            {
+                activeBuses.Dequeue();
+                continue;
+            }
+
+            if (activeBuses.Peek().transform.position.z < ZboundsThreshold) {
+                activeBuses.Dequeue();
+                Destroy(bus.gameObject);
+            }
+            else
+            {
+                break;
+            }
         }
     }
 }

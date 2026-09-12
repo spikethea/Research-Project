@@ -1,22 +1,33 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class BusBrain : MonoBehaviour
 {
+    public bool isFlipped = false;
     public bool busStopping = false;
     public CarMotor motor;
     [SerializeField] float rayHeight = 1f;
-    [SerializeField] float rayLength = 50f;
+    [SerializeField] float rayLength = 20f;
 
     [SerializeField] BrakeLight indicatorL;
     [SerializeField] BrakeLight indicatorR;
 
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip carCrashClip;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         indicatorL.isDisabled = true;
         indicatorR.isDisabled = true;
+
+        if (isFlipped)
+        {
+            BrakeLight temp = indicatorL;
+            indicatorL = indicatorR;
+            indicatorR = temp;
+        }
 
         StartCoroutine(BusStopCoroutine());
     }
@@ -46,21 +57,48 @@ public class BusBrain : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.GetComponent<LaneTile>().tileType == LaneTileType.Pavement)
+        var laneTile = other.gameObject.GetComponent<LaneTile>();
+        if (laneTile != null && laneTile.tileType == LaneTileType.Pavement)
         {
             motor.decelerate(25f);
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(UnityEngine.Collider other)
     {
-        if (collision.gameObject.CompareTag("Car"))
+        if (other.gameObject.CompareTag("Pavement"))
         {
-            // Implement collision logic here
-            motor.decelerate(5f); // Example: decelerate when a car is hit
+            motor.decelerate(25f);
+
         }
 
+        if (other.gameObject.CompareTag("Hazard") || other.gameObject.CompareTag("Car"))
+        {
+            
+            motor.decelerate(25f); 
+            
 
+        }
+
+        if (other.gameObject.CompareTag("Player"))
+        {
+            var bike = other.transform.GetComponentInChildren<Bike>();
+
+            if (bike)
+            {
+                audioSource.PlayOneShot(carCrashClip);
+                bike.CrashBike(2.5f);
+                Destroy(gameObject, 2f);
+            }
+
+        }
+
+        LaneTile laneTile = other.gameObject.GetComponent<LaneTile>();
+
+        if (laneTile != null && laneTile.tileType == LaneTileType.Pavement)
+        {
+            Destroy(gameObject);
+        }
     }
 
     void DetectRaycast()
@@ -68,7 +106,7 @@ public class BusBrain : MonoBehaviour
         if (RaycastForward() < rayLength)
         {
             // Implement collision logic here
-            motor.decelerate(5f); // Example: decelerate when an obstacle is detected
+            motor.decelerate(25f); // Example: decelerate when an obstacle is detected
         }
     }
 
@@ -79,7 +117,7 @@ public class BusBrain : MonoBehaviour
             busStopping = true;
             indicatorL.isDisabled = true;
             indicatorR.isDisabled = false;
-            yield return new WaitForSeconds(3f); // Example: stop for 3 seconds
+            yield return new WaitForSeconds(13f); // Example: stop for 3 seconds
             indicatorL.isDisabled = false;
             indicatorR.isDisabled = true;
             busStopping = false;
@@ -101,7 +139,7 @@ public class BusBrain : MonoBehaviour
             return;
         }
         DetectRaycast();
-        if (RaycastForward() > 5f)
+        if (RaycastForward() > rayLength)
         {
             motor.accelerate(25f);
         }

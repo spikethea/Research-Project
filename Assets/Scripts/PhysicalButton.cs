@@ -5,6 +5,7 @@ using UnityEngine.Events;
 public class PhysicalButton : MonoBehaviour
 {
     [SerializeField] HapticsManager haptics;
+    [SerializeField] GameObject buttonVisual;
     public Transform[] pressers;
     public UnityEvent onPressed;
     public float pressDuration = 0.5f;
@@ -58,10 +59,13 @@ public class PhysicalButton : MonoBehaviour
                 onPressed.Invoke();
                 pressedTimer = 0f;
             }
+
+            buttonVisual.transform.localPosition = new Vector3(0, 0.0f, 0);
         }
         else
         {
             pressedTimer = 0f;
+            buttonVisual.transform.localPosition = new Vector3(0, 0.02f, 0);
         }
     }
 }
